@@ -4,11 +4,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 function DateField({
+  id,
   text,
   onChange,
   required,
   value,
 }: {
+  id: string;
   text: string;
   onChange: any;
   required?: boolean;
@@ -27,6 +29,7 @@ function DateField({
       ref: LegacyRef<HTMLInputElement> | undefined
     ) => (
       <input
+        id={id}
         required={required}
         value={value}
         placeholder={text}
