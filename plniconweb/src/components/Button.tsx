@@ -6,7 +6,7 @@ function Button({
     onSubmit,
     // isLoading,
 }: {
-    type: "save" | "submit" | "cancel" | "add" | undefined;
+    type: "save" | "submit" | "login" | "cancel" | "add" | undefined;
     onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
     onSubmit?: FormEventHandler<HTMLButtonElement> | undefined;
     isLoading?: boolean;
@@ -28,6 +28,15 @@ function Button({
         onSubmit={onSubmit}
         className="h-[40px] w-[120px] text-[20px] font-semibold text-white bg-blue-primary rounded-[10px] hover:bg-blue-hover active:bg-blue-click">
             Submit
+        </button>
+    )}
+
+    {type == 'login' && (
+        <button
+        onClick={onClick}
+        onSubmit={onSubmit}
+        className="h-[40px] w-[120px] text-[20px] font-semibold text-white bg-blue-primary rounded-[10px] hover:bg-blue-hover active:bg-blue-click">
+            Login
         </button>
     )}
 

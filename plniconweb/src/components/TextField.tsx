@@ -46,7 +46,7 @@ function TextField({
             required={required}
             type="text"
             placeholder={placeholder}
-            className="w-full px-3 py-2 text-black bg-white border-2 border-[#6B6B6B] hover:border-black rounded-[10px]"
+            className="w-full px-3 py-2 text-black bg-white border-2 border-[#6B6B6B] hover:border-blue-hover focus:outline-blue-primary rounded-[10px]"
             onChange={handleChange}
           />
         </div>
@@ -59,7 +59,7 @@ function TextField({
               required={required}
               type={currType}
               placeholder={placeholder}
-              className="w-full px-3 py-2 pr-7 sm:pr-10 md:pr-10 lg:pr-14 text-black bg-white border-2 border-[#6B6B6B] hover:border-black rounded-[10px]"
+              className="w-full px-3 py-2 pr-7 sm:pr-10 md:pr-10 lg:pr-14 text-black bg-white border-2 border-[#6B6B6B] hover:border-blue-hover focus:outline-blue-primary rounded-[10px]"
             />
             <span
               className="absolute right-[3%] flex cursor-pointer items-center justify-around text-lg lg:text-2xl xl:right-[2%]"

@@ -7,11 +7,129 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./dashboard.css"
 import DateField from "../../components/DateField";
+import StackedbarChartJenis from "../../components/StackedbarChartJenisPOP";
+import StackedbarChartKabKot from "../../components/StackedbarChartKabKot";
+import Table from "../../components/Table";
+import Status from "../../components/Status";
+import TextField from "../../components/TextField";
 
 
 function Dashboard() {
   const [sliderRef, setSliderRef] = useState<any>(null);
-  const [date, setDate] = useState<Date|null>(null)
+  const [date, setDate] = useState<Date|null>(null);
+  const data = [
+    {
+      id: "ISP/2023/0001",
+      status: <Status type="PLAN"/>,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Komeng",
+      kontak: "086799899890"
+    },
+    {
+      id: "ISP/2023/0002",
+      status: <Status type="PLAN"/>,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Komeng",
+      kontak: "086799899890"
+    },
+    {
+      id: "ISP/2023/0003",
+      status: <Status type="PLAN"/>,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Komeng",
+      kontak: "086799899890"
+    },
+    {
+      id: "ISP/2023/0004",
+      status: <Status type="PLAN"/>,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Komeng",
+      kontak: "086799899890"
+    },
+    {
+      id: "ISP/2023/0005",
+      status: <Status type="PLAN"/>,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Komeng",
+      kontak: "086799899890"
+    },
+    {
+      id: "ISP/2023/0006",
+      status: <Status type="PLAN"/>,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Komeng",
+      kontak: "086799899890"
+    },
+    {
+      id: "ISP/2023/0007",
+      status: <Status type="PLAN"/>,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Komeng",
+      kontak: "086799899890"
+    },
+    {
+      id: "ISP/2023/0008",
+      status: <Status type="PLAN"/>,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Komeng",
+      kontak: "086799899890"
+    },
+    {
+      id: "ISP/2023/0009",
+      status: <Status type="PLAN"/>,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Komeng",
+      kontak: "086799899890"
+    },
+    {
+      id: "ISP/2023/0010",
+      status: <Status type="REALISASI"/>,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Komeng",
+      kontak: "086799899890"
+    }
+  ];
+  const kolom = ["ID","Status","Plan","Jenis PM","Kategori PM","Wilayah","Area","Field Support","Kontak"]
 
   const NextArrow = () => {
     return (
@@ -116,6 +234,25 @@ function Dashboard() {
                         OSP
                     </h2>
                 </div>
+            </div>
+            <div className="mt-[46px] w-[1240px] bg-bnw-50 mx-auto py-10 rounded-lg shadow-xl flex items-center justify-center gap-16">
+              <div className="flex flex-col">
+                <StackedbarChartJenis/>
+                <StackedbarChartKabKot/>
+              </div>
+            </div>
+            <h1 className="mt-[100px] header1 text-blue-primary text-center">Jadwal Hari Ini</h1>
+            <div className="my-[56px] w-[1370px] bg-bnw-50 mx-auto py-10 rounded-lg shadow-xl gap-16">
+              <div className="flex flex-col gap-5">
+                <div className="flex justify-end pr-[20px]">
+                  <a href="" className="flex items-center justify-center rounded-[10px] h-[40px] w-[150px] text-white bg-blue-primary font-semibold">
+                    Lihat Semua
+                  </a>
+                </div>
+                <div className="flex items-center justify-center">
+                  <Table data={data} header={kolom} tipe="pm" role="admin"/>
+                </div>
+              </div>
             </div>
         </div>
       </div>
