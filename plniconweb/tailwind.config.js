@@ -3,6 +3,9 @@ export default {
   content: ["index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      fontSize: {
+        
+      },
       fontFamily: {
         montserrat: ['Montserrat', 'sans-serif'],
       },
@@ -11,7 +14,6 @@ export default {
           primary: "#F8DB25",
           hover: "#FFEA6A",
           click: "#E7B400",
-          graph: "#FFA41B",
         },
         blue: {
           primary: "#09AEEF",
@@ -37,8 +39,11 @@ export default {
         pink: {
           graph: "#F266AB",
         },
-        neutral: {
-          500: "#fafaff",
+        orange: {
+          graph: "#FFA41B",
+        },
+        bnw: {
+          50: "#fafaff",
           100: "#eef0f2",
           300: "#ecebe4",
           500: "#daddd8",

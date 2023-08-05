@@ -1,0 +1,12 @@
+
+.slick-dots li button:before {
+  @apply text-text-dark opacity-50 text-xs;
+}
+
+.slick-dots li button:before:hover {
+  @apply text-blue-hover;
+}
+
+.slick-dots li.slick-active button:before {
+  @apply text-blue-primary opacity-100;
+}
