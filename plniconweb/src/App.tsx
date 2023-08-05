@@ -7,6 +7,7 @@ import Chart from './components/Chart'
 import CardPOP from './components/CardPOP'
 import Table from './components/Table'
 import Dashboard from './pages/dashboard/dashboard'
+import DaftarUser from './pages/daftar_user/daftar_user'
 // import './App.css'
 
 function App() {
@@ -52,7 +53,7 @@ function App() {
 
   return (
     <>
-      <Tab/>
+      <DaftarUser/>
     </>
   )
 }
