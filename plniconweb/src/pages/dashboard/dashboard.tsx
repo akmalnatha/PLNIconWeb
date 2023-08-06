@@ -12,6 +12,7 @@ import StackedbarChartKabKot from "../../components/StackedbarChartKabKot";
 import Table from "../../components/Table";
 import Status from "../../components/Status";
 import TextField from "../../components/TextField";
+import Footer from "../../components/footer";
 
 
 function Dashboard() {
@@ -256,6 +257,7 @@ function Dashboard() {
             </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 }
