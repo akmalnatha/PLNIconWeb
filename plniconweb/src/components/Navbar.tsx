@@ -11,24 +11,24 @@ function Navbar() {
     }
     return (
     <>
-    <div className="fixed z-20 w-full flex justify-between items-center h-20 px-7 bg-bnw-50 shadow-lg">
+    <div className="fixed z-50 w-full flex justify-between items-center h-20 px-7 bg-bnw-50 shadow-lg">
         <img src={logo} alt="logo PLN IconPlus" />
         <div className="flex gap-4 xl:gap-11 items-center">
-            <a href="" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Home</a>
+            <a href="/" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Home</a>
             <a href="" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Dashboard POP</a>
-            <a href="" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">POP</a>
+            <a href="/info-umum" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">POP</a>
             <a href="" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Penjadwalan PM</a>
             <a href="" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Temuan</a>
             <a href="" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Export</a>
             <div className="relative w-[220px]">
-                <div className="flex gap-2 w-full cursor-pointer" onClick={toggleUser}>
+                <div className="flex gap-2 w-full cursor-pointer hover:bg-blue-hover items-center justify-center group" onClick={toggleUser}>
                     <div className="w-[50px] h-[50px] shrink-0 rounded-full bg-bnw-500"></div>
                     <div className="flex gap-[5px] flex-col justify-center overflow-x-hidden">
-                        <p className="text-text-dark truncate text-ellipsis overflow-hidden whitespace-nowrap">Nama User Panjang Sekali</p>
-                        <p className="text-text-dark truncate text-ellipsis overflow-hidden whitespace-nowrap">Role</p>
+                        <p className="text-text-dark group-hover:text-text-light truncate text-ellipsis overflow-hidden whitespace-nowrap">Nama User Panjang Sekali</p>
+                        <p className="text-text-dark group-hover:text-text-light truncate text-ellipsis overflow-hidden whitespace-nowrap">Role</p>
                     </div>
                 </div>
-                <div className="absolute top-[66px] bg-bnw-50 shadow-lg w-full rounded-b-lg overflow-hidden z-10">
+                <div className="absolute top-[68px] bg-bnw-50 shadow-lg w-full rounded-lg overflow-hidden z-10">
                     <UserOptions type="admin" visibility={open}/>
                 </div>
             </div>

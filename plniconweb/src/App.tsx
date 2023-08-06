@@ -8,54 +8,48 @@ import CardPOP from './components/CardPOP'
 import Table from './components/Table'
 import Dashboard from './pages/dashboard/dashboard'
 import DaftarUser from './pages/daftar_user/daftar_user'
+import { createBrowserRouter, RouterProvider, Routes, Route } from 'react-router-dom'
+import KWH from './pages/detail_pop/details/kwh'
+import Recti from './pages/detail_pop/details/recti'
+import PageDetail from './pages/detail_pop/page_detail'
+import Inverter from './pages/detail_pop/details/inverter'
+import InfoUmum from './pages/detail_pop/details/info_umum'
 // import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
-  const data = [
-    {
-      id: 1,
-      Tanggal: "15 Juli 2023",
-      Nama: "Agus",
-      Barang: "Waduh",
-      jenis: "kopeng",
-      jumlah: 2,
-      satuan: 1,
-    },
-    {
-      id: 2,
-      Tanggal: "15 Juli 2023",
-      Nama: "Agus",
-      Barang: "Waduh",
-      jenis: "kopeng",
-      jumlah: 2,
-      satuan: 1,
-    },
-    {
-      id: 3,
-      Tanggal: "15 Juli 2023",
-      Nama: "Agus",
-      Barang: "Waduh",
-      jenis: "kopeng",
-      jumlah: 2,
-      satuan: 1,
-    },
-  ];
-  const kolom = [
-    "No",
-    "Tanggal",
-    "Nama",
-    "Barang",
-    "Jenis",
-    "Jumlah",
-    "Satuan",
-  ];
+const router = createBrowserRouter([
+  { path: "*", Component: Root }
+]);
 
-  return (
-    <>
-      <DaftarUser/>
-    </>
-  )
+export default function App() {
+  return <RouterProvider router={router} />;
 }
 
-export default App
+function Root() {
+  return (
+    <Routes>
+      <Route path='/info-umum' element={
+        <PageDetail>
+        <InfoUmum/>
+      </PageDetail>
+    } />
+      <Route path="/kwh" element={
+      <PageDetail>
+        <KWH/>
+      </PageDetail>
+    } />
+      <Route path="/inverter" element={
+      <PageDetail>
+        <Inverter/>
+      </PageDetail>
+    } />
+      <Route path="/Recti" element={
+      <PageDetail>
+        <Recti />
+      </PageDetail>
+      } />
+      <Route path="/" element={<Dashboard/>} />
+      <Route path='/daftar-user' element={<DaftarUser/>} />
+    </Routes>
+  );
+}
+

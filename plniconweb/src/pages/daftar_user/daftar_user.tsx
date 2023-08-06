@@ -32,9 +32,9 @@ function DaftarUser() {
     <>
       <Navbar />
       <div className="overflow-auto pt-[136px] min-h-screen bg-bnw-50">
-        <h1 className="header1 text-blue-primary text-center mb-[106px]">DAFTAR USER</h1>
-        <div className="w-[50%] mx-auto">
-            <Table data={data} header={kolom} tipe="user" role="user"/>
+        <h1 className="header1 text-blue-primary text-center mb-[56px]">DAFTAR USER</h1>
+        <div className="w-[1370px] mx-auto py-5 rounded-lg shadow-xl px-5">
+            <Table data={data} header={kolom} tipe="user" role="admin"/>
         </div>
       </div>
     </>

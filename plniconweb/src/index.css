@@ -9,6 +9,26 @@
   }
 }
 
+/* width */
+::-webkit-scrollbar {
+  @apply h-[6px] w-1 lg:w-2;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply z-10 rounded-[5px] bg-blue-primary;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-blue-hover;
+}
+
 @responsive {
   .header1 {
     @apply font-bold tracking-[0.02em] leading-none text-[64px];

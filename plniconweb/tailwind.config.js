@@ -17,6 +17,7 @@ export default {
         },
         blue: {
           primary: "#09AEEF",
+          alternative: "#17a2b8",
           hover: "#59C6F1",
           click: "#0B7AA6",
           graph: "#015CBA",
@@ -48,6 +49,8 @@ export default {
           300: "#ecebe4",
           500: "#daddd8",
           700: "#1c1c1c",
+          alternative: "#e9ecef",
+          alternative2: "#ced4da",
         },
         text: {
           light: "#F8F8F8",

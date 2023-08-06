@@ -41,7 +41,7 @@ function Table({
                 <tr key={idx}>
                   {role == "admin" && (
                     <td className="h-auto w-auto border-collapse border-b-2 border-bnw-500 px-2 py-3 text-center xl:px-4">
-                      <div className="flex gap-1">
+                      <div className="flex items-center justify-center gap-1">
                         {tipe != "user" && (
                           <div className="group relative">
                             <button className="bg-blue-primary p-2 rounded hover:bg-blue-hover active:bg-blue-click text-text-light">
