@@ -1,4 +1,4 @@
-import CardPOP from "./CardPOP";
+import CardPOP from "./CardChart";
 
 function CardCarousel({tipe}: {tipe: string}) {
     return (
