@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./textfield.css"
 
 function TextField({
+  id,
   style,
   type,
   placeholder,
@@ -11,6 +12,7 @@ function TextField({
   value,
   required,
 }: {
+  id: string;
   style?: string;
   type: "standart" | "pass" | "area" | "datepicker" | "dropdown" | "search";
   placeholder: string;
@@ -57,6 +59,7 @@ function TextField({
         <div className={style + " w-full"}>
           <div className="relative flex items-center">
             <input
+              id={id}
               required={required}
               type={currType}
               placeholder={placeholder}
