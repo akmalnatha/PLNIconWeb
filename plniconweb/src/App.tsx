@@ -14,6 +14,7 @@ import Recti from './pages/detail_pop/details/recti'
 import PageDetail from './pages/detail_pop/page_detail'
 import Inverter from './pages/detail_pop/details/inverter'
 import InfoUmum from './pages/detail_pop/details/info_umum'
+import AddUser from './pages/daftar_user/add_user'
 // import './App.css'
 
 const router = createBrowserRouter([
@@ -48,7 +49,8 @@ function Root() {
       </PageDetail>
       } />
       <Route path="/" element={<Dashboard/>} />
-      <Route path='/daftar-user' element={<DaftarUser/>} />
+      <Route path='/daftar-user' element={<DaftarUser />} />
+      <Route path='/daftar-user/create' element={<AddUser/>}/>
     </Routes>
   );
 }
