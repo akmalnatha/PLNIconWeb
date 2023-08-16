@@ -11,8 +11,8 @@ import StackedbarChartJenis from "../../components/StackedbarChartJenisPOP";
 import StackedbarChartKabKot from "../../components/StackedbarChartKabKot";
 import Table from "../../components/Table";
 import Status from "../../components/Status";
-import TextField from "../../components/TextField";
 import Footer from "../../components/footer";
+import Pagination from "../../components/Pagination";
 
 
 function Dashboard() {
@@ -128,9 +128,33 @@ function Dashboard() {
       area: "Jakarta Timur",
       field_suppport: "Komeng",
       kontak: "086799899890"
-    }
+    },
+    {
+      id: "ISP/2023/0001",
+      status: <Status type="PLAN"/>,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Komeng",
+      kontak: "086799899890"
+    },
+    {
+      id: "ISP/2023/0002",
+      status: <Status type="PLAN"/>,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Komeng",
+      kontak: "086799899890"
+    },
   ];
   const kolom = ["ID","Status","Plan","Jenis PM","Kategori PM","Wilayah","Area","Field Support","Kontak"]
+
+  const [page, setPage] = useState(1);
 
   const NextArrow = () => {
     return (
@@ -253,6 +277,7 @@ function Dashboard() {
                 <div className="flex items-center justify-center">
                   <Table data={data} header={kolom} tipe="pm" role="admin"/>
                 </div>
+                <Pagination totalData={data.length} dataLimit={12} current={(page) => setPage(page)} />
               </div>
             </div>
         </div>

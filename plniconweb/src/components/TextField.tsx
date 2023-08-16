@@ -12,7 +12,7 @@ function TextField({
   value,
   required,
 }: {
-  id: string;
+  id?: string;
   style?: string;
   type: "standart" | "pass" | "area" | "datepicker" | "dropdown" | "search";
   placeholder: string;

@@ -2,7 +2,7 @@ function InfoUmum(){
     return(
         <>
         <div className="w-full mt-[38px] pb-[75px]">
-            <div className="bg-bnw-500 w-[1266px] mx-auto rounded-lg p-[50px] shadow-md shadow-bnw-alternative2">
+            <div className="bg-bnw-alternative w-[1266px] mx-auto rounded-lg p-[50px] shadow-md shadow-bnw-alternative2">
                 <h2 className="header2 text-text-dark">
                     HEALTHY INDEX POP 
                 </h2>

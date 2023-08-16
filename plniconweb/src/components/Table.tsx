@@ -6,16 +6,25 @@ function Table({
   header,
   tipe,
   role,
+  search,
 }: {
   data: any;
   header: any;
   tipe: string;
   role: string;
+  search?: string | undefined; 
 }) {
+  const filteredData = search
+    ? data.filter((item: any) =>
+        Object.values(item).some((value: any) =>
+          String(value).toLowerCase().includes(search.toLowerCase())
+        )
+      )
+    : data;
   return (
     <>
       <div className="flex overflow-visible">
-        <table className="w-full">
+        <table className="min-w-full">
           <thead>
             <tr>
               {role == "admin" && (
@@ -36,7 +45,7 @@ function Table({
             </tr>
           </thead>
           <tbody>
-            {Object.values(data).map((obj: any, idx: number) => {
+            {filteredData.map((obj: any, idx: number) => {
               return (
                 <tr key={idx}>
                   {role == "admin" && (
