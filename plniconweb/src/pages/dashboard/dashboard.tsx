@@ -270,7 +270,7 @@ function Dashboard() {
             <div className="my-[56px] w-[1370px] bg-bnw-50 mx-auto py-10 rounded-lg shadow-xl gap-16">
               <div className="flex flex-col gap-5">
                 <div className="flex justify-end pr-[20px]">
-                  <a href="" className="flex items-center justify-center rounded-[10px] h-[40px] w-[150px] text-white bg-blue-primary font-semibold">
+                  <a href="/penjadwalan-pm" className="flex items-center justify-center rounded-[10px] h-[40px] w-[150px] text-white bg-blue-primary font-semibold">
                     Lihat Semua
                   </a>
                 </div>
