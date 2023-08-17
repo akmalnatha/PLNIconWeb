@@ -91,7 +91,7 @@ function TextField({
 
       {type == "search" && (
         <div className={style + " w-full"}>
-          <div className="pointer-events-none flex w-full justify-between rounded-lg border-2 border-[#6B6B6B] px-2 focus-within:border-black hover:border-black hover:focus-within:border-black ">
+          <div className="pointer-events-none flex w-full justify-between rounded-lg border-2 border-[#6B6B6B] px-2 focus-within:border-black hover:border-blue-hover hover:focus-within:border-blue-primary ">
             <input
               required={required}
               tabIndex={0}

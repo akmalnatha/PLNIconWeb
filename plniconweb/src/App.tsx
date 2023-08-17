@@ -22,6 +22,7 @@ import InfoUmum from "./pages/detail_pop/details/info_umum";
 import AddUser from "./pages/daftar_user/add_user";
 import DashboardPOP from "./pages/dashboard_pop/dashboard_pop";
 import PenjadwalanPM from "./pages/penjadwalan_pm/penjadwalan_pm";
+import CreatePM from "./pages/create_pm/create_pm";
 // import './App.css'
 
 const router = createBrowserRouter([{ path: "*", Component: Root }]);
@@ -66,10 +67,49 @@ function Root() {
         }
       />
       <Route path="/" element={<Dashboard />} />
-      <Route path="/daftar-user" element={<DaftarUser />} />
-      <Route path="/daftar-user/create" element={<AddUser />} />
-      <Route path="/penjadwalan-pm" element={<PenjadwalanPM />} />
-      <Route path="/dashboard-pop" element={<DashboardPOP />} />
+      <Route path="/daftar-user">
+        <Route path="" element={<DaftarUser />} />
+        <Route path="create" element={<AddUser />} />
+      </Route>
+      <Route path="penjadwalan-pm">
+        <Route path="" element={<PenjadwalanPM />} />
+        <Route path="create" element={<CreatePM/>}/>
+      </Route>
+      <Route path="/dashboard-pop">
+        <Route path="" element={<DashboardPOP />} />
+        <Route
+          path="info-umum"
+          element={
+            <PageDetail>
+              <InfoUmum />
+            </PageDetail>
+          }
+        />
+        <Route
+          path="kwh"
+          element={
+            <PageDetail>
+              <KWH />
+            </PageDetail>
+          }
+        />
+        <Route
+          path="inverter"
+          element={
+            <PageDetail>
+              <Inverter />
+            </PageDetail>
+          }
+        />
+        <Route
+          path="recti"
+          element={
+            <PageDetail>
+              <Recti />
+            </PageDetail>
+          }
+        />
+      </Route>
     </Routes>
   );
 }

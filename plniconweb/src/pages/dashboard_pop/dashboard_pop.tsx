@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import CardPOP from "../../components/CardPOP"
 import Dropdown from "../../components/Dropdown"
 import Navbar from "../../components/Navbar"
@@ -5,6 +6,7 @@ import TextField from "../../components/TextField"
 import Footer from "../../components/footer"
 
 function DashboardPOP(){
+    const changePage = useNavigate();
     return(
     <>
     <Navbar/>
@@ -27,7 +29,7 @@ function DashboardPOP(){
             </div>
         </div>
         <div className="w-full bg-white grid grid-cols-6 gap-5 mt-[36px]">
-            <CardPOP kondisi="handal" type="s-backbone"/>
+            <CardPOP kondisi="handal" type="s-backbone" onClick={() => changePage('info-umum')}/>
             <CardPOP kondisi="sehat" type="s-backbone"/>
             <CardPOP kondisi="handal" type="s-backbone"/>
             <CardPOP kondisi="sehat" type="s-backbone"/>

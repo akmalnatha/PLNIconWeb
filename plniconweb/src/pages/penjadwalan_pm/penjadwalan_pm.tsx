@@ -5,18 +5,19 @@ import Footer from "../../components/footer";
 import TextField from "../../components/TextField";
 import Button from "../../components/Button";
 import Table from "../../components/Table";
+import { useNavigate } from "react-router-dom";
 
 function PenjadwalanPM() {
   const data = [
     {
       id: "ISP/2023/0001",
       status: <Status type="PLAN" />,
-      plan: "2023-07-09",
+      plan: "2023-15-08",
       jenis: "ISP",
-      kategori: "Rutin",
+      kategori: "Incidental",
       wilayah: "HARJAK",
-      area: "Jakarta Timur",
-      field_suppport: "Komeng",
+      area: "Banten",
+      field_suppport: "Akmal",
       kontak: "086799899890",
     },
     {
@@ -27,7 +28,7 @@ function PenjadwalanPM() {
       kategori: "Rutin",
       wilayah: "HARJAK",
       area: "Jakarta Timur",
-      field_suppport: "Komeng",
+      field_suppport: "Akmal",
       kontak: "086799899890",
     },
     {
@@ -49,7 +50,7 @@ function PenjadwalanPM() {
       kategori: "Rutin",
       wilayah: "HARJAK",
       area: "Jakarta Timur",
-      field_suppport: "Komeng",
+      field_suppport: "Ardhan",
       kontak: "086799899890",
     },
     {
@@ -71,7 +72,7 @@ function PenjadwalanPM() {
       kategori: "Rutin",
       wilayah: "HARJAK",
       area: "Jakarta Timur",
-      field_suppport: "Komeng",
+      field_suppport: "Ibrahim",
       kontak: "086799899890",
     },
     {
@@ -92,7 +93,7 @@ function PenjadwalanPM() {
       jenis: "ISP",
       kategori: "Rutin",
       wilayah: "HARJAK",
-      area: "Jakarta Timur",
+      area: "Tangerang Selatan",
       field_suppport: "Komeng",
       kontak: "086799899890",
     },
@@ -103,8 +104,8 @@ function PenjadwalanPM() {
       jenis: "ISP",
       kategori: "Rutin",
       wilayah: "HARJAK",
-      area: "Jakarta Timur",
-      field_suppport: "Komeng",
+      area: "Tangerang Selatan",
+      field_suppport: "Sultan",
       kontak: "086799899890",
     },
     {
@@ -119,7 +120,7 @@ function PenjadwalanPM() {
       kontak: "086799899890",
     },
     {
-      id: "ISP/2023/0001",
+      id: "ISP/2023/0011",
       status: <Status type="PLAN" />,
       plan: "2023-07-09",
       jenis: "ISP",
@@ -130,7 +131,7 @@ function PenjadwalanPM() {
       kontak: "086799899890",
     },
     {
-      id: "ISP/2023/0002",
+      id: "ISP/2023/0012",
       status: <Status type="PLAN" />,
       plan: "2023-07-09",
       jenis: "ISP",
@@ -155,6 +156,7 @@ function PenjadwalanPM() {
 
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState<string>("");
+  const changePage = useNavigate();
   return (
     <>
       <Navbar />
@@ -170,7 +172,7 @@ function PenjadwalanPM() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <Button type="add" />
+          <Button type="add" onClick={() => changePage('create')}/>
         </div>
         <div className="mb-[56px] max-w-[1370px] bg-bnw-50 mx-auto pb-10 rounded-lg shadow-xl px-[20px] overflow-auto">
           <Table

@@ -8,13 +8,13 @@ function CardPOP({
 }:{
     kondisi: "handal" | "sehat" | "critical";
     type: "s-backbone" | "backbone" | "distribusi" | "akses" | "cpe"
-    onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
+    onClick?: MouseEventHandler<HTMLDivElement> | undefined;
 }){
     const iconStyle = { color: "white", fontSize: "2.5em"};
     return(
     <>
     {type == "s-backbone" && (
-        <div className="w-[200px] h-[160px] bg-white rounded-2xl border-2 drop-shadow-lg">
+        <div className="w-[200px] h-[160px] bg-white hover:bg-bnw-500 rounded-2xl border-2 drop-shadow-lg cursor-pointer " onClick={onClick}>
             <div className="flex flex-col items-center gap-1 p-5">
                 {kondisi == "handal" && (<div className="w-[75px] h-[75px] bg-green-primary rounded-full flex items-center justify-center">
                     <HiUserGroup style={iconStyle}/>
