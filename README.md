@@ -1,7 +1,7 @@
 # PLNIconWeb
 
 # Langkah-Langkah
-Clone repo: git clone https://github.com/KATITB2023/oskm-info.git
-Masuk ke folder: cd plniconweb
-Install dependencies: npm install 
-Jalankan local dev server: npm run dev
+1. Clone repo: git clone https://github.com/KATITB2023/oskm-info.git](https://github.com/akmalnatha/PLNIconWeb.git
+2. Masuk ke folder: cd plniconweb
+3. Install dependencies: npm install 
+4. Jalankan local dev server: npm run dev
