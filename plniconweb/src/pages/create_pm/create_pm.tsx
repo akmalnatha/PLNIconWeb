@@ -1,9 +1,25 @@
 import Button from "../../components/Button";
+import DateField from "../../components/DateField";
 import Navbar from "../../components/Navbar";
 import TextField from "../../components/TextField";
 import Footer from "../../components/footer";
+import Select from "react-select";
 
 function CreatePM(){
+    const options1 = [
+        {value: "Rutin", label: "Rutin"},
+        {value: "Isidental", label: "Isidental"},
+    ];
+    const options2 = [
+        {value: "ISP", label: "ISP"},
+        {value: "OSP", label: "OSP"},
+    ];
+    const style = [
+        {control: (baseStyles: any, state: { isFocused: any; }) => ({
+            ...baseStyles,
+            borderColor: state.isFocused ? 'grey' : 'red',
+    }),}
+    ];
     return(
     <>
     <Navbar/>
@@ -12,11 +28,11 @@ function CreatePM(){
         <div className="w-[400px] flex flex-col justify-center gap-5">
             <div>
                 <p className="header3 text-left mb-1">Plan</p>
-                <TextField type="standart" placeholder="Isi"/>
+                <DateField  id="" text="Pilih Tanggal PM"/>
             </div>
             <div>
                 <p className="header3 text-left mb-1">Pelaksana</p>
-                <TextField type="standart" placeholder="Isi"/>
+                <Select  placeholder="Pilih Pelaksana PM"/>
             </div>
         </div>
     </div>
@@ -24,21 +40,21 @@ function CreatePM(){
         <div className="w-1/2 flex flex-col items-center gap-5">
                 <div className="w-[400px]">
                     <p className="header3 text-left mb-1">Wilayah</p>
-                    <TextField type="standart" placeholder="Isi"/>
+                    <Select placeholder="Pilih Wilayah PM"/>
                 </div>
                 <div className="w-[400px]">
                     <p className="header3 text-left mb-1">Kategori PM</p>
-                    <TextField type="standart" placeholder="Isi"/>
+                    <Select options={options1} placeholder={"Pilih Kategori PM"}/>
                 </div>
         </div>
         <div className="w-1/2 flex flex-col items-center gap-5">
                 <div className="w-[400px]">
                     <p className="header3 text-left mb-1">Area</p>
-                    <TextField type="standart" placeholder="Isi"/>
+                    <Select placeholder="Pilih Area PM"/>
                 </div>
                 <div className="w-[400px]">
                     <p className="header3 text-left mb-1">Jenis PM</p>
-                    <TextField type="standart" placeholder="Isi"/>
+                    <Select options={options2} placeholder={"Pilih Jenis PM"}/>
                 </div>
         </div>
     </div>
