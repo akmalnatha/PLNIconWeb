@@ -1,15 +1,12 @@
 import { ChangeEventHandler } from "react";
-// import "./Checkbox.css";
 
 function Checkbox({
-  type,
   id,
   label,
   description,
   checked,
   onChange,
 }: {
-  type: "check" | "indeter" | undefined;
   id: string;
   label?: string;
   description?: string;
@@ -20,11 +17,7 @@ function Checkbox({
     <>
       <div className="flex h-auto w-full justify-center gap-3">
         <input
-          className={`${
-            type == "indeter"
-              ? "indetermark before:right-[5.5px]"
-              : "checkmark before:right-[3px]"
-          } checkmark relative h-[20px] w-[20px] cursor-pointer appearance-none rounded border-2 border-kGrey-300 outline-none before:absolute before:-bottom-[2.5px] before:border-white before:text-center before:font-bold before:text-white checked:border-kBlue-200 checked:bg-kBlue-200 hover:border-kBlue-300 checked:hover:border-kBlue-300 checked:hover:bg-kBlue-300 focus:outline focus:outline-kBlue-200 checked:focus:border-kBlue-200 focus:hover:border-kBlue-300 focus:hover:outline-kBlue-300 active:border-kBlue-400 checked:active:border-kBlue-400 checked:active:bg-kBlue-400 focus:active:border-kBlue-400 focus:active:outline-kBlue-400 disabled:opacity-30 disabled:hover:border-kGrey-300`}
+          className={`before:w-4 before:h-3 checked:before:bg-[url('../assets/check_icon.svg')] before:inline-block before:bg-center before:bg-contain before:bg-no-repeat before:absolute before:-top-[-3px] relative h-[20px] w-[20px] cursor-pointer appearance-none rounded border-2 border-slate-500 outline-none before:border-white before:text-center before:font-bold before:text-white checked:border-blue-graph checked:bg-blue-graph hover:border-blue-hover checked:hover:border-blue-hover checked:hover:bg-blue-hover focus:outline focus:outline-blue-graph checked:focus:border-blue-graph focus:hover:border-blue-hover focus:hover:outline-blue-hover active:border-blue-click checked:active:border-blue-click checked:active:bg-blue-click focus:active:border-blue-click focus:active:outline-blue-click disabled:opacity-30 disabled:hover:border-slate-500`}
           type="checkbox"
           id={id}
           checked={checked}
