@@ -6,6 +6,7 @@ import TextField from "../../components/TextField";
 import Footer from "../../components/footer";
 import Select from "react-select";
 import Checkbox from "../../components/Checkbox";
+import { postWithAuth } from "../../api/api";
 
 function CreatePM() {
   const options1 = [
@@ -24,6 +25,22 @@ function CreatePM() {
       }),
     },
   ];
+  const token = localStorage.getItem("access_token");
+
+  const addJadwalPm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if(token){
+      try{
+        const response = await postWithAuth("jadwalpm",{
+          
+        },
+        token
+        )
+      }catch(error){
+        console.log(error);
+      }
+    }
+  }
 
   const [date, setDate] = useState<Date | null>(null);
   const [jenis, setJenis] = useState<string | undefined>();
