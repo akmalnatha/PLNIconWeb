@@ -17,27 +17,6 @@ function KWH() {
               </p>
             </div>
           </div>
-          <h3 className="header3 mt-10 text-center">MCB</h3>
-          <div className="grid auto-rows-min grid-cols-3 gap-x-[15px] mt-10 gap-y-10">
-            <div className="w-full">
-              <h3 className="header3 mb-[5px]">KAPASITAS R</h3>
-              <p className="p-2 bg-bnw-alternative rounded-lg border-bnw-alternative2 border-[1px]">
-                -
-              </p>
-            </div>
-            <div className="w-full">
-              <h3 className="header3 mb-[5px]">KAPASITAS S</h3>
-              <p className="p-2 bg-bnw-alternative rounded-lg border-bnw-alternative2 border-[1px]">
-                -
-              </p>
-            </div>
-            <div className="w-full">
-              <h3 className="header3 mb-[5px]">KAPASITAS T</h3>
-              <p className="p-2 bg-bnw-alternative rounded-lg border-bnw-alternative2 border-[1px]">
-                -
-              </p>
-            </div>
-          </div>
           <div className="flex gap-[15px] mt-10">
             <div className="w-full">
               <h3 className="header3 mb-[5px]">COS</h3>
@@ -66,7 +45,28 @@ function KWH() {
               </p>
             </div>
           </div>
-          <h3 className="header3 mt-10 text-center">KABEL</h3>
+          <h3 className="header3 mt-10 text-center text-blue-alternative">MCB</h3>
+          <div className="grid auto-rows-min grid-cols-3 gap-x-[15px] mt-10 gap-y-10">
+            <div className="w-full">
+              <h3 className="header3 mb-[5px]">KAPASITAS R</h3>
+              <p className="p-2 bg-bnw-alternative rounded-lg border-bnw-alternative2 border-[1px]">
+                -
+              </p>
+            </div>
+            <div className="w-full">
+              <h3 className="header3 mb-[5px]">KAPASITAS S</h3>
+              <p className="p-2 bg-bnw-alternative rounded-lg border-bnw-alternative2 border-[1px]">
+                -
+              </p>
+            </div>
+            <div className="w-full">
+              <h3 className="header3 mb-[5px]">KAPASITAS T</h3>
+              <p className="p-2 bg-bnw-alternative rounded-lg border-bnw-alternative2 border-[1px]">
+                -
+              </p>
+            </div>
+          </div>
+          <h3 className="header3 mt-10 text-center text-blue-alternative">KABEL</h3>
           <div className="grid auto-rows-min grid-cols-5 gap-x-[15px] mt-10 gap-y-10">
             <div className="w-full">
               <h3 className="header3 mb-[5px]">WARNA R</h3>

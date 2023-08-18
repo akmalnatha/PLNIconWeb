@@ -36,7 +36,7 @@ function Table({
                 return (
                   <th
                     key={idx}
-                    className="h-auto w-auto border-collapse text-text-light bg-blue-primary px-2 py-1 text-center font-normal xl:px-4"
+                    className="h-auto w-auto border-collapse text-text-light bg-blue-primary px-2 py-1 text-center font-normal xl:px-4 truncate"
                   >
                     {cell}
                   </th>
@@ -84,7 +84,7 @@ function Table({
                     return (
                       <td
                         key={idx}
-                        className="h-auto w-auto border-collapse border-b-2 border-bnw-500 px-2 py-3 text-center xl:px-4"
+                        className="h-auto w-auto border-collapse border-b-2 border-bnw-500 px-2 py-3 text-center xl:px-4 min-w-max truncate"
                       >
                         {cell}
                       </td>

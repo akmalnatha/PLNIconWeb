@@ -160,7 +160,7 @@ function PenjadwalanPM() {
   return (
     <>
       <Navbar />
-      <div className="pt-[136px] bg-bnw-50 px-2">
+      <div className="pt-[136px] min-h-[91.75vh] bg-bnw-50 px-2">
         <h1 className="header1 text-blue-primary text-center">
           PENJADWALAN PM
         </h1>
