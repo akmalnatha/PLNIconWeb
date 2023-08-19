@@ -79,7 +79,7 @@ function Root() {
       </Route>
       <Route path="pop">
         <Route path="" element={<ListPOP />} />
-        {/* <Route path="create" element={<CreatePM/>}/> */}
+        <Route path="create" element={<CreatePM/>}/>
       </Route>
       <Route path="/dashboard-pop">
         <Route path="" element={<DashboardPOP />} />

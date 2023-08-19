@@ -44,7 +44,7 @@ function DateField({
     <>
       <DatePicker
         wrapperClassName="w-full"
-        dateFormat={"dd MMMM yyyy"}
+        dateFormat={"yyyy-MM-dd"}
         showMonthDropdown
         showYearDropdown
         scrollableYearDropdown
