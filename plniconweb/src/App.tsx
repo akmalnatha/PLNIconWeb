@@ -24,6 +24,7 @@ import DashboardPOP from "./pages/dashboard_pop/dashboard_pop";
 import PenjadwalanPM from "./pages/penjadwalan_pm/penjadwalan_pm";
 import CreatePM from "./pages/create_pm/create_pm";
 import ListPOP from "./pages/list_pop/list_pop";
+import Login from "./pages/login/login";
 // import './App.css'
 
 const router = createBrowserRouter([{ path: "*", Component: Root }]);
@@ -67,7 +68,7 @@ function Root() {
           </PageDetail>
         }
       />
-      <Route path="/" element={<Dashboard />} />
+      <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/daftar-user">
         <Route path="" element={<DaftarUser />} />
         <Route path="create" element={<AddUser />} />
@@ -115,6 +116,7 @@ function Root() {
           }
         />
       </Route>
+      <Route path="/" element={<Login />} />
     </Routes>
   );
 }
