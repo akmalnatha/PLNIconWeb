@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import Status from "../../components/Status";
 import Footer from "../../components/footer";
@@ -7,6 +7,7 @@ import Button from "../../components/Button";
 import Table from "../../components/Table";
 import { useNavigate } from "react-router-dom";
 import { post } from "../../api/api";
+import Pagination from "../../components/Pagination";
 
 function PenjadwalanPM() {
   const data = [
@@ -142,6 +143,72 @@ function PenjadwalanPM() {
       field_suppport: "Komeng",
       kontak: "086799899890",
     },
+    {
+      id: "ISP/2023/0013",
+      status: <Status type="PLAN" />,
+      plan: "2023-15-08",
+      jenis: "ISP",
+      kategori: "Incidental",
+      wilayah: "HARJAK",
+      area: "Banten",
+      field_suppport: "Akmal",
+      kontak: "086799899890",
+    },
+    {
+      id: "ISP/2023/0014",
+      status: <Status type="PLAN" />,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Akmal",
+      kontak: "086799899890",
+    },
+    {
+      id: "ISP/2023/0015",
+      status: <Status type="PLAN" />,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Komeng",
+      kontak: "086799899890",
+    },
+    {
+      id: "ISP/2023/0016",
+      status: <Status type="PLAN" />,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Ardhan",
+      kontak: "086799899890",
+    },
+    {
+      id: "ISP/2023/0017",
+      status: <Status type="PLAN" />,
+      plan: "2023-07-09",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "Komeng",
+      kontak: "086799899890",
+    },
+    {
+      id: "ISP/2023/0018",
+      status: <Status type="PLAN" />,
+      plan: "2023-08-11",
+      jenis: "ISP",
+      kategori: "Rutin",
+      wilayah: "HARJAK",
+      area: "Jakarta Timur",
+      field_suppport: "akuh",
+      kontak: "086799899890",
+    },
   ];
   const kolom = [
     "ID",
@@ -156,8 +223,52 @@ function PenjadwalanPM() {
   ];
 
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState<string>("");
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [search, setSearch] = useState<string | undefined>();
+  const [paginatedData, setPaginatedData] = useState<any[]>([])
   const changePage = useNavigate();
+
+  const dataLimit = 12;
+  
+  // const paginatedData = data.slice(
+  //   (page - 1) * dataLimit,
+  //   page * dataLimit
+  // );
+  useEffect(() => {
+    if (!data) return;
+    if (search != undefined && search != ""){
+      const filtered = data.filter((item: any) =>
+      Object.values(item).some((value: any) =>
+      String(value).toLowerCase().includes(search.toLowerCase())
+      ));
+      setPaginatedData(filtered.slice(
+        (page - 1) * dataLimit,
+        page * dataLimit
+      ));
+      setTotalPages(
+        filtered.length % dataLimit === 0
+          ? filtered.length / dataLimit
+          : Math.floor(filtered.length / dataLimit) + 1
+      );
+    } else {
+      setPaginatedData(data.slice(
+        (page - 1) * dataLimit,
+        page * dataLimit
+      ))
+      setTotalPages(
+        data.length % dataLimit === 0
+          ? data.length / dataLimit
+          : Math.floor(data.length / dataLimit) + 1
+      );
+    }
+    if(totalPages < page){
+      setPage(1);
+    }
+    // const paginatedData = filteredData.slice(
+    //   (page - 1) * dataLimit,
+    //   page * dataLimit
+    // );
+  }, [search, page])
 
   return (
     <>
@@ -178,12 +289,13 @@ function PenjadwalanPM() {
         </div>
         <div className="mb-[56px] max-w-[1370px] bg-bnw-50 mx-auto pb-10 rounded-lg shadow-xl px-[20px] overflow-auto">
           <Table
-            data={data}
+            data={paginatedData}
             header={kolom}
             tipe="pm"
             role="admin"
             search={search}
           />
+          <Pagination totalData={data.length} dataLimit={dataLimit} totalPages={totalPages} current={(page: number) => setPage(page)} />
         </div>
       </div>
       <Footer />

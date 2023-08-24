@@ -45,7 +45,7 @@ function Table({
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((obj: any, idx: number) => {
+            {data.map((obj: any, idx: number) => {
               return (
                 <tr key={idx}>
                   {role == "admin" && (

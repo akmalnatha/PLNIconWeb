@@ -1,21 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md'
 
 function Pagination({
   current,
   totalData,
   dataLimit,
+  totalPages
 }: {
   totalData: number;
   dataLimit: number;
   current: (x: number) => void | undefined;
+  totalPages: number 
 }) {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages: number =
-    totalData % dataLimit === 0
-      ? totalData / dataLimit
-      : Math.floor(totalData / dataLimit) + 1;
+  useEffect(() => {
+    if(totalPages < currentPage){
+      setCurrentPage(1);
+    }
+    // const paginatedData = filteredData.slice(
+    //   (page - 1) * dataLimit,
+    //   page * dataLimit
+    // );
+  }, [totalPages])
+  // const totalPages: number =
+  //   totalData % dataLimit === 0
+  //     ? totalData / dataLimit
+  //     : Math.floor(totalData / dataLimit) + 1;
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -71,7 +82,7 @@ function Pagination({
           Data Tidak Ditemukan
         </div>
       )} */}
-      <div className="mt-[66px] w-full ">
+      <div className="mt-10 w-full ">
         <ul className="flex w-auto items-center justify-center">
           <li
             className={

@@ -8,6 +8,7 @@ import Select from "react-select";
 import Checkbox from "../../components/Checkbox";
 import { postWithAuth } from "../../api/api";
 import moment from "moment";
+import { toastError, toastSuccess } from "../../components/Toast";
 
 function CreatePM() {
   const [popID, setPopID] = useState(0);
@@ -18,6 +19,10 @@ function CreatePM() {
   const [detail, setDetail] = useState<string[]>([]);
   const [wilayah, setWilayah] = useState("");
   const [area, setArea] = useState("");
+  const [lokasi, setLokasi] = useState("");
+  const [ketLokasi, setKetLokasi] = useState("");
+  const [koorAwal, setKoorAwal] = useState("");
+  const [koorAkhir, setKoorAkhir] = useState("");
   const optionsKategori = [
     { value: "Rutin", label: "Rutin" },
     { value: "Incidental", label: "Incidental" },
@@ -70,7 +75,7 @@ function CreatePM() {
     e.preventDefault();
     if (token) {
       try {
-        console.log(detail);
+        console.log(sortedArray.join(", "));
         const response = await postWithAuth(
           "jadwalpm",
           {
@@ -86,10 +91,11 @@ function CreatePM() {
           },
           token
         );
+        toastSuccess("Add jadwal PM successful")
         setDetail([]);
-        console.log(detail);
+        console.log(sortedArray.join(", "));
       } catch (error) {
-        console.log(error);
+        toastError("Add jadwal PM failed")
       }
     }
   };
@@ -98,7 +104,7 @@ function CreatePM() {
     <>
       <Navbar />
       <div className="pt-[100px] min-h-screen bg-bnw-50">
-        <div className="w-[95%] lg:w-[97%] mx-auto rounded-lg shadow-xl ">
+        <div className="w-[95%] lg:w-[97%] mx-auto rounded-lg mb-6 shadow-xl ">
           <h1 className="bg-blue-alternative header1 p-2 px-3 text-text-light rounded-t-lg">
             Create PM
           </h1>
@@ -170,8 +176,12 @@ function CreatePM() {
                   onChange={(selectedOption) => {
                     if (selectedOption) {
                       setKategori(selectedOption.value);
-                      if (selectedOption.value == "Rutin") {
-                        setDetail(["All"]);
+                      if (selectedOption.value == "Rutin" ) {
+                        if(jenis == "ISP"){
+                          setDetail(["Uji Baterai, PM OLT Retail, Air Conditioner, Genset, Pendataan"]);
+                        } else {
+                          setDetail(["Jalur Kabel TR/TM, ADSS LS, Retail - IKR, Retail - FAT, Retail - Cluster"]);
+                        }
                       } else {
                         setDetail([]);
                       }
@@ -196,9 +206,11 @@ function CreatePM() {
                 />
               </div>
             </div>
+            <div className="mt-[20px] lg:mt-[59px] flex justify-between flex-col lg:flex-row gap-y-2">
             {jenis != "" && jenis == "ISP" ? (
                 kategori == "Rutin" ? (
-                  <div className="mt-[59px] flex justify-between">
+                  <>
+                  
                     <Checkbox
                       checked={true}
                       disabled={true}
@@ -234,133 +246,141 @@ function CreatePM() {
                       label="Pendataan"
                       value="Pendataan"
                     />
-                  </div>
+                  
+                  </>
                 ) : (
-                  <div className="mt-[59px] flex justify-between">
-                    <Checkbox
-                      checked={detail.includes("Uji Baterai")}
-                      onChange={handleCheckboxChange}
-                      disabled={false}
-                      id="baterai"
-                      label="Uji Baterai"
-                      value="Uji Baterai"
-                    />
-                    <Checkbox
-                      checked={detail.includes("PM OLT Retail")}
-                      onChange={handleCheckboxChange}
-                      disabled={false}
-                      id="olt"
-                      label="PM OLT Retail"
-                      value="PM OLT Retail"
-                    />
-                    <Checkbox
-                      checked={detail.includes("Air Conditioner")}
-                      onChange={handleCheckboxChange}
-                      disabled={false}
-                      id="ac"
-                      label="Air Conditioner"
-                      value="Air Conditioner"
-                    />
-                    <Checkbox
-                      checked={detail.includes("Genset")}
-                      onChange={handleCheckboxChange}
-                      disabled={false}
-                      id="genset"
-                      label="Genset"
-                      value="Genset"
-                    />
-                    <Checkbox
-                      checked={detail.includes("Pendataan")}
-                      onChange={handleCheckboxChange}
-                      disabled={false}
-                      id="pendataan"
-                      label="Pendataan"
-                      value="Pendataan"
-                    />
-                  </div>
+                  <>
+                  
+                  <Checkbox
+                    checked={detail.includes("Uji Baterai")}
+                    onChange={handleCheckboxChange}
+                    disabled={false}
+                    id="baterai"
+                    label="Uji Baterai"
+                    value="Uji Baterai"
+                  />
+                  <Checkbox
+                    checked={detail.includes("PM OLT Retail")}
+                    onChange={handleCheckboxChange}
+                    disabled={false}
+                    id="olt"
+                    label="PM OLT Retail"
+                    value="PM OLT Retail"
+                  />
+                  <Checkbox
+                    checked={detail.includes("Air Conditioner")}
+                    onChange={handleCheckboxChange}
+                    disabled={false}
+                    id="ac"
+                    label="Air Conditioner"
+                    value="Air Conditioner"
+                  />
+                  <Checkbox
+                    checked={detail.includes("Genset")}
+                    onChange={handleCheckboxChange}
+                    disabled={false}
+                    id="genset"
+                    label="Genset"
+                    value="Genset"
+                  />
+                  <Checkbox
+                    checked={detail.includes("Pendataan")}
+                    onChange={handleCheckboxChange}
+                    disabled={false}
+                    id="pendataan"
+                    label="Pendataan"
+                    value="Pendataan"
+                  />
+                
+                  </>
                 )
               ) : jenis != "" &&( kategori == "Rutin" ? (
-                <div className="mt-[59px] flex justify-between">
-                  <Checkbox
-                    checked={true}
-                    disabled={true}
-                    id="tr/tm"
-                    label="Jalur Kabel TR/TM"
-                    value="Jalur Kabel TR/TM"
-                  />
-                  <Checkbox
-                    checked={true}
-                    disabled={true}
-                    id="adss"
-                    label="ADSS LS"
-                    value="ADSS LS"
-                  />
-                  <Checkbox
-                    checked={true}
-                    disabled={true}
-                    id="ikr"
-                    label="Retail - IKR"
-                    value="Retail - IKR"
-                  />
-                  <Checkbox
-                    checked={true}
-                    disabled={true}
-                    id="fat"
-                    label="Retail - FAT"
-                    value="Retail - FAT"
-                  />
-                  <Checkbox
-                    checked={true}
-                    disabled={true}
-                    id="cluster"
-                    label="Retail - Cluster"
-                    value="Retail - Cluster"
-                  />
-                </div>
+                <>
+                
+                <Checkbox
+                  checked={true}
+                  disabled={true}
+                  id="tr/tm"
+                  label="Jalur Kabel TR/TM"
+                  value="Jalur Kabel TR/TM"
+                />
+                <Checkbox
+                  checked={true}
+                  disabled={true}
+                  id="adss"
+                  label="ADSS LS"
+                  value="ADSS LS"
+                />
+                <Checkbox
+                  checked={true}
+                  disabled={true}
+                  id="ikr"
+                  label="Retail - IKR"
+                  value="Retail - IKR"
+                />
+                <Checkbox
+                  checked={true}
+                  disabled={true}
+                  id="fat"
+                  label="Retail - FAT"
+                  value="Retail - FAT"
+                />
+                <Checkbox
+                  checked={true}
+                  disabled={true}
+                  id="cluster"
+                  label="Retail - Cluster"
+                  value="Retail - Cluster"
+                />
+              
+                </>
               ) : (
-                <div className="mt-[59px] flex justify-between">
-                  <Checkbox
-                    checked={detail.includes("Jalur Kabel TR/TM")}
-                    onChange={handleCheckboxChange}
-                    disabled={false}
-                    id="tr/tm"
-                    label="Jalur Kabel TR/TM"
-                    value="Jalur Kabel TR/TM"
-                  />
-                  <Checkbox
-                    checked={detail.includes("ADSS LS")}
-                    onChange={handleCheckboxChange}
-                    disabled={false}
-                    id="adss"
-                    label="ADSS LS"
-                    value="ADSS LS"
-                  />
-                  <Checkbox
-                    checked={detail.includes("Retail - IKR")}
-                    onChange={handleCheckboxChange}
-                    disabled={false}
-                    id="ikr"
-                    label="Retail - IKR"
-                    value="Retail - IKR"
-                  />
-                  <Checkbox
-                    checked={detail.includes("Retail - FAT")}
-                    onChange={handleCheckboxChange}
-                    disabled={false}
-                    id="fat"
-                    label="Retail - FAT"
-                    value="Retail - FAT"
-                  />
-                  <Checkbox
-                    checked={detail.includes("Retail - Cluster")}
-                    onChange={handleCheckboxChange}
-                    disabled={false}
-                    id="cluster"
-                    label="Retail - Cluster"
-                    value="Retail - Cluster"
-                  />
-                </div>
+                <>
+                
+                <Checkbox
+                  checked={detail.includes("Jalur Kabel TR/TM")}
+                  onChange={handleCheckboxChange}
+                  disabled={false}
+                  id="tr/tm"
+                  label="Jalur Kabel TR/TM"
+                  value="Jalur Kabel TR/TM"
+                />
+                <Checkbox
+                  checked={detail.includes("ADSS LS")}
+                  onChange={handleCheckboxChange}
+                  disabled={false}
+                  id="adss"
+                  label="ADSS LS"
+                  value="ADSS LS"
+                />
+                <Checkbox
+                  checked={detail.includes("Retail - IKR")}
+                  onChange={handleCheckboxChange}
+                  disabled={false}
+                  id="ikr"
+                  label="Retail - IKR"
+                  value="Retail - IKR"
+                />
+                <Checkbox
+                  checked={detail.includes("Retail - FAT")}
+                  onChange={handleCheckboxChange}
+                  disabled={false}
+                  id="fat"
+                  label="Retail - FAT"
+                  value="Retail - FAT"
+                />
+                <Checkbox
+                  checked={detail.includes("Retail - Cluster")}
+                  onChange={handleCheckboxChange}
+                  disabled={false}
+                  id="cluster"
+                  label="Retail - Cluster"
+                  value="Retail - Cluster"
+                />
+              
+                </>
               ))}
+              </div>
             <div className="grid grid-cols-1 lg:grid-cols-[max-content_max-content] auto-rows-min gap-y-5 justify-between mt-[20px] lg:mt-[40px]">
               {jenis == "ISP" ? (
                 <div className="w-full lg:w-[375px] xl:w-[400px]">
@@ -380,67 +400,27 @@ function CreatePM() {
               ) : jenis == "OSP" ? (
                 <>
                   <div className="w-full lg:w-[375px] xl:w-[400px]">
-                    <p className="header3 text-left mb-1">KONTOL</p>
-                    <Select
-                      options={optionsPOP}
-                      placeholder={"Pilih ID POP"}
-                      onChange={(selectedOption) => {
-                        if (selectedOption) {
-                          setPopID(selectedOption.value);
-                        } else {
-                          setPopID(0);
-                        }
-                      }}
-                    />
+                    <p className="header3 text-left mb-1">Lokasi OSP</p>
+                    <TextField type="standart" placeholder="Nama jalan/cluster" onChange={(e) => setLokasi(e.target.value)}/>
                   </div>
                   <div className="w-full lg:w-[375px] xl:w-[400px]">
-                    <p className="header3 text-left mb-1">KONTOL</p>
-                    <Select
-                      options={optionsPOP}
-                      placeholder={"Pilih ID POP"}
-                      onChange={(selectedOption) => {
-                        if (selectedOption) {
-                          setPopID(selectedOption.value);
-                        } else {
-                          setPopID(0);
-                        }
-                      }}
-                    />
+                    <p className="header3 text-left mb-1">Keterangan Lokasi</p>
+                    <TextField type="standart" placeholder="Tower X - Tower Y" onChange={(e) => setKetLokasi(e.target.value)}/>
                   </div>
                   <div className="w-full lg:w-[375px] xl:w-[400px]">
-                    <p className="header3 text-left mb-1">KONTOL</p>
-                    <Select
-                      options={optionsPOP}
-                      placeholder={"Pilih ID POP"}
-                      onChange={(selectedOption) => {
-                        if (selectedOption) {
-                          setPopID(selectedOption.value);
-                        } else {
-                          setPopID(0);
-                        }
-                      }}
-                    />
+                    <p className="header3 text-left mb-1">Koordinat Awal</p>
+                    <TextField type="standart" placeholder="Koordinat jalan/cluster" onChange={(e) => setKoorAwal(e.target.value)}/>
                   </div>
                   <div className="w-full lg:w-[375px] xl:w-[400px]">
-                    <p className="header3 text-left mb-1">KONTOL</p>
-                    <Select
-                      options={optionsPOP}
-                      placeholder={"Pilih ID POP"}
-                      onChange={(selectedOption) => {
-                        if (selectedOption) {
-                          setPopID(selectedOption.value);
-                        } else {
-                          setPopID(0);
-                        }
-                      }}
-                    />
+                    <p className="header3 text-left mb-1">Koordinat Akhir</p>
+                    <TextField type="standart" placeholder="Koordinat jalan/cluster" onChange={(e) => setKoorAkhir(e.target.value)}/>
                   </div>
                 </>
               ) : (
                 <div></div>
               )}
             </div>
-            <div className="flex justify-center gap-5 py-20">
+            <div className="flex justify-center lg:justify-end gap-5 mt-5">
               <Button type="cancel" />
               <Button type="save" />
             </div>
