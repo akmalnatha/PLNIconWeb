@@ -154,8 +154,6 @@ function Dashboard() {
   ];
   const kolom = ["ID","Status","Plan","Jenis PM","Kategori PM","Wilayah","Area","Field Support","Kontak"]
 
-  const [page, setPage] = useState(1);
-
   const NextArrow = () => {
     return (
       <>
@@ -277,7 +275,6 @@ function Dashboard() {
                 <div className="flex items-center justify-center">
                   <Table data={data} header={kolom} tipe="pm" role="admin"/>
                 </div>
-                <Pagination totalData={data.length} dataLimit={12} current={(page) => setPage(page)} />
               </div>
             </div>
         </div>
