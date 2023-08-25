@@ -1,32 +1,20 @@
 import { useEffect, useState } from "react";
-import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md'
+import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 
 function Pagination({
   current,
-  totalData,
-  dataLimit,
-  totalPages
+  totalPages,
 }: {
-  totalData: number;
-  dataLimit: number;
   current: (x: number) => void | undefined;
-  totalPages: number 
+  totalPages: number;
 }) {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    if(totalPages < currentPage){
+    if (totalPages < currentPage) {
       setCurrentPage(1);
     }
-    // const paginatedData = filteredData.slice(
-    //   (page - 1) * dataLimit,
-    //   page * dataLimit
-    // );
-  }, [totalPages])
-  // const totalPages: number =
-  //   totalData % dataLimit === 0
-  //     ? totalData / dataLimit
-  //     : Math.floor(totalData / dataLimit) + 1;
+  }, [totalPages]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -62,13 +50,21 @@ function Pagination({
           ) {
             pushPage(pageNumbers, i);
           } else if (i == currentPage + 3) {
-            pageNumbers.push(<li className="text-blue-primary border-2 border-x-[1px] px-3 py-1 border-blue-primary">...</li>);
+            pageNumbers.push(
+              <li className="text-blue-primary border-2 border-x-[1px] px-3 py-1 border-blue-primary">
+                ...
+              </li>
+            );
           }
         } else {
           if (i >= totalPages - 3 || i <= totalPages - currentPage + 1) {
             pushPage(pageNumbers, i);
           } else if (i == totalPages - 4) {
-            pageNumbers.push(<li className="text-blue-primary border-2 border-x-[1px] px-3 py-1 border-blue-primary">...</li>);
+            pageNumbers.push(
+              <li className="text-blue-primary border-2 border-x-[1px] px-3 py-1 border-blue-primary">
+                ...
+              </li>
+            );
           }
         }
       }
@@ -77,11 +73,6 @@ function Pagination({
   };
   return (
     <>
-      {/* {totalData == 0 && (
-        <div className="mt-12 text-center text-12 xl:text-14">
-          Data Tidak Ditemukan
-        </div>
-      )} */}
       <div className="mt-10 w-full ">
         <ul className="flex w-auto items-center justify-center">
           <li
@@ -92,7 +83,7 @@ function Pagination({
             }
             onClick={() => handlePageChange(currentPage - 1)}
           >
-            <MdArrowBackIosNew/>
+            <MdArrowBackIosNew />
           </li>
           {renderPage()}
           <li
@@ -103,7 +94,7 @@ function Pagination({
             }
             onClick={() => handlePageChange(currentPage + 1)}
           >
-            <MdArrowForwardIos/>
+            <MdArrowForwardIos />
           </li>
         </ul>
       </div>

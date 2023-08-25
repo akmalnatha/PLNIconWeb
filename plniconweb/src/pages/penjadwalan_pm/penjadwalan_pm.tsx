@@ -6,211 +6,14 @@ import TextField from "../../components/TextField";
 import Button from "../../components/Button";
 import Table from "../../components/Table";
 import { useNavigate } from "react-router-dom";
-import { post } from "../../api/api";
+import { getWithAuth } from "../../api/api";
 import Pagination from "../../components/Pagination";
+import { toastError, toastSuccess } from "../../components/Toast";
+import moment from "moment";
 
 function PenjadwalanPM() {
-  const data = [
-    {
-      id: "ISP/2023/0001",
-      status: <Status type="PLAN" />,
-      plan: "2023-15-08",
-      jenis: "ISP",
-      kategori: "Incidental",
-      wilayah: "HARJAK",
-      area: "Banten",
-      field_suppport: "Akmal",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0002",
-      status: <Status type="PLAN" />,
-      plan: "2023-07-09",
-      jenis: "ISP",
-      kategori: "Rutin",
-      wilayah: "HARJAK",
-      area: "Jakarta Timur",
-      field_suppport: "Akmal",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0003",
-      status: <Status type="PLAN" />,
-      plan: "2023-07-09",
-      jenis: "ISP",
-      kategori: "Rutin",
-      wilayah: "HARJAK",
-      area: "Jakarta Timur",
-      field_suppport: "Komeng",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0004",
-      status: <Status type="PLAN" />,
-      plan: "2023-07-09",
-      jenis: "ISP",
-      kategori: "Rutin",
-      wilayah: "HARJAK",
-      area: "Jakarta Timur",
-      field_suppport: "Ardhan",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0005",
-      status: <Status type="PLAN" />,
-      plan: "2023-07-09",
-      jenis: "ISP",
-      kategori: "Rutin",
-      wilayah: "HARJAK",
-      area: "Jakarta Timur",
-      field_suppport: "Komeng",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0006",
-      status: <Status type="PLAN" />,
-      plan: "2023-07-09",
-      jenis: "ISP",
-      kategori: "Rutin",
-      wilayah: "HARJAK",
-      area: "Jakarta Timur",
-      field_suppport: "Ibrahim",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0007",
-      status: <Status type="PLAN" />,
-      plan: "2023-07-09",
-      jenis: "ISP",
-      kategori: "Rutin",
-      wilayah: "HARJAK",
-      area: "Jakarta Timur",
-      field_suppport: "Komeng",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0008",
-      status: <Status type="PLAN" />,
-      plan: "2023-07-09",
-      jenis: "ISP",
-      kategori: "Rutin",
-      wilayah: "HARJAK",
-      area: "Tangerang Selatan",
-      field_suppport: "Komeng",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0009",
-      status: <Status type="PLAN" />,
-      plan: "2023-07-09",
-      jenis: "ISP",
-      kategori: "Rutin",
-      wilayah: "HARJAK",
-      area: "Tangerang Selatan",
-      field_suppport: "Sultan",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0010",
-      status: <Status type="REALISASI" />,
-      plan: "2023-07-09",
-      jenis: "ISP",
-      kategori: "Rutin",
-      wilayah: "HARJAK",
-      area: "Jakarta Timur",
-      field_suppport: "Komeng",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0011",
-      status: <Status type="PLAN" />,
-      plan: "2023-07-09",
-      jenis: "ISP",
-      kategori: "Rutin",
-      wilayah: "HARJAK",
-      area: "Bekasi",
-      field_suppport: "Komeng",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0012",
-      status: <Status type="PLAN" />,
-      plan: "2023-07-09",
-      jenis: "ISP",
-      kategori: "Improvement",
-      wilayah: "HARJAK",
-      area: "Jakarta Timur",
-      field_suppport: "Komeng",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0013",
-      status: <Status type="PLAN" />,
-      plan: "2023-15-08",
-      jenis: "ISP",
-      kategori: "Incidental",
-      wilayah: "HARJAK",
-      area: "Banten",
-      field_suppport: "Akmal",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0014",
-      status: <Status type="PLAN" />,
-      plan: "2023-07-09",
-      jenis: "ISP",
-      kategori: "Rutin",
-      wilayah: "HARJAK",
-      area: "Jakarta Timur",
-      field_suppport: "Akmal",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0015",
-      status: <Status type="PLAN" />,
-      plan: "2023-07-09",
-      jenis: "ISP",
-      kategori: "Rutin",
-      wilayah: "HARJAK",
-      area: "Jakarta Timur",
-      field_suppport: "Komeng",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0016",
-      status: <Status type="PLAN" />,
-      plan: "2023-07-09",
-      jenis: "ISP",
-      kategori: "Rutin",
-      wilayah: "HARJAK",
-      area: "Jakarta Timur",
-      field_suppport: "Ardhan",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0017",
-      status: <Status type="PLAN" />,
-      plan: "2023-07-09",
-      jenis: "ISP",
-      kategori: "Rutin",
-      wilayah: "HARJAK",
-      area: "Jakarta Timur",
-      field_suppport: "Komeng",
-      kontak: "086799899890",
-    },
-    {
-      id: "ISP/2023/0018",
-      status: <Status type="PLAN" />,
-      plan: "2023-08-11",
-      jenis: "ISP",
-      kategori: "Rutin",
-      wilayah: "HARJAK",
-      area: "Jakarta Timur",
-      field_suppport: "akuh",
-      kontak: "086799899890",
-    },
-  ];
   const kolom = [
+    "Action",
     "ID",
     "Status",
     "Plan",
@@ -223,52 +26,77 @@ function PenjadwalanPM() {
   ];
 
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [search, setSearch] = useState<string | undefined>();
-  const [paginatedData, setPaginatedData] = useState<any[]>([])
+  const [paginatedData, setPaginatedData] = useState<any[]>([]);
+  const [data, setData] = useState<any[]>([]);
   const changePage = useNavigate();
 
   const dataLimit = 12;
-  
-  // const paginatedData = data.slice(
-  //   (page - 1) * dataLimit,
-  //   page * dataLimit
-  // );
+
+  const token = localStorage.getItem("access_token");
+  const getJadwalPm = async () => {
+    setIsLoading(true);
+    if (token) {
+      try {
+        const jadwalpm = await getWithAuth(token, "jadwalpm");
+        console.log(jadwalpm);
+        setData(
+          jadwalpm.data.data.map((data: any) => {
+            return {
+              id: data.pm_kode,
+              status: <Status type={data.status} />,
+              plan: moment(data.plan).format("YYYY-MM-DD"),
+              jenis: data.jenis,
+              kategori: data.kategori,
+              wilayah: data.wilayah,
+              area: data.area,
+              user: data.user.nama,
+              kontak: data.user.phone,
+            };
+          })
+        );
+        toastSuccess("Get Data Jadwal PM Successful");
+      } catch (error) {
+        toastError("Get Data Jadwal PM Failed");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
   useEffect(() => {
-    if (!data) return;
-    if (search != undefined && search != ""){
+    if (search != undefined && search != "") {
       const filtered = data.filter((item: any) =>
-      Object.values(item).some((value: any) =>
-      String(value).toLowerCase().includes(search.toLowerCase())
-      ));
-      setPaginatedData(filtered.slice(
-        (page - 1) * dataLimit,
-        page * dataLimit
-      ));
+        Object.values(item).some((value: any) =>
+          String(value).toLowerCase().includes(search.toLowerCase())
+        )
+      );
+      setPaginatedData(
+        filtered.slice((page - 1) * dataLimit, page * dataLimit)
+      );
       setTotalPages(
         filtered.length % dataLimit === 0
           ? filtered.length / dataLimit
           : Math.floor(filtered.length / dataLimit) + 1
       );
     } else {
-      setPaginatedData(data.slice(
-        (page - 1) * dataLimit,
-        page * dataLimit
-      ))
+      setPaginatedData(data.slice((page - 1) * dataLimit, page * dataLimit));
       setTotalPages(
         data.length % dataLimit === 0
           ? data.length / dataLimit
           : Math.floor(data.length / dataLimit) + 1
       );
     }
-    if(totalPages < page){
+    if (totalPages < page) {
       setPage(1);
     }
-    // const paginatedData = filteredData.slice(
-    //   (page - 1) * dataLimit,
-    //   page * dataLimit
-    // );
-  }, [search, page])
+  }, [search, page, data]);
+
+  useEffect(() => {
+    getJadwalPm();
+  }, []);
 
   return (
     <>
@@ -277,25 +105,30 @@ function PenjadwalanPM() {
         <h1 className="header1 text-blue-primary text-center">
           PENJADWALAN PM
         </h1>
-        <div className="flex justify-between mb-[11px] mt-[51px] max-w-[1370px] mx-auto">
-          <div className="max-w-[20%]">
-            <TextField
-              type="search"
-              placeholder="Search PM"
-              onChange={(e) => setSearch(e.target.value)}
+        <div className="mb-[56px] mt-[40px] pt-[11px] max-w-[1370px] bg-bnw-50 mx-auto rounded-lg shadow-xl px-[20px] border-t-bnw-alternative border-t-2">
+          <div className="flex justify-between mb-[11px]">
+            <div className="max-w-[20%]">
+              <TextField
+                type="search"
+                placeholder="Search PM"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+            <Button type="add" onClick={() => changePage("create")} />
+          </div>
+          <div className="w-full bg-bnw-50 mx-auto pb-10 overflow-auto">
+            <Table
+              data={paginatedData}
+              header={kolom}
+              tipe="pm"
+              role="admin"
+              isLoading={isLoading}
+            />
+            <Pagination
+              totalPages={totalPages}
+              current={(page: number) => setPage(page)}
             />
           </div>
-          <Button type="add" onClick={() => changePage('create')}/>
-        </div>
-        <div className="mb-[56px] max-w-[1370px] bg-bnw-50 mx-auto pb-10 rounded-lg shadow-xl px-[20px] overflow-auto">
-          <Table
-            data={paginatedData}
-            header={kolom}
-            tipe="pm"
-            role="admin"
-            search={search}
-          />
-          <Pagination totalData={data.length} dataLimit={dataLimit} totalPages={totalPages} current={(page: number) => setPage(page)} />
         </div>
       </div>
       <Footer />

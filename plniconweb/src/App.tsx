@@ -25,6 +25,7 @@ import PenjadwalanPM from "./pages/penjadwalan_pm/penjadwalan_pm";
 import CreatePM from "./pages/create_pm/create_pm";
 import ListPOP from "./pages/list_pop/list_pop";
 import Login from "./pages/login/login";
+import ComingSoon from "./pages/coming_soon/coming_soon";
 // import './App.css'
 
 const router = createBrowserRouter([{ path: "*", Component: Root }]);
@@ -117,6 +118,7 @@ function Root() {
         />
       </Route>
       <Route path="/" element={<Login />} />
+      <Route path="*" element={<ComingSoon />} />
     </Routes>
   );
 }
