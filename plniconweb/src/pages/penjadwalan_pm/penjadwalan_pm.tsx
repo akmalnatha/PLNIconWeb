@@ -25,14 +25,16 @@ function PenjadwalanPM() {
     "Kontak",
   ];
 
-  const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
-  const [totalPages, setTotalPages] = useState<number>(0);
+  //Page Attributes
   const [search, setSearch] = useState<string | undefined>();
-  const [paginatedData, setPaginatedData] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+  
+  //Page Data
   const [data, setData] = useState<any[]>([]);
-  const changePage = useNavigate();
-
+  const [page, setPage] = useState(1);
+  const [paginatedData, setPaginatedData] = useState<any[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(0);
   const dataLimit = 12;
 
   const token = localStorage.getItem("access_token");
@@ -105,7 +107,7 @@ function PenjadwalanPM() {
         <h1 className="header1 text-blue-primary text-center">
           PENJADWALAN PM
         </h1>
-        <div className="mb-[56px] mt-[40px] pt-[11px] max-w-[1370px] bg-bnw-50 mx-auto rounded-lg shadow-xl px-[20px] border-t-bnw-alternative border-t-2">
+        <div className="mb-[56px] mt-[40px] pt-[11px] w-full bg-bnw-50 mx-auto rounded-lg shadow-xl px-[20px] border-t-bnw-alternative border-t-2">
           <div className="flex justify-between mb-[11px]">
             <div className="max-w-[20%]">
               <TextField
@@ -114,7 +116,7 @@ function PenjadwalanPM() {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <Button type="add" onClick={() => changePage("create")} />
+            <Button type="add" onClick={() => navigate("create")} />
           </div>
           <div className="w-full bg-bnw-50 mx-auto pb-10 overflow-auto">
             <Table

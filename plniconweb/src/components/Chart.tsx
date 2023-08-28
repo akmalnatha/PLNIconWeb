@@ -3,16 +3,17 @@ import { Doughnut } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface ChartProps {
-    tipe: "Wilayah" | "Jenis" | "Health" | string
+    tipe: "Wilayah" | "Jenis" | "Health" | string;
+    datachart: number[][];
 }
 
-function Chart({tipe} : ChartProps) {
+function Chart({tipe, datachart} : ChartProps) {
     if (tipe === "Wilayah"){
         const data = {
           labels: ["HarJak", "HarBDB"],
           datasets: [
             {
-              data: [3, 6],
+              data: datachart[1],
               backgroundColor: ["#015CBA", "#FFA41B"],
             },
           ],
@@ -29,18 +30,23 @@ function Chart({tipe} : ChartProps) {
           id: 'textCenter',
           beforeDatasetsDraw(chart: { getDatasetMeta?: any; ctx?: any; data?: any; }) {
               const { ctx, data } = chart;
-              var total=0;
-              for(let i = 0; i<data.datasets[0].data.length; i++){
-                total += data.datasets[0].data[i]
-                console.log(total);
+              if (data && data.datasets && data.datasets.length > 0 && data.datasets[0].data.length > 0) {
+                const datasetMeta = chart.getDatasetMeta(0);
+                if (datasetMeta && datasetMeta.data && datasetMeta.data.length > 0) {
+                  const firstDataPoint = datasetMeta.data[0];
+                  const x = firstDataPoint.x || 0;
+                  const y = firstDataPoint.y || 0;
+          
+                  var total = data.datasets[0].data.reduce((sum: number, value: number) => sum + value, 0);
+          
+                  ctx.save();
+                  ctx.font = 'bolder 65px sans-serif';
+                  ctx.fillStyle = 'black';
+                  ctx.textAlign = 'center';
+                  ctx.textBaseline = 'middle';
+                  ctx.fillText(total, x, y);
+                }
               }
-      
-              ctx.save()
-              ctx.font = `bolder 65px sans-serif`;
-              ctx.fillStyle = 'black';
-              ctx.textAlign = 'center';
-              ctx.textBaseline = 'middle';
-              ctx.fillText(total, chart.getDatasetMeta(0).data[0].x, chart.getDatasetMeta(0).data[0].y);
           }
         }
         return (
@@ -72,17 +78,23 @@ function Chart({tipe} : ChartProps) {
           id: 'textCenter',
           beforeDatasetsDraw(chart: { getDatasetMeta?: any; ctx?: any; data?: any; }) {
             const { ctx, data } = chart;
-            var total=0;
-            for(let i = 0; i<data.datasets[0].data.length; i++){
-              total += data.datasets[0].data[i]
+            if (data && data.datasets && data.datasets.length > 0 && data.datasets[0].data.length > 0) {
+              const datasetMeta = chart.getDatasetMeta(0);
+              if (datasetMeta && datasetMeta.data && datasetMeta.data.length > 0) {
+                const firstDataPoint = datasetMeta.data[0];
+                const x = firstDataPoint.x || 0;
+                const y = firstDataPoint.y || 0;
+        
+                var total = data.datasets[0].data.reduce((sum: number, value: number) => sum + value, 0);
+        
+                ctx.save();
+                ctx.font = 'bolder 65px sans-serif';
+                ctx.fillStyle = 'black';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(total, x, y);
+              }
             }
-      
-              ctx.save()
-              ctx.font = 'bolder 65px sans-serif';
-              ctx.fillStyle = 'black';
-              ctx.textAlign = 'center';
-              ctx.textBaseline = 'middle';
-              ctx.fillText(total, chart.getDatasetMeta(0).data[0].x, chart.getDatasetMeta(0).data[0].y);
           }
         }
         return (
@@ -97,7 +109,7 @@ function Chart({tipe} : ChartProps) {
         labels: ["Shelter", "Ruang Kantor", "ODC", "Mini POP", "Micro POP", "OLT Gantung"],
         datasets: [
           {
-            data: [3, 6, 1, 2, 3, 8],
+            data: datachart[0],
             backgroundColor: ["#BD1B1B", "#015CBA", "#F8DB25", "#F266AB", "#9384D1", "#FFA41B"],
           },
         ],
@@ -114,18 +126,23 @@ function Chart({tipe} : ChartProps) {
         id: 'textCenter',
         beforeDatasetsDraw(chart: { getDatasetMeta?: any; ctx?: any; data?: any; }) {
             const { ctx, data } = chart;
-            var total=0;
-            for(let i = 0; i<data.datasets[0].data.length; i++){
-              total += data.datasets[0].data[i]
+            if (data && data.datasets && data.datasets.length > 0 && data.datasets[0].data.length > 0) {
+              const datasetMeta = chart.getDatasetMeta(0);
+              if (datasetMeta && datasetMeta.data && datasetMeta.data.length > 0) {
+                const firstDataPoint = datasetMeta.data[0];
+                const x = firstDataPoint.x || 0;
+                const y = firstDataPoint.y || 0;
+        
+                var total = data.datasets[0].data.reduce((sum: number, value: number) => sum + value, 0);
+        
+                ctx.save();
+                ctx.font = 'bolder 65px sans-serif';
+                ctx.fillStyle = 'black';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(total, x, y);
+              }
             }
-
-    
-            ctx.save()
-            ctx.font = 'bolder 65px sans-serif';
-            ctx.fillStyle = 'black';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(total, chart.getDatasetMeta(0).data[0].x, chart.getDatasetMeta(0).data[0].y);
         }
       }
       return (
