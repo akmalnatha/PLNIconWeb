@@ -4,15 +4,16 @@ interface CardChartProps {
   tipe: "Legend" | "Chart"
   chart: "Wilayah" | "Jenis" | "Health" | string
   text?: string
+  data?: number[][]
 }
 
-function CardChart({ tipe, chart, text }: CardChartProps) {
+function CardChart({ tipe, chart, text, data }: CardChartProps) {
   return (
     <>
       {tipe == "Chart" && (
         <div className="z-0 w-[360px] h-[420px] flex flex-col items-center justify-center shadow-xl rounded-xl">
           <div className="w-[75%] h-[75%] flex items-center">
-            <Chart tipe={chart} />
+            <Chart tipe={chart} datachart={data!}/>
           </div>
           <p className="text-blue-primary text-2xl">{text}</p>
         </div>
@@ -24,14 +25,14 @@ function CardChart({ tipe, chart, text }: CardChartProps) {
                     <p className="text-sm text-center mb-[5px]">
                         Wilayah POP
                     </p>
-                    <p className="text-sm ml-[32%]"><span className="bg-blue-graph rounded-full h-4 w-4 inline-block align-text-top"></span> HarBDB</p>
-                    <p className="text-sm ml-[32%]"><span className="bg-orange-graph rounded-full h-4 w-4 inline-block align-text-top"></span> HarJak</p>
+                    <p className="text-sm ml-[32%]"><span className="bg-blue-graph rounded-full h-4 w-4 inline-block align-text-top"></span> HarJak</p>
+                    <p className="text-sm ml-[32%]"><span className="bg-orange-graph rounded-full h-4 w-4 inline-block align-text-top"></span> HarBDB</p>
                 </>
             )}
             {chart == "Jenis" && (
                 <>
                     <p className="text-sm text-center mb-[5px]">
-                        Jenis POP
+                        Jenis Building POP
                     </p>
                     <p className="text-sm ml-[32%]"><span className="bg-red-graph rounded-full h-4 w-4 inline-block align-text-top"></span> Shelter</p>
                     <p className="text-sm ml-[32%]"><span className="bg-blue-graph rounded-full h-4 w-4 inline-block align-text-top"></span> Ruang Kantor</p>
@@ -44,7 +45,7 @@ function CardChart({ tipe, chart, text }: CardChartProps) {
             {chart == "Health" && (
                 <>
                     <p className="text-sm text-center mb-[5px]">
-                        Jenis POP
+                        Healthy Index
                     </p>
                     <p className="text-sm ml-[32%]"><span className="bg-green-graph rounded-full h-4 w-4 inline-block align-text-top"></span> Handal</p>
                     <p className="text-sm ml-[32%]"><span className="bg-blue-graph rounded-full h-4 w-4 inline-block align-text-top"></span> Sehat</p>
