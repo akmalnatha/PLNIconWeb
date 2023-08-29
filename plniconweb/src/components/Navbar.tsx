@@ -14,15 +14,15 @@ function Navbar() {
     const navigate = useNavigate();
     return (
     <>
-    <div className="fixed z-50 w-full flex justify-between items-center h-20 px-7 bg-bnw-50 shadow-lg">
-        <img src={logo} alt="logo PLN IconPlus" onClick={() => navigate("/dashboard")}/>
+    <div className="fixed z-40 w-full flex justify-between items-center h-20 px-7 bg-bnw-50 shadow-lg">
+        <img src={logo} alt="logo PLN IconPlus" onClick={() => navigate('/dashboard')} className="cursor-pointer"/>
         <div className="flex gap-4 xl:gap-11 items-center">
             <a href="/dashboard" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Home</a>
             <a href="/dashboard-pop" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Dashboard POP</a>
             <a href="/pop" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">POP</a>
             <a href="/penjadwalan-pm" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Penjadwalan PM</a>
-            <a href="" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Temuan</a>
-            <a href="" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Export</a>
+            <a href="/coming-soon" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Temuan</a>
+            <a href="/coming-soon" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Export</a>
             <div className="relative w-[220px]">
                 <div className="flex gap-2 w-full cursor-pointer hover:bg-blue-hover items-center justify-center group" onClick={toggleUser}>
                     <div className="w-[50px] h-[50px] shrink-0 rounded-full bg-bnw-500"></div>

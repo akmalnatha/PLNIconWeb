@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import Button from "../../components/Button";
 import DateField from "../../components/DateField";
 import Navbar from "../../components/Navbar";
 import TextField from "../../components/TextField";
 import Footer from "../../components/footer";
-import Select from "react-select";
+import Select, { SingleValue } from "react-select";
 import Checkbox from "../../components/Checkbox";
 import { postWithAuth } from "../../api/api";
 import moment from "moment";
 import { toastError, toastSuccess } from "../../components/Toast";
+import Dropdown from "../../components/Dropdown";
 
 function CreatePM() {
   const [popID, setPopID] = useState(0);
@@ -23,14 +24,10 @@ function CreatePM() {
   const [ketLokasi, setKetLokasi] = useState("");
   const [koorAwal, setKoorAwal] = useState("");
   const [koorAkhir, setKoorAkhir] = useState("");
-  const optionsKategori = [
-    { value: "Rutin", label: "Rutin" },
-    { value: "Incidental", label: "Incidental" },
-    { value: "Improvement", label: "Improvement" },
-  ];
+  const [optionsKategori, setOptionsKategori] = useState<{ value: string; label: string; }[]>([])
   const optionsJenis = [
     { value: "ISP", label: "ISP" },
-    { value: "OSP", label: "OSP" },
+    // { value: "OSP", label: "OSP" },
   ];
   const optionsUser = [
     { value: 1, label: "OmadWahyu" },
@@ -91,6 +88,7 @@ function CreatePM() {
           },
           token
         );
+        
         toastSuccess("Add jadwal PM successful")
         setDetail([]);
         console.log(sortedArray.join(", "));
@@ -99,7 +97,44 @@ function CreatePM() {
       }
     }
   };
+  function OnChange(selectedOption: SingleValue<{value: string;label: string;}>, setState:SetStateAction<any>, value:number|string){
+    if (setState == setKategori){
+      if (selectedOption) {
+        setKategori(selectedOption.value);
+        if (selectedOption.value == "Rutin" ) {
+          if(jenis == "ISP"){
+            setDetail(["Uji Baterai, PM OLT Retail, Air Conditioner, Genset, Pendataan"]);
+          } else {
+            setDetail(["Jalur Kabel TR/TM, ADSS LS, Retail - IKR, Retail - FAT, Retail - Cluster"]);
+          }
+        } else {
+          setDetail([]);
+        }
+      } else {
+        setKategori("");
+      }
+    }
+    else{
+      if (selectedOption) {
+        setState(selectedOption.value);
+      } else {
+        setState(value);
+      }
+    }
+  };
 
+  useEffect(() => {
+    if(jenis == ""){
+      setOptionsKategori([]);
+    } else {
+      const newOptions = [
+        { value: "Rutin", label: "Rutin" },
+        { value: "Incidental", label: "Incidental" },
+        { value: "Improvement", label: "Improvement" },
+      ];
+      setOptionsKategori(newOptions)
+    }
+  },[jenis])
   return (
     <>
       <Navbar />
@@ -118,6 +153,7 @@ function CreatePM() {
                 <div>
                   <p className="header3 text-left mb-1">Plan</p>
                   <DateField
+                    required
                     onChange={(date: Date) => setDate(date)}
                     id=""
                     text="Pilih Tanggal PM"
@@ -125,7 +161,8 @@ function CreatePM() {
                 </div>
                 <div>
                   <p className="header3 text-left mb-1">Pelaksana</p>
-                  <Select
+                  <Dropdown required placeholder="Pilih Pelaksana PM" type="" onChange={(selectedOption) => OnChange(selectedOption,setUserId,0)} options={optionsUser}/>
+                  {/* <Select
                     options={optionsUser}
                     placeholder={"Pilih Pelaksana PM"}
                     onChange={(selectedOption) => {
@@ -135,14 +172,15 @@ function CreatePM() {
                         setUserId(0);
                       }
                     }}
-                  />
+                  /> */}
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-[max-content_max-content] grid-rows-4 lg:grid-rows-2 gap-y-5 justify-between mt-[20px] lg:mt-[40px]">
               <div className="w-full lg:w-[375px] xl:w-[400px]">
                 <p className="header3 text-left mb-1">Wilayah</p>
-                <Select
+                <Dropdown required placeholder="Pilih Wilayah PM" type="" onChange={(selectedOption) => OnChange(selectedOption,setWilayah,"")} options={optionsWilayah}/>
+                {/* <Select
                   options={optionsWilayah}
                   placeholder="Pilih Wilayah PM"
                   onChange={(selectedOption) => {
@@ -152,11 +190,12 @@ function CreatePM() {
                       setWilayah("");
                     }
                   }}
-                />
+                /> */}
               </div>
               <div className="w-full lg:w-[375px] xl:w-[400px]">
                 <p className="header3 text-left mb-1">Area</p>
-                <Select
+                <Dropdown required placeholder="Pilih Area PM" type="" onChange={(selectedOption) => OnChange(selectedOption,setArea,"")} options={optionsArea}/>
+                {/* <Select
                   options={optionsArea}
                   placeholder={"Pilih Area PM"}
                   onChange={(selectedOption) => {
@@ -166,11 +205,12 @@ function CreatePM() {
                       setArea("");
                     }
                   }}
-                />
+                /> */}
               </div>
               <div className="w-full lg:w-[375px] xl:w-[400px]">
                 <p className="header3 text-left mb-1">Kategori PM</p>
-                <Select
+                <Dropdown required placeholder="Pilih Kategori PM" type="" onChange={(selectedOption) => OnChange(selectedOption,setKategori,"")} options={optionsKategori}/>
+                {/* <Select
                   options={optionsKategori}
                   placeholder={"Pilih Kategori PM"}
                   onChange={(selectedOption) => {
@@ -189,11 +229,12 @@ function CreatePM() {
                       setKategori("");
                     }
                   }}
-                />
+                /> */}
               </div>
               <div className="w-full lg:w-[375px] xl:w-[400px]">
                 <p className="header3 text-left mb-1">Jenis PM</p>
-                <Select
+                <Dropdown required placeholder="Pilih Jenis PM" type="" onChange={(selectedOption) => OnChange(selectedOption,setJenis,"")} options={optionsJenis}/>
+                {/* <Select
                   options={optionsJenis}
                   placeholder={"Pilih Jenis PM"}
                   onChange={(selectedOption) => {
@@ -203,7 +244,7 @@ function CreatePM() {
                       setJenis("");
                     }
                   }}
-                />
+                /> */}
               </div>
             </div>
             <div className="mt-[20px] lg:mt-[59px] flex justify-between flex-col lg:flex-row gap-y-2">
@@ -385,7 +426,8 @@ function CreatePM() {
               {jenis == "ISP" ? (
                 <div className="w-full lg:w-[375px] xl:w-[400px]">
                   <p className="header3 text-left mb-1">ID POP</p>
-                  <Select
+                  <Dropdown required placeholder="Pilih ID POP" type="" onChange={(selectedOption) => OnChange(selectedOption,setPopID,0)} options={optionsPOP}/>
+                  {/* <Select
                     options={optionsPOP}
                     placeholder={"Pilih ID POP"}
                     onChange={(selectedOption) => {
@@ -395,7 +437,7 @@ function CreatePM() {
                         setPopID(0);
                       }
                     }}
-                  />
+                  /> */}
                 </div>
               ) : jenis == "OSP" ? (
                 <>

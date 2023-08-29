@@ -28,46 +28,32 @@ const Dropdown = ({
   value,
   required,
 }: DropdownProps) => {
+  
   return (
     <Select
       required={required}
-      className="basic-single w-full rounded-lg "
-      onChange={onChange}
-      placeholder={placeholder}
-      name={type}
-      maxMenuHeight={200}
       options={options}
-      value={
-        value == null ? undefined : { value: value!.value, label: value!.label }
-      }
+      placeholder={placeholder}
+      onChange={onChange}
       isSearchable={true}
-      isClearable={true}
       theme={(theme) => ({
         ...theme,
-        borderRadius: 0,
+        borderRadius: "8px",
         border: "2px",
+
         colors: {
           ...theme.colors,
-          primary: "#000000",
+          primary: "#09AEEF",
         },
       })}
       styles={{
         control: (baseStyles, state) => ({
           ...baseStyles,
-          borderRadius: "10px",
-          paddingLeft: "8px",
-          paddingTop: "2px",
-          paddingBottom: "2px",
+          height: "44px",
           border: state.isFocused ? "" : "2px solid #6B6B6B",
           "&:hover": {
-            borderColor: state.isFocused ? "" : "#000000",
+            borderColor: state.isFocused ? "#59C6F1" : "#59C6F1",
           },
-        }),
-        placeholder: (base) => ({
-          ...base,
-          fontSize: "14px",
-          color: "#A8A8A8",
-          fontWeight: 400,
         }),
       }}
     />

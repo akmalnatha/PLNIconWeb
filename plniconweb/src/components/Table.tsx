@@ -1,5 +1,8 @@
 import { BiSolidPencil } from "react-icons/bi";
 import { BsBarChartFill, BsTrashFill } from "react-icons/bs";
+import Modal from "./Modal";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Table({
   data,
@@ -14,6 +17,8 @@ function Table({
   role: string;
   isLoading: boolean;
 }) {
+  const [showDetailPM, setShowDetailPM] = useState(false);
+  const navigate = useNavigate();
   const Load = () => {
     const dummy = [1, 2, 3, 4, 5];
     return dummy.map((idx: number) => (
@@ -31,8 +36,86 @@ function Table({
       </tr>
     ));
   };
+  function Klik(tipe:string, url:string){
+    if (tipe=='pm'){
+      setShowDetailPM(true)
+    }
+    else{
+      navigate(url);
+    }
+  }
   return (
     <>
+      <Modal
+        visible={showDetailPM}
+        onClose={() => setShowDetailPM(false)}>
+        <h1 className="bg-blue-alternative header1 p-2 px-3 text-text-light rounded-t-lg">
+            Detail PM
+          </h1>
+        <div className="w-full p-5">
+          <div className="grid grid-cols-3 gap-y-10">
+            <div className="text-[20px]">
+              <span className="font-semibold">ID : </span>
+              <span>ISP/2023/0005</span>
+            </div>
+            <div className="text-[20px]">
+              <span className="font-semibold">Plan : </span>
+              <span>2023-01-09</span>
+            </div>
+            <div className="text-[20px]">
+              <span className="font-semibold">Realisasi : </span>
+              <span>2023-03-09</span>
+            </div>
+            <div className="text-[20px]">
+              <span className="font-semibold">Status : </span>
+              <span>PLAN</span>
+            </div>
+            <div className="text-[20px]">
+              <span className="font-semibold">Wilayah : </span>
+              <span>HAR JAKARTA</span>
+            </div>
+            <div className="text-[20px]">
+              <span className="font-semibold">Area : </span>
+              <span>Jakarta Timur</span>
+            </div>
+            <div className="text-[20px]">
+              <span className="font-semibold">Jenis PM : </span>
+              <span>ISP</span>
+            </div>
+            <div className="text-[20px]">
+              <span className="font-semibold">Kategori PM : </span>
+              <span>Rutin</span>
+            </div>
+            <div className="text-[20px]">
+              <span className="font-semibold">Detail PM : </span>
+              <span>AC - Environment</span>
+            </div>
+            <div className="text-[20px]">
+              <span className="font-semibold">Hostname : </span>
+              <span>-</span>
+            </div>
+            <div className="text-[20px]">
+              <span className="font-semibold">FAT ID : </span>
+              <span>-</span>
+            </div>
+            <div className="text-[20px]">
+              <span className="font-semibold">Nama POP : </span>
+              <span>Cawang GI Shelter</span>
+            </div>
+            <div className="text-[20px] col-span-3">
+              <span className="font-semibold">Temuan : </span>
+              <span>Perangkat panas, AC bocor, rect mati, dan tembok retak</span>
+            </div>
+            <div className="text-[20px] col-span-3">
+              <span className="font-semibold">Link Laporan OSP : </span>
+              <span>
+                <a href="http://pm.microlearning.my.id/jadwal" className="hover:text-blue-400 hover:underline">http://pm.microlearning.my.id/jadwal</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
       <div className="flex overflow-visible">
         <table className="min-w-full">
           <thead>
@@ -60,7 +143,7 @@ function Table({
                       <div className="flex items-center justify-center gap-1">
                         {tipe != "user" && (
                           <div className="group relative">
-                            <button className="bg-blue-primary p-2 rounded hover:bg-blue-hover active:bg-blue-click text-text-light">
+                            <button className="bg-blue-primary p-2 rounded hover:bg-blue-hover active:bg-blue-click text-text-light" onClick={() => Klik(tipe, "/dashboard-pop/info-umum")}>
                               <BsBarChartFill />
                             </button>
                             <p className="p-1 rounded z-10 shadow-lg hidden group-hover:block absolute bg-bnw-50">
