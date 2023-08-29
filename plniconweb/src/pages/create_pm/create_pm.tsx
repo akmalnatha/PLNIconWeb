@@ -88,8 +88,7 @@ function CreatePM() {
           },
           token
         );
-        
-        toastSuccess("Add jadwal PM successful")
+        toastSuccess(response.data.meta.message)
         setDetail([]);
         console.log(sortedArray.join(", "));
       } catch (error) {

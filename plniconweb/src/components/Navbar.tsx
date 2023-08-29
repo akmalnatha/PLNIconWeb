@@ -1,4 +1,3 @@
-import logo from "../assets/logo.svg"
 import { IoNotifications } from "react-icons/io5"
 import UserOptions from "./UserOptions";
 import { useState } from "react";
@@ -15,7 +14,7 @@ function Navbar() {
     return (
     <>
     <div className="fixed z-40 w-full flex justify-between items-center h-20 px-7 bg-bnw-50 shadow-lg">
-        <img src={logo} alt="logo PLN IconPlus" onClick={() => navigate('/dashboard')} className="cursor-pointer"/>
+        <img src="/assets/logo.svg" alt="logo PLN IconPlus" onClick={() => navigate('/dashboard')} className="cursor-pointer"/>
         <div className="flex gap-4 xl:gap-11 items-center">
             <a href="/dashboard" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Home</a>
             <a href="/dashboard-pop" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Dashboard POP</a>
