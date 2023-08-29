@@ -28,35 +28,7 @@ const Dropdown = ({
   value,
   required,
 }: DropdownProps) => {
-  const [jenis, setJenis] = useState("");
-  const [kategori, setKategori] = useState("");
-  const [detail, setDetail] = useState<string[]>([]);
-  const [wilayah, setWilayah] = useState("");
-  const [area, setArea] = useState("");
-  const optionsKategori = [
-    { value: "Rutin", label: "Rutin" },
-    { value: "Incidental", label: "Incidental" },
-    { value: "Improvement", label: "Improvement" },
-  ];
-  const optionsJenis = [
-    { value: "ISP", label: "ISP" },
-    { value: "OSP", label: "OSP" },
-  ];
-  const optionsUser = [
-    { value: 1, label: "OmadWahyu" },
-    { value: 2, label: "Akmal" },
-  ];
-  const optionsPOP = [{ value: 1, label: "POP/Cawang/aowkwowkwokwok" }];
-  const optionsWilayah = [
-    { value: "HARJAK", label: "HARJAK" },
-    { value: "HARBDB", label: "HARBDB" },
-  ];
-  const optionsArea = [
-    { value: "Jakarta Timur", label: "Jakarta Timur" },
-    { value: "Bekasi", label: "Bekasi" },
-    { value: "Banten", label: "Banten" },
-    { value: "Tangerang Selatan", label: "Tangerang Selatan" },
-  ];
+  
   return (
     <Select
       required={required}
