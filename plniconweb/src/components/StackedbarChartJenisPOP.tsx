@@ -1,8 +1,11 @@
-import { auto } from '@popperjs/core';
 import Chart from 'react-apexcharts';
-import { BiFullscreen } from 'react-icons/bi';
 
-function StackedbarChart(){
+interface StackedBarChartProps {
+    dataRealisasi: number[];
+    dataRemaining: number[];
+}
+
+function StackedbarChart({dataRealisasi, dataRemaining} : StackedBarChartProps){
     return(
         <>
             <div className="container-fluid mb-3">
@@ -13,12 +16,12 @@ function StackedbarChart(){
                 series={[
                     {
                         name:"Realisasi",
-                        data:[45,78,90,20,50],
+                        data:dataRealisasi,
                         color:'#F266AB'
                     },
                     {
                         name:"Remaining from target",
-                        data:[5,8,0,5,10],
+                        data:dataRemaining,
                         color: '#9384D1'
                     }
                 ]}

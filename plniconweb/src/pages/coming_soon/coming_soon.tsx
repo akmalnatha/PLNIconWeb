@@ -1,4 +1,3 @@
-import cs from "../../../public/assets/coming_soon.svg";
 import Navbar from "../../components/Navbar";
 function ComingSoon() {
   return (

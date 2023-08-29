@@ -41,6 +41,9 @@ function Dashboard() {
   const [dataPopA, setDataPopA] = useState<number[][]>([[], [], []]);
   const [dataCpePln, setDataCpePln] = useState<number[][]>([[], [], []]);
 
+  const [dataRemainingStatus, setDataRemainingStatus] = useState<number[]>([]);
+  const [dataRealisasi, setDataRealisasi] = useState<number[]>([]);
+
   //Page Attributes
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -114,17 +117,25 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    const processFilteredData = (filteredData: any[], setDataFunc: React.Dispatch<React.SetStateAction<number[][]>>) => {
+    const processFilteredData = (
+      filteredData: any[],
+      setDataFunc: React.Dispatch<React.SetStateAction<number[][]>>,
+      setDataRealisasiFunc: React.Dispatch<React.SetStateAction<number[]>>,
+      setDataRemainingFunc: React.Dispatch<React.SetStateAction<number[]>>
+    ) => {
       let shelterCount = 0;
       let ruangKantorCount = 0;
       let odcCount = 0;
       let miniPopCount = 0;
       let microPopCount = 0;
       let oltGantungCount = 0;
-  
+
       let HarjakCount = 0;
       let HarBdbCount = 0;
-  
+
+      let realisasiCount = 0;
+      let totalStatusCount = 0;
+
       filteredData.forEach((item: any) => {
         if (item.wilayah) {
           switch (item.wilayah) {
@@ -159,8 +170,22 @@ function Dashboard() {
               break;
           }
         }
+        if (item.status) {
+          switch (item.status) {
+            case "REALISASI":
+              realisasiCount++;
+              totalStatusCount++;
+              break;
+            case "PLAN":
+              totalStatusCount++;
+              break;
+          }
+        }
+        dataPm.forEach((data: string) => {
+        })
       });
-  
+      let remainingCount = 0;
+      remainingCount = totalStatusCount - realisasiCount;
       const newData = [
         [
           shelterCount,
@@ -174,22 +199,54 @@ function Dashboard() {
         [],
       ];
       setDataFunc(newData);
+      setDataRealisasiFunc((children) => [...children, realisasiCount]);
+      setDataRemainingFunc((children) => [...children, remainingCount]);
+      console.log(realisasiCount);
+      console.log(remainingCount);
+      console.log(totalStatusCount);
     };
-  
+
     const filteredDataSb = dataPop.filter((item) => item.tipe === "SB");
-    processFilteredData(filteredDataSb, setDataPopSb);
-  
+    processFilteredData(
+      filteredDataSb,
+      setDataPopSb,
+      setDataRealisasi,
+      setDataRemainingStatus
+    );
+
     const filteredDataB = dataPop.filter((item) => item.tipe === "B");
-    processFilteredData(filteredDataB, setDataPopB);
-  
+    processFilteredData(
+      filteredDataB,
+      setDataPopB,
+      setDataRealisasi,
+      setDataRemainingStatus
+    );
+
     const filteredDataD = dataPop.filter((item) => item.tipe === "D");
-    processFilteredData(filteredDataD, setDataPopD);
-  
+    processFilteredData(
+      filteredDataD,
+      setDataPopD,
+      setDataRealisasi,
+      setDataRemainingStatus
+    );
+
     const filteredDataA = dataPop.filter((item) => item.tipe === "A");
-    processFilteredData(filteredDataA, setDataPopA);
-  
-    const filteredDataCpePln = dataPop.filter((item) => item.tipe === "CPE PLN");
-    processFilteredData(filteredDataCpePln, setDataCpePln);
+    processFilteredData(
+      filteredDataA,
+      setDataPopA,
+      setDataRealisasi,
+      setDataRemainingStatus
+    );
+
+    const filteredDataCpePln = dataPop.filter(
+      (item) => item.tipe === "CPE PLN"
+    );
+    processFilteredData(
+      filteredDataCpePln,
+      setDataCpePln,
+      setDataRealisasi,
+      setDataRemainingStatus
+    );
   }, [dataPop]);
 
   useEffect(() => {
@@ -259,9 +316,23 @@ function Dashboard() {
           <PrevArrow />
           <div className="w-full max-w-[1300px] h-full mx-auto">
             <Slides ref={setSliderRef} {...settings}>
-              <CardCarousel tipe="Jenis" dataPopSb={dataPopSb} dataPopB={dataPopB} dataPopA={dataPopA} dataPopD={dataPopD} dataCpePln={dataCpePln}/>
+              <CardCarousel
+                tipe="Jenis"
+                dataPopSb={dataPopSb}
+                dataPopB={dataPopB}
+                dataPopA={dataPopA}
+                dataPopD={dataPopD}
+                dataCpePln={dataCpePln}
+              />
               {/* <CardCarousel tipe="Health" dataPopSb={dataPopSb} dataPopB={dataPopB} dataPopA={dataPopA} dataPopD={dataPopD} dataCpePln={dataCpePln}/> */}
-              <CardCarousel tipe="Wilayah" dataPopSb={dataPopSb} dataPopB={dataPopB} dataPopA={dataPopA} dataPopD={dataPopD} dataCpePln={dataCpePln}/>
+              <CardCarousel
+                tipe="Wilayah"
+                dataPopSb={dataPopSb}
+                dataPopB={dataPopB}
+                dataPopA={dataPopA}
+                dataPopD={dataPopD}
+                dataCpePln={dataCpePln}
+              />
             </Slides>
           </div>
           <NextArrow />
@@ -318,7 +389,10 @@ function Dashboard() {
           </div>
           <div className="mt-[46px] w-[1240px] bg-bnw-50 mx-auto py-10 rounded-lg shadow-xl flex items-center justify-center gap-16">
             <div className="flex flex-col">
-              <StackedbarChartJenis />
+              <StackedbarChartJenis
+                dataRealisasi={dataRealisasi}
+                dataRemaining={dataRemainingStatus}
+              />
               <StackedbarChartKabKot />
             </div>
           </div>
