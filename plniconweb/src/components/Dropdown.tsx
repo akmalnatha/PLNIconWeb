@@ -28,46 +28,60 @@ const Dropdown = ({
   value,
   required,
 }: DropdownProps) => {
+  const [jenis, setJenis] = useState("");
+  const [kategori, setKategori] = useState("");
+  const [detail, setDetail] = useState<string[]>([]);
+  const [wilayah, setWilayah] = useState("");
+  const [area, setArea] = useState("");
+  const optionsKategori = [
+    { value: "Rutin", label: "Rutin" },
+    { value: "Incidental", label: "Incidental" },
+    { value: "Improvement", label: "Improvement" },
+  ];
+  const optionsJenis = [
+    { value: "ISP", label: "ISP" },
+    { value: "OSP", label: "OSP" },
+  ];
+  const optionsUser = [
+    { value: 1, label: "OmadWahyu" },
+    { value: 2, label: "Akmal" },
+  ];
+  const optionsPOP = [{ value: 1, label: "POP/Cawang/aowkwowkwokwok" }];
+  const optionsWilayah = [
+    { value: "HARJAK", label: "HARJAK" },
+    { value: "HARBDB", label: "HARBDB" },
+  ];
+  const optionsArea = [
+    { value: "Jakarta Timur", label: "Jakarta Timur" },
+    { value: "Bekasi", label: "Bekasi" },
+    { value: "Banten", label: "Banten" },
+    { value: "Tangerang Selatan", label: "Tangerang Selatan" },
+  ];
   return (
     <Select
       required={required}
-      className="basic-single w-full rounded-lg "
-      onChange={onChange}
-      placeholder={placeholder}
-      name={type}
-      maxMenuHeight={200}
       options={options}
-      value={
-        value == null ? undefined : { value: value!.value, label: value!.label }
-      }
+      placeholder={placeholder}
+      onChange={onChange}
       isSearchable={true}
-      isClearable={true}
       theme={(theme) => ({
         ...theme,
-        borderRadius: 0,
+        borderRadius: "8px",
         border: "2px",
+
         colors: {
           ...theme.colors,
-          primary: "#000000",
+          primary: "#09AEEF",
         },
       })}
       styles={{
         control: (baseStyles, state) => ({
           ...baseStyles,
-          borderRadius: "10px",
-          paddingLeft: "8px",
-          paddingTop: "2px",
-          paddingBottom: "2px",
+          height: "44px",
           border: state.isFocused ? "" : "2px solid #6B6B6B",
           "&:hover": {
-            borderColor: state.isFocused ? "" : "#000000",
+            borderColor: state.isFocused ? "#59C6F1" : "#59C6F1",
           },
-        }),
-        placeholder: (base) => ({
-          ...base,
-          fontSize: "14px",
-          color: "#A8A8A8",
-          fontWeight: 400,
         }),
       }}
     />

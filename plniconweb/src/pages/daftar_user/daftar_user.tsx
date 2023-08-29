@@ -44,7 +44,7 @@ function DaftarUser() {
             <div className="self-end">
               <Button type="add" onClick={routeChange}/>
             </div>
-            <Table data={data} header={kolom} tipe="user" role="admin"/>
+            <Table data={data} header={kolom} tipe="user" role="admin" isLoading={false}/>
         </div>
       </div>
     </>
