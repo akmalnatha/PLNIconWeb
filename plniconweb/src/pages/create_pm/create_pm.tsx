@@ -62,9 +62,6 @@ function CreatePM() {
       setDetail(detail.filter((val) => val !== value));
     }
   };
-  //   const stringValue = e.target.value;
-  //   setDetail(e.target.checked ? [...detail, stringValue] : detail.filter(val => val !== stringValue));
-  // };
 
   const sortedArray = detail.slice().sort((a, b) => a.localeCompare(b));
 
