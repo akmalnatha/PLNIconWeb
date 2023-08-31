@@ -17,7 +17,7 @@ function Navbar() {
         <img src="/assets/logo.svg" alt="logo PLN IconPlus" onClick={() => navigate('/dashboard')} className="cursor-pointer"/>
         <div className="flex gap-4 xl:gap-11 items-center">
             <a href="/dashboard" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Home</a>
-            <a href="/dashboard-pop" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Dashboard POP</a>
+            <a href="/coming-soon" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Dashboard POP</a>
             <a href="/pop" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">POP</a>
             <a href="/penjadwalan-pm" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Penjadwalan PM</a>
             <a href="/coming-soon" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Temuan</a>

@@ -59,7 +59,7 @@ function PenjadwalanPM() {
             };
           })
         );
-        toastSuccess("Get Data Jadwal PM Successful");
+        toastSuccess(jadwalpm.data.meta.message);
       } catch (error) {
         toastError("Get Data Jadwal PM Failed");
       } finally {

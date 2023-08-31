@@ -59,7 +59,7 @@ function ListPOP() {
             };
           })
         );
-        toastSuccess("Get Data List POP Successful");
+        toastSuccess(listpop.data.meta.message);
       } catch (error) {
         toastError("Get Data List POP Failed");
       } finally {

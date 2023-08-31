@@ -89,7 +89,7 @@ function CreatePM() {
         setDetail([]);
         console.log(sortedArray.join(", "));
       } catch (error) {
-        toastError("Add jadwal PM failed")
+        toastError("Create Jadwal PM Failed")
       }
     }
   };
@@ -204,6 +204,21 @@ function CreatePM() {
                 /> */}
               </div>
               <div className="w-full lg:w-[375px] xl:w-[400px]">
+                <p className="header3 text-left mb-1">Jenis PM</p>
+                <Dropdown required placeholder="Pilih Jenis PM" type="" onChange={(selectedOption) => OnChange(selectedOption,setJenis,"")} options={optionsJenis}/>
+                {/* <Select
+                  options={optionsJenis}
+                  placeholder={"Pilih Jenis PM"}
+                  onChange={(selectedOption) => {
+                    if (selectedOption) {
+                      setJenis(selectedOption.value);
+                    } else {
+                      setJenis("");
+                    }
+                  }}
+                /> */}
+              </div>
+              <div className="w-full lg:w-[375px] xl:w-[400px]">
                 <p className="header3 text-left mb-1">Kategori PM</p>
                 <Dropdown required placeholder="Pilih Kategori PM" type="" onChange={(selectedOption) => OnChange(selectedOption,setKategori,"")} options={optionsKategori}/>
                 {/* <Select
@@ -223,21 +238,6 @@ function CreatePM() {
                       }
                     } else {
                       setKategori("");
-                    }
-                  }}
-                /> */}
-              </div>
-              <div className="w-full lg:w-[375px] xl:w-[400px]">
-                <p className="header3 text-left mb-1">Jenis PM</p>
-                <Dropdown required placeholder="Pilih Jenis PM" type="" onChange={(selectedOption) => OnChange(selectedOption,setJenis,"")} options={optionsJenis}/>
-                {/* <Select
-                  options={optionsJenis}
-                  placeholder={"Pilih Jenis PM"}
-                  onChange={(selectedOption) => {
-                    if (selectedOption) {
-                      setJenis(selectedOption.value);
-                    } else {
-                      setJenis("");
                     }
                   }}
                 /> */}

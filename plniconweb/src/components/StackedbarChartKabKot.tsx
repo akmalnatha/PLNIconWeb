@@ -1,6 +1,12 @@
 import Chart from 'react-apexcharts';
 
-function StackedbarChart(){
+interface StackedBarChartProps {
+    dataLabel: string[];
+    dataPlan: number[];
+    dataRealisasi: number[];
+}
+
+function StackedbarChart({dataLabel, dataPlan, dataRealisasi}: StackedBarChartProps){
     return(
         <>
             <div className="container-fluid mb-3">
@@ -11,12 +17,12 @@ function StackedbarChart(){
                 series={[
                     {
                         name:"Plan",
-                        data:[40,45,78,90,20,50,45,78,90,20,50,45,78,90],
+                        data:dataPlan,
                         color:'#09AEEF'
                     },
                     {
                         name:"On Schedule",
-                        data:[6,3,5,8,0,5,10,6,3,5,8,0,5,10],
+                        data:dataRealisasi,
                         color: '#34AA4F'
                     }
                 ]}
@@ -43,22 +49,7 @@ function StackedbarChart(){
                         title:{
                             text:"",
                         },
-                        categories:[
-                            'Bekasi Kabupaten',
-                            'Bekasi Kabupaten',
-                            'Bekasi Kabupaten',
-                            'Bekasi Kabupaten',
-                            'Bekasi Kabupaten',
-                            'Bekasi Kabupaten',
-                            'Bekasi Kabupaten',
-                            'Bekasi Kabupaten',
-                            'Bekasi Kabupaten',
-                            'Bekasi Kabupaten',
-                            'Bekasi Kabupaten',
-                            'Bekasi Kabupaten',
-                            'Bekasi Kabupaten',
-                            'Bekasi Kabupaten',
-                        ]
+                        categories: dataLabel,
                     },
                     yaxis:{
                         title:{

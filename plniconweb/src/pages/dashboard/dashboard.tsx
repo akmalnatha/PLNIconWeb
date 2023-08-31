@@ -43,6 +43,9 @@ function Dashboard() {
 
   const [dataRemainingStatus, setDataRemainingStatus] = useState<number[]>([]);
   const [dataRealisasi, setDataRealisasi] = useState<number[]>([]);
+  const [dataPlan, setDataPlan] = useState<number[]>([]);
+  const [dataRealisasiPerKota, setDataRealisasiPerKota] = useState<number[]>([]);
+  const [dataPlanPerKota, setDataPlanPerKota] = useState<number[]>([]);
 
   //Page Attributes
   const [isLoading, setIsLoading] = useState(true);
@@ -50,8 +53,11 @@ function Dashboard() {
 
   //Page Data
   const [dataPm, setDataPm] = useState<any[]>([]);
-  const [dataPop, setDataPop] = useState<any[]>([]);
-  const [date, setDate] = useState<Date | null>(null);
+  const [dataChartPm, setDataChartPm] = useState<any[]>([]);
+  const [dataKotaPop, setDataKotaPop] = useState<string[]>([]);
+  const [dataChartPop, setDataChartPop] = useState<any[]>([]);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const [filteredDataPm, setFilteredDataPm] = useState<any[]>([]);
 
   const token = localStorage.getItem("access_token");
@@ -60,24 +66,20 @@ function Dashboard() {
     if (token) {
       try {
         const listpop = await getWithAuth(token, "pop");
-        console.log(listpop);
-        setDataPop(
+        setDataChartPop(
           listpop.data.data.map((data: any) => {
             return {
-              id: data.pop_kode,
+              id: data.id,
+              kode: data.pop_kode,
               nama: data.nama,
               wilayah: data.wilayah,
-              koordinat: data.koordinat,
-              alamat: data.alamat,
-              kelurahan: data.kelurahan,
-              kecamatan: data.kecamatan,
               kota: data.kota,
-              building: data.building,
               tipe: data.tipe,
+              building: data.building,
             };
           })
         );
-        toastSuccess("Get Data List POP Successful");
+        toastSuccess(listpop.data.meta.message);
       } catch (error) {
         toastError("Get Data List POP Failed");
       } finally {
@@ -92,6 +94,21 @@ function Dashboard() {
       try {
         const jadwalpm = await getWithAuth(token, "jadwalpm");
         console.log(jadwalpm);
+        setDataChartPm(
+          jadwalpm.data.data.map((data: any) => {
+            return {
+              id: data.pm_kode,
+              status: data.status,
+              plan: moment(data.plan).format("YYYY-MM-DD"),
+              realisasi: moment(data.realisasi).format("YYYY-MM-DD"),
+              popId: data.datapop.id,
+              popKode: data.datapop.pop_kode,
+              popWilayah: data.datapop.wilayah,
+              popKota: data.datapop.kota,
+              popTipe: data.datapop.tipe,
+            };
+          })
+        );
         setDataPm(
           jadwalpm.data.data.map((data: any) => {
             return {
@@ -107,7 +124,7 @@ function Dashboard() {
             };
           })
         );
-        toastSuccess("Get Data Jadwal PM Successful");
+        toastSuccess(jadwalpm.data.meta.message);
       } catch (error) {
         toastError("Get Data Jadwal PM Failed");
       } finally {
@@ -117,11 +134,103 @@ function Dashboard() {
   };
 
   useEffect(() => {
+    const uniqueCities = Array.from(
+      new Set(dataChartPop.map((data) => data.kota))
+    );
+    const sortedCities = uniqueCities.sort((a, b) => a.localeCompare(b));
+    setDataKotaPop(sortedCities);
+
+    const initialDataStatusPerKota = Array(dataKotaPop.length).fill(0);
+    const newDataRealisasiPerKota = [...initialDataStatusPerKota];
+    const newDataPlanPerKota = [...initialDataStatusPerKota];
+
+    let realisasiCount = 0;
+    let planCount = 0;
+    let totalStatusCount = 0;
+
+    const filterStartDate = moment(startDate).format("YYYY-MM-DD");
+    const filterEndDate = moment(endDate).format("YYYY-MM-DD");
+    let filteredData;
+    if(startDate && endDate){
+      filteredData = dataChartPm.filter((data) => data.plan >= filterStartDate && data.plan <= filterEndDate)
+    } else {
+      filteredData = dataChartPm;
+    }
+
+    filteredData.forEach((data: any) => {
+      if (data.popId) {
+        let i = dataKotaPop.indexOf(data.popKota);
+        if (i != -1) {
+          if (data.status) {
+            totalStatusCount++;
+            switch (data.status) {
+              case "PLAN":
+                newDataPlanPerKota[i]++;
+                planCount++;
+                break;
+              case "REALISASI":
+                newDataRealisasiPerKota[i]++;
+                realisasiCount++;
+              break;
+            }
+          }
+        }
+      }
+      let remainingCount = 0;
+      remainingCount = totalStatusCount - realisasiCount;
+
+      setDataRealisasi((prevData) => {
+        const updatedData = [...prevData];
+        switch (data.popTipe) {
+          case "SB":
+            updatedData[0] = realisasiCount;
+            break;
+          case "B":
+            updatedData[1] = realisasiCount;
+            break;
+          case "D":
+            updatedData[2] = realisasiCount;
+            break;
+          case "A":
+            updatedData[3] = realisasiCount;
+            break;
+          case "CPE PLN":
+            updatedData[4] = realisasiCount;
+            break;
+        }
+        return updatedData;
+      });
+      setDataRemainingStatus((prevData) => {
+        const updatedData = [...prevData];
+        switch (data.popTipe) {
+          case "SB":
+            updatedData[0] = remainingCount;
+            break;
+          case "B":
+            updatedData[1] = remainingCount;
+            break;
+          case "D":
+            updatedData[2] = remainingCount;
+            break;
+          case "A":
+            updatedData[3] = remainingCount;
+            break;
+          case "CPE PLN":
+            updatedData[4] = remainingCount;
+            break;
+        }
+        return updatedData;
+      });
+    });
+
+    setDataRealisasiPerKota(newDataRealisasiPerKota);
+    setDataPlanPerKota(newDataPlanPerKota);
+  }, [dataChartPop, dataChartPm, dataKotaPop, startDate, endDate]);
+
+  useEffect(() => {
     const processFilteredData = (
-      filteredData: any[],
+      filteredDataPop: any[],
       setDataFunc: React.Dispatch<React.SetStateAction<number[][]>>,
-      setDataRealisasiFunc: React.Dispatch<React.SetStateAction<number[]>>,
-      setDataRemainingFunc: React.Dispatch<React.SetStateAction<number[]>>
     ) => {
       let shelterCount = 0;
       let ruangKantorCount = 0;
@@ -133,10 +242,7 @@ function Dashboard() {
       let HarjakCount = 0;
       let HarBdbCount = 0;
 
-      let realisasiCount = 0;
-      let totalStatusCount = 0;
-
-      filteredData.forEach((item: any) => {
+      filteredDataPop.forEach((item: any) => {
         if (item.wilayah) {
           switch (item.wilayah) {
             case "Jakarta":
@@ -170,22 +276,8 @@ function Dashboard() {
               break;
           }
         }
-        if (item.status) {
-          switch (item.status) {
-            case "REALISASI":
-              realisasiCount++;
-              totalStatusCount++;
-              break;
-            case "PLAN":
-              totalStatusCount++;
-              break;
-          }
-        }
-        dataPm.forEach((data: string) => {
-        })
+        
       });
-      let remainingCount = 0;
-      remainingCount = totalStatusCount - realisasiCount;
       const newData = [
         [
           shelterCount,
@@ -199,55 +291,40 @@ function Dashboard() {
         [],
       ];
       setDataFunc(newData);
-      setDataRealisasiFunc((children) => [...children, realisasiCount]);
-      setDataRemainingFunc((children) => [...children, remainingCount]);
-      console.log(realisasiCount);
-      console.log(remainingCount);
-      console.log(totalStatusCount);
     };
 
-    const filteredDataSb = dataPop.filter((item) => item.tipe === "SB");
+    const filteredDataSb = dataChartPop.filter((item) => item.tipe === "SB");
     processFilteredData(
       filteredDataSb,
       setDataPopSb,
-      setDataRealisasi,
-      setDataRemainingStatus
     );
 
-    const filteredDataB = dataPop.filter((item) => item.tipe === "B");
+    const filteredDataB = dataChartPop.filter((item) => item.tipe === "B");
     processFilteredData(
       filteredDataB,
       setDataPopB,
-      setDataRealisasi,
-      setDataRemainingStatus
     );
 
-    const filteredDataD = dataPop.filter((item) => item.tipe === "D");
+    const filteredDataD = dataChartPop.filter((item) => item.tipe === "D");
     processFilteredData(
       filteredDataD,
       setDataPopD,
-      setDataRealisasi,
-      setDataRemainingStatus
     );
 
-    const filteredDataA = dataPop.filter((item) => item.tipe === "A");
+    const filteredDataA = dataChartPop.filter((item) => item.tipe === "A");
     processFilteredData(
       filteredDataA,
       setDataPopA,
-      setDataRealisasi,
-      setDataRemainingStatus
     );
 
-    const filteredDataCpePln = dataPop.filter(
+    const filteredDataCpePln = dataChartPop.filter(
       (item) => item.tipe === "CPE PLN"
     );
     processFilteredData(
       filteredDataCpePln,
       setDataCpePln,
-      setDataRealisasi,
-      setDataRemainingStatus
     );
-  }, [dataPop]);
+  }, [dataChartPop, dataChartPm]);
 
   useEffect(() => {
     const dateToday = new Date();
@@ -343,13 +420,13 @@ function Dashboard() {
           </h1>
           <div className="mt-[46px] w-[1240px] bg-bnw-50 mx-auto py-10 rounded-lg shadow-xl flex items-center justify-center gap-16">
             <div className="bg-red-primary flex flex-col gap-8 rounded-lg items-center justify-center w-[400px] h-[260px]">
-              <h1 className="header1 text-text-light text-center">3</h1>
+              <h1 className="header1 text-text-light text-center">0</h1>
               <h2 className="header2 text-text-light text-center">
                 Temuan Kritikal
               </h2>
             </div>
             <div className="bg-yellow-primary flex flex-col gap-8 rounded-lg items-center justify-center w-[400px] h-[260px]">
-              <h1 className="header1 text-text-light text-center">15</h1>
+              <h1 className="header1 text-text-light text-center">0</h1>
               <h2 className="header2 text-text-light text-center">
                 Temuan <br /> Non-Kritikal
               </h2>
@@ -363,17 +440,17 @@ function Dashboard() {
               <DateField
                 id="start"
                 text="Pilih Tanggal!"
-                onChange={(date: Date) => setDate(date)}
+                onChange={(date: Date) => setStartDate(date)}
               />
             </div>
             <div>
-              <label className="header3" htmlFor="start">
+              <label className="header3" htmlFor="end">
                 Tanggal Akhir
               </label>
               <DateField
-                id="start"
+                id="end"
                 text="Pilih Tanggal!"
-                onChange={(date: Date) => setDate(date)}
+                onChange={(date: Date) => setEndDate(date)}
               />
             </div>
           </div>
@@ -393,7 +470,11 @@ function Dashboard() {
                 dataRealisasi={dataRealisasi}
                 dataRemaining={dataRemainingStatus}
               />
-              <StackedbarChartKabKot />
+              <StackedbarChartKabKot
+                dataLabel={dataKotaPop}
+                dataRealisasi={dataRealisasiPerKota}
+                dataPlan={dataPlanPerKota}
+              />
             </div>
           </div>
           <h1 className="mt-[100px] header1 text-blue-primary text-center">
