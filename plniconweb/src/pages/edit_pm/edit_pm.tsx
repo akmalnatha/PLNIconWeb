@@ -11,16 +11,18 @@ import moment from "moment";
 import { toastError, toastSuccess } from "../../components/Toast";
 import Dropdown from "../../components/Dropdown";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-function CreatePM() {
+function EditPM() {
+  const params = useParams(); // inside your component
+  
+  const [idPM,setIdPM] = useState(params.idPM)
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   
   const [dataPop, setDataPop] = useState<any[]>([]);
   const [dataKotaPop, setDataKotaPop] = useState<string[]>([]);
   const [dataSeluruhPop, setDataSeluruhPop] = useState<string[]>([]);
-  
-  const [dataUser, setDataUser] = useState<any[]>([]);
 
   //OPSI UMUM
   const [userId, setUserId] = useState(0);
@@ -45,10 +47,10 @@ function CreatePM() {
     { value: "ISP", label: "ISP" },
     // { value: "OSP", label: "OSP" },
   ];
-  const optionsUser = dataUser.map((data: any) => ({
-    value: data.id,
-    label: data.nama,
-  }));
+  const optionsUser = [
+    { value: 1, label: "OmadWahyu" },
+    { value: 2, label: "Akmal" },
+  ];
   const optionsPOP = dataPop.map((data: any) => ({
     value: data.id,
     label: data.nama,
@@ -74,13 +76,14 @@ function CreatePM() {
   
   const token = localStorage.getItem("access_token");
   const sortedArray = detail.slice().sort((a, b) => a.localeCompare(b));
-  const addJadwalPm = async (e: React.FormEvent<HTMLFormElement>) => {
+  const editJadwalPm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (token) {
       try {
         const response = await postWithAuth(
-          "jadwalpm",
+          "edit-jadwalpm",
           {
+            id: idPM,
             pop_id: popID,
             user_id: userId,
             plan: moment(date).format("YYYY-MM-DD HH:mm:ss"),
@@ -96,12 +99,12 @@ function CreatePM() {
         toastSuccess(response.data.meta.message);
         setDetail([]);
       } catch (error) {
-        toastError("Create Jadwal PM Failed");
+        toastError("Edit Jadwal PM Failed");
         console.log(error);
       }
     }
   };
-
+ 
   const getListPop = async () => {
     setIsLoading(true);
     if (token) {
@@ -121,29 +124,6 @@ function CreatePM() {
         toastSuccess(listpop.data.meta.message);
       } catch (error) {
         toastError("Get Data List POP Failed");
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  };
-
-  const getDaftarUser = async () => {
-    setIsLoading(true);
-    if (token) {
-      try {
-        const listUser = await getWithAuth(token, "all-user");
-        console.log(listUser);
-        setDataUser(
-          listUser.data.data.map((data: any) => {
-            return {
-              id: data.id,
-              nama: data.nama,
-            };
-          })
-        );
-        toastSuccess(listUser.data.meta.message);
-      } catch (error) {
-        toastError("Get all user data failed");
       } finally {
         setIsLoading(false);
       }
@@ -204,8 +184,13 @@ function CreatePM() {
 
   useEffect(() => {
     getListPop();
-    getDaftarUser();
   }, []);
+
+  useEffect(()=>{
+    setIdPM(params.idPM);
+    console.log(params)
+    console.log(idPM)
+  },[params])
 
   return (
     <>
@@ -213,11 +198,11 @@ function CreatePM() {
       <div className="pt-[100px] min-h-screen bg-bnw-50">
         <div className="w-[95%] lg:w-[97%] mx-auto rounded-lg mb-6 shadow-xl ">
           <h1 className="bg-blue-alternative header1 p-2 px-3 text-text-light rounded-t-lg">
-            Create PM
+            Edit PM
           </h1>
           <form
             action=""
-            onSubmit={(e) => addJadwalPm(e)}
+            onSubmit={(e) => editJadwalPm(e)}
             className="w-full px-[10.0802%] py-[64px]"
           >
             <div className="w-full flex justify-center">
@@ -242,6 +227,17 @@ function CreatePM() {
                     }
                     options={optionsUser}
                   />
+                  {/* <Select
+                    options={optionsUser}
+                    placeholder={"Pilih Pelaksana PM"}
+                    onChange={(selectedOption) => {
+                      if (selectedOption) {
+                        setUserId(selectedOption.value);
+                      } else {
+                        setUserId(0);
+                      }
+                    }}
+                  /> */}
                 </div>
               </div>
             </div>
@@ -257,6 +253,17 @@ function CreatePM() {
                   }
                   options={optionsWilayah}
                 />
+                {/* <Select
+                  options={optionsWilayah}
+                  placeholder="Pilih Wilayah PM"
+                  onChange={(selectedOption) => {
+                    if (selectedOption) {
+                      setWilayah(selectedOption.value);
+                    } else {
+                      setWilayah("");
+                    }
+                  }}
+                /> */}
               </div>
               <div className="w-full lg:w-[375px] xl:w-[400px]">
                 <p className="header3 text-left mb-1">Area</p>
@@ -269,6 +276,17 @@ function CreatePM() {
                   }
                   options={optionsArea}
                 />
+                {/* <Select
+                  options={optionsArea}
+                  placeholder={"Pilih Area PM"}
+                  onChange={(selectedOption) => {
+                    if (selectedOption) {
+                      setArea(selectedOption.value);
+                    } else {
+                      setArea("");
+                    }
+                  }}
+                /> */}
               </div>
               <div className="w-full lg:w-[375px] xl:w-[400px]">
                 <p className="header3 text-left mb-1">Jenis PM</p>
@@ -281,6 +299,17 @@ function CreatePM() {
                   }
                   options={optionsJenis}
                 />
+                {/* <Select
+                  options={optionsJenis}
+                  placeholder={"Pilih Jenis PM"}
+                  onChange={(selectedOption) => {
+                    if (selectedOption) {
+                      setJenis(selectedOption.value);
+                    } else {
+                      setJenis("");
+                    }
+                  }}
+                /> */}
               </div>
               <div className="w-full lg:w-[375px] xl:w-[400px]">
                 <p className="header3 text-left mb-1">Kategori PM</p>
@@ -293,6 +322,26 @@ function CreatePM() {
                   }
                   options={optionsKategori}
                 />
+                {/* <Select
+                  options={optionsKategori}
+                  placeholder={"Pilih Kategori PM"}
+                  onChange={(selectedOption) => {
+                    if (selectedOption) {
+                      setKategori(selectedOption.value);
+                      if (selectedOption.value == "Rutin" ) {
+                        if(jenis == "ISP"){
+                          setDetail(["Uji Baterai, PM OLT Retail, Air Conditioner, Genset, Pendataan"]);
+                        } else {
+                          setDetail(["Jalur Kabel TR/TM, ADSS LS, Retail - IKR, Retail - FAT, Retail - Cluster"]);
+                        }
+                      } else {
+                        setDetail([]);
+                      }
+                    } else {
+                      setKategori("");
+                    }
+                  }}
+                /> */}
               </div>
             </div>
             <div className="mt-[20px] lg:mt-[59px] flex justify-between flex-col lg:flex-row gap-y-2">
@@ -478,6 +527,17 @@ function CreatePM() {
                     }
                     options={optionsPOP}
                   />
+                  {/* <Select
+                    options={optionsPOP}
+                    placeholder={"Pilih ID POP"}
+                    onChange={(selectedOption) => {
+                      if (selectedOption) {
+                        setPopID(selectedOption.value);
+                      } else {
+                        setPopID(0);
+                      }
+                    }}
+                  /> */}
                 </div>
               ) : jenis == "OSP" ? (
                 <>
@@ -530,4 +590,4 @@ function CreatePM() {
   );
 }
 
-export default CreatePM;
+export default EditPM;

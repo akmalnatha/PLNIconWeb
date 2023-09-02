@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { getWithAuth } from "../../api/api";
 import { toastSuccess, toastError } from "../../components/Toast";
+import Button from "../../components/Button";
 
 function Dashboard() {
   const kolom = [
@@ -41,9 +42,16 @@ function Dashboard() {
   const [dataPopA, setDataPopA] = useState<number[][]>([[], [], []]);
   const [dataCpePln, setDataCpePln] = useState<number[][]>([[], [], []]);
 
-  const [dataRemainingStatus, setDataRemainingStatus] = useState<number[]>([]);
-  const [dataRealisasi, setDataRealisasi] = useState<number[]>([]);
+  //ISP and OSP count
+  const [dataIspCount, setDataIspCount] = useState(0);
+  const [dataOspCount, setDataOspCount] = useState(0);
+
+  //Bar chart 1
+  const [dataRemainingStatus, setDataRemainingStatus] = useState<number[]>([0, 0, 0, 0, 0]);
+  const [dataRealisasi, setDataRealisasi] = useState<number[]>([0, 0, 0, 0, 0]);
   const [dataPlan, setDataPlan] = useState<number[]>([]);
+
+  //Bar chart 2
   const [dataRealisasiPerKota, setDataRealisasiPerKota] = useState<number[]>([]);
   const [dataPlanPerKota, setDataPlanPerKota] = useState<number[]>([]);
 
@@ -59,6 +67,8 @@ function Dashboard() {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [filteredDataPm, setFilteredDataPm] = useState<any[]>([]);
+  const [triggerPop, setTriggerPop] = useState(0);
+  const [triggerPm, setTriggerPm] = useState(0);
 
   const token = localStorage.getItem("access_token");
   const getListPop = async () => {
@@ -80,6 +90,7 @@ function Dashboard() {
           })
         );
         toastSuccess(listpop.data.meta.message);
+        setTriggerPop(1);
       } catch (error) {
         toastError("Get Data List POP Failed");
       } finally {
@@ -99,6 +110,8 @@ function Dashboard() {
             return {
               id: data.pm_kode,
               status: data.status,
+              jenis: data.jenis,
+              area: data.area,
               plan: moment(data.plan).format("YYYY-MM-DD"),
               realisasi: moment(data.realisasi).format("YYYY-MM-DD"),
               popId: data.datapop.id,
@@ -125,6 +138,7 @@ function Dashboard() {
           })
         );
         toastSuccess(jadwalpm.data.meta.message);
+        setTriggerPm(1);
       } catch (error) {
         toastError("Get Data Jadwal PM Failed");
       } finally {
@@ -139,93 +153,61 @@ function Dashboard() {
     );
     const sortedCities = uniqueCities.sort((a, b) => a.localeCompare(b));
     setDataKotaPop(sortedCities);
+  }, [triggerPop]) 
 
+  useEffect(() => {
+    if(dataKotaPop.length === 0){
+      return
+    }
     const initialDataStatusPerKota = Array(dataKotaPop.length).fill(0);
     const newDataRealisasiPerKota = [...initialDataStatusPerKota];
     const newDataPlanPerKota = [...initialDataStatusPerKota];
+    
+    let ispCount = 0;
+    let ospCount = 0;
 
-    let realisasiCount = 0;
-    let planCount = 0;
-    let totalStatusCount = 0;
-
-    const filterStartDate = moment(startDate).format("YYYY-MM-DD");
-    const filterEndDate = moment(endDate).format("YYYY-MM-DD");
     let filteredData;
     if(startDate && endDate){
+      const filterStartDate = moment(startDate).format("YYYY-MM-DD");
+      const filterEndDate = moment(endDate).format("YYYY-MM-DD");
       filteredData = dataChartPm.filter((data) => data.plan >= filterStartDate && data.plan <= filterEndDate)
     } else {
       filteredData = dataChartPm;
     }
 
+
     filteredData.forEach((data: any) => {
       if (data.popId) {
-        let i = dataKotaPop.indexOf(data.popKota);
+        let i = dataKotaPop.indexOf(data.area);
         if (i != -1) {
           if (data.status) {
-            totalStatusCount++;
             switch (data.status) {
               case "PLAN":
                 newDataPlanPerKota[i]++;
-                planCount++;
                 break;
               case "REALISASI":
                 newDataRealisasiPerKota[i]++;
-                realisasiCount++;
               break;
             }
           }
         }
+        if(data.jenis){
+          switch(data.jenis){
+            case "ISP":
+              ispCount++;
+              break;
+            case "OSP":
+              ospCount++;
+              break;
+          }
+        }
       }
-      let remainingCount = 0;
-      remainingCount = totalStatusCount - realisasiCount;
-
-      setDataRealisasi((prevData) => {
-        const updatedData = [...prevData];
-        switch (data.popTipe) {
-          case "SB":
-            updatedData[0] = realisasiCount;
-            break;
-          case "B":
-            updatedData[1] = realisasiCount;
-            break;
-          case "D":
-            updatedData[2] = realisasiCount;
-            break;
-          case "A":
-            updatedData[3] = realisasiCount;
-            break;
-          case "CPE PLN":
-            updatedData[4] = realisasiCount;
-            break;
-        }
-        return updatedData;
-      });
-      setDataRemainingStatus((prevData) => {
-        const updatedData = [...prevData];
-        switch (data.popTipe) {
-          case "SB":
-            updatedData[0] = remainingCount;
-            break;
-          case "B":
-            updatedData[1] = remainingCount;
-            break;
-          case "D":
-            updatedData[2] = remainingCount;
-            break;
-          case "A":
-            updatedData[3] = remainingCount;
-            break;
-          case "CPE PLN":
-            updatedData[4] = remainingCount;
-            break;
-        }
-        return updatedData;
-      });
     });
-
+    setDataIspCount(ispCount);
+    setDataOspCount(ospCount);
     setDataRealisasiPerKota(newDataRealisasiPerKota);
     setDataPlanPerKota(newDataPlanPerKota);
-  }, [dataChartPop, dataChartPm, dataKotaPop, startDate, endDate]);
+  }, [dataKotaPop, triggerPm, startDate, endDate]);
 
   useEffect(() => {
     const processFilteredData = (
@@ -337,7 +319,62 @@ function Dashboard() {
       );
     });
     setFilteredDataPm(filtered);
-  }, [dataPm]);
+
+    dataChartPm.forEach((data: any) => {
+      if(data.popTipe){
+        if(data.status){
+          switch (data.status){
+            case "REALISASI":
+              setDataRealisasi((prevData) => {
+                const updatedData = [...prevData];
+                switch (data.popTipe) {
+                  case "SB":
+                    updatedData[0]++;
+                    break;
+                  case "B":
+                    updatedData[1]++;
+                    break;
+                  case "D":
+                    updatedData[2]++;
+                    break;
+                  case "A":
+                    updatedData[3]++;
+                    break;
+                  case "CPE PLN":
+                    updatedData[4]++;
+                    break;
+                }
+                return updatedData;
+              });
+              break;
+            case "PLAN":
+              setDataRemainingStatus((prevData) => {
+                const updatedData = [...prevData];
+                switch (data.popTipe) {
+                  case "SB":
+                    updatedData[0]++;
+                    break;
+                  case "B":
+                    updatedData[1]++;
+                    break;
+                  case "D":
+                    updatedData[2]++;
+                    break;
+                  case "A":
+                    updatedData[3]++;
+                    break;
+                  case "CPE PLN":
+                    updatedData[4]++;
+                    break;
+                }
+                return updatedData;
+              });
+              break;
+          }
+        }
+      }
+    });
+  }, [triggerPm]);
 
   useEffect(() => {
     getJadwalPm();
@@ -380,6 +417,13 @@ function Dashboard() {
     autoplay: true,
     autoplaySpeed: 3000,
   };
+
+  function clearDate() {
+    setStartDate(null);
+    setEndDate(null);
+    console.log(startDate);
+    console.log(endDate);
+  }
   return (
     <>
       <Navbar />
@@ -438,8 +482,9 @@ function Dashboard() {
                 Tanggal Awal
               </label>
               <DateField
+                value={startDate}
                 id="start"
-                text="Pilih Tanggal!"
+                text="Pilih Tanggal Awal!"
                 onChange={(date: Date) => setStartDate(date)}
               />
             </div>
@@ -448,19 +493,23 @@ function Dashboard() {
                 Tanggal Akhir
               </label>
               <DateField
+                value={endDate}
                 id="end"
-                text="Pilih Tanggal!"
+                text="Pilih Tanggal Akhir!"
                 onChange={(date: Date) => setEndDate(date)}
               />
             </div>
           </div>
+          {startDate && endDate && <div className="w-[864px] mx-auto mt-[22px]">
+            <Button type={undefined} text="Clear Date Filter" onClick={clearDate} className="h-[40px] w-full text-[20px] font-semibold text-white bg-blue-primary rounded-[10px] hover:bg-blue-hover active:bg-blue-click"/>
+          </div>}
           <div className="mt-[22px] flex items-center justify-center gap-16">
             <div className="bg-blue-primary flex flex-col gap-8 rounded-lg items-center justify-center w-[400px] h-[260px]">
-              <h1 className="header1 text-text-light text-center">3</h1>
+              <h1 className="header1 text-text-light text-center">{dataIspCount}</h1>
               <h2 className="header2 text-text-light text-center">ISP</h2>
             </div>
             <div className="bg-blue-primary flex flex-col gap-8 rounded-lg items-center justify-center w-[400px] h-[260px]">
-              <h1 className="header1 text-text-light text-center">15</h1>
+              <h1 className="header1 text-text-light text-center">{dataOspCount}</h1>
               <h2 className="header2 text-text-light text-center">OSP</h2>
             </div>
           </div>

@@ -31,7 +31,12 @@ function PenjadwalanPM() {
   const navigate = useNavigate();
   
   //Page Data
-  const [data, setData] = useState<any[]>([]);
+  const [dataPm, setDataPm] = useState<any[]>([]);
+  const [dataPop, setDataPop] = useState<any[]>([]);
+
+  const [dataKotaPop, setDataKotaPop] = useState<string[]>([]);
+  const [dataSeluruhPop, setDataSeluruhPop] = useState<string[]>([]);
+
   const [page, setPage] = useState(1);
   const [paginatedData, setPaginatedData] = useState<any[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -44,7 +49,7 @@ function PenjadwalanPM() {
       try {
         const jadwalpm = await getWithAuth(token, "jadwalpm");
         console.log(jadwalpm);
-        setData(
+        setDataPm(
           jadwalpm.data.data.map((data: any) => {
             return {
               id: data.pm_kode,
@@ -70,7 +75,7 @@ function PenjadwalanPM() {
 
   useEffect(() => {
     if (search != undefined && search != "") {
-      const filtered = data.filter((item: any) =>
+      const filtered = dataPm.filter((item: any) =>
         Object.values(item).some((value: any) =>
           String(value).toLowerCase().includes(search.toLowerCase())
         )
@@ -84,17 +89,17 @@ function PenjadwalanPM() {
           : Math.floor(filtered.length / dataLimit) + 1
       );
     } else {
-      setPaginatedData(data.slice((page - 1) * dataLimit, page * dataLimit));
+      setPaginatedData(dataPm.slice((page - 1) * dataLimit, page * dataLimit));
       setTotalPages(
-        data.length % dataLimit === 0
-          ? data.length / dataLimit
-          : Math.floor(data.length / dataLimit) + 1
+        dataPm.length % dataLimit === 0
+          ? dataPm.length / dataLimit
+          : Math.floor(dataPm.length / dataLimit) + 1
       );
     }
     if (totalPages < page) {
       setPage(1);
     }
-  }, [search, page, data]);
+  }, [search, page, dataPm]);
 
   useEffect(() => {
     getJadwalPm();
@@ -103,11 +108,11 @@ function PenjadwalanPM() {
   return (
     <>
       <Navbar />
-      <div className="pt-[136px] min-h-[91.75vh] bg-bnw-50 px-2">
+      <div className="pt-[136px] min-h-[calc(100vh-60px)] bg-bnw-50 px-2">
         <h1 className="header1 text-blue-primary text-center">
           PENJADWALAN PM
         </h1>
-        <div className="mb-[56px] mt-[40px] pt-[11px] w-full bg-bnw-50 mx-auto rounded-lg shadow-xl px-[20px] border-t-bnw-alternative border-t-2">
+        <div className="mb-[56px] mt-[40px] pt-[11px] pb-10 w-full bg-bnw-50 rounded-lg shadow-xl px-[20px] border-t-bnw-alternative border-t-2">
           <div className="flex justify-between mb-[11px]">
             <div className="max-w-[20%]">
               <TextField
@@ -118,7 +123,7 @@ function PenjadwalanPM() {
             </div>
             <Button type="add" onClick={() => navigate("create")} />
           </div>
-          <div className="w-full bg-bnw-50 mx-auto pb-10 overflow-auto">
+          <div className="w-full bg-bnw-50 overflow-auto">
             <Table
               data={paginatedData}
               header={kolom}
@@ -126,11 +131,11 @@ function PenjadwalanPM() {
               role="admin"
               isLoading={isLoading}
             />
+          </div>
             <Pagination
               totalPages={totalPages}
               current={(page: number) => setPage(page)}
             />
-          </div>
         </div>
       </div>
       <Footer />

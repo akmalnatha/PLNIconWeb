@@ -29,13 +29,13 @@ function ListPOP() {
   const [search, setSearch] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  
+
   // Page Data
   const [data, setData] = useState<any[]>([]);
   const [paginatedData, setPaginatedData] = useState<any[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
   const dataLimit = 12;
-  
+
   const token = localStorage.getItem("access_token");
   const getListPop = async () => {
     setIsLoading(true);
@@ -103,31 +103,31 @@ function ListPOP() {
   return (
     <>
       <Navbar />
-      <div className="pt-[136px] min-h-[91.75vh] bg-bnw-50 px-2">
-        <h1 className="header1 text-blue-primary text-center">
-          POP
-        </h1>
-        <div className="flex justify-between mb-[11px] mt-[51px] max-w-[1370px] mx-auto">
-          <div className="max-w-[20%]">
-            <TextField
-              type="search"
-              placeholder="Search PM"
-              onChange={(e) => setSearch(e.target.value)}
+      <div className="pt-[136px] min-h-[calc(100vh-60px)] bg-bnw-50 px-2">
+        <h1 className="header1 text-blue-primary text-center">POP</h1>
+        <div className="mb-[56px] mt-[40px] pt-[11px] pb-10 w-full bg-bnw-50 rounded-lg shadow-xl px-[20px] border-t-bnw-alternative border-t-2">
+          <div className="flex justify-between mb-[11px]">
+            <div className="max-w-[20%]">
+              <TextField
+                type="search"
+                placeholder="Search PM"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+            <Button type="add" onClick={() => navigate("create")} />
+          </div>
+          <div className="w-full bg-bnw-50 overflow-auto">
+            <Table
+              data={paginatedData}
+              header={kolom}
+              tipe="pop"
+              role="admin"
+              isLoading={isLoading}
             />
           </div>
-          <Button type="add" onClick={() => navigate('create')}/>
-        </div>
-        <div className="mb-[56px] max-w-[1370px] bg-bnw-50 mx-auto pb-10 rounded-lg shadow-xl px-[20px] overflow-auto">
-          <Table
-            data={paginatedData}
-            header={kolom}
-            tipe="pop"
-            role="admin"
-            isLoading={isLoading}
-          />
           <Pagination
-              totalPages={totalPages}
-              current={(page: number) => setPage(page)}
+            totalPages={totalPages}
+            current={(page: number) => setPage(page)}
           />
         </div>
       </div>

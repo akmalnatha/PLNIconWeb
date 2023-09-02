@@ -15,6 +15,7 @@ import AddUser from "./pages/daftar_user/add_user";
 import DashboardPOP from "./pages/dashboard_pop/dashboard_pop";
 import PenjadwalanPM from "./pages/penjadwalan_pm/penjadwalan_pm";
 import CreatePM from "./pages/create_pm/create_pm";
+import EditPM from "./pages/edit_pm/edit_pm";
 import ListPOP from "./pages/list_pop/list_pop";
 import Login from "./pages/login/login";
 import ComingSoon from "./pages/coming_soon/coming_soon";
@@ -29,38 +30,6 @@ export default function App() {
 function Root() {
   return (
     <Routes>
-      <Route
-        path="/info-umum"
-        element={
-          <PageDetail>
-            <InfoUmum />
-          </PageDetail>
-        }
-      />
-      <Route
-        path="/kwh"
-        element={
-          <PageDetail>
-            <KWH />
-          </PageDetail>
-        }
-      />
-      <Route
-        path="/inverter"
-        element={
-          <PageDetail>
-            <Inverter />
-          </PageDetail>
-        }
-      />
-      <Route
-        path="/Recti"
-        element={
-          <PageDetail>
-            <Recti />
-          </PageDetail>
-        }
-      />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/daftar-user">
         <Route path="" element={<DaftarUser />} />
@@ -69,6 +38,7 @@ function Root() {
       <Route path="penjadwalan-pm">
         <Route path="" element={<PenjadwalanPM />} />
         <Route path="create" element={<CreatePM/>}/>
+        <Route path="edit/:idPM" element={<EditPM/>}/>
       </Route>
       <Route path="pop">
         <Route path="" element={<ListPOP />} />

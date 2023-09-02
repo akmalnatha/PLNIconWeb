@@ -3,6 +3,7 @@ import { BsBarChartFill, BsTrashFill } from "react-icons/bs";
 import Modal from "./Modal";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Button from "./Button";
 
 function Table({
   data,
@@ -18,7 +19,11 @@ function Table({
   isLoading: boolean;
 }) {
   const [showDetailPM, setShowDetailPM] = useState(false);
+  const [showPopUpDelete, setShowPopUpDelete] = useState(false);
+  const [idDelete, setIdDelete] = useState(0);
+
   const navigate = useNavigate();
+  
   const Load = () => {
     const dummy = [1, 2, 3, 4, 5];
     return dummy.map((idx: number) => (
@@ -36,6 +41,13 @@ function Table({
       </tr>
     ));
   };
+
+  function deleteItem(id: number){
+    setIdDelete(id);
+    setShowPopUpDelete(true);
+    console.log(idDelete);
+  }
+
   function Klik(tipe:string, url:string){
     if (tipe=='pm'){
       setShowDetailPM(true)
@@ -115,6 +127,17 @@ function Table({
           </div>
         </div>
       </Modal>
+      <Modal visible={showPopUpDelete} onClose={() => setShowPopUpDelete(false)}>
+        <div className="flex items-center justify-center text-[40px] mx-auto w-20 h-20 rounded-full text-red-primary border-2 border-red-primary">
+          <BsTrashFill />
+        </div>
+        <h3 className="header3 text-center text-red-primary mt-5">Are you sure?</h3>
+        <p className="text-center text-text-dark mt-3">Do you really want to delete this item? <br /> This action cannot be undone</p>
+        <div className="flex gap-5 mt-5">
+          <Button type={undefined} className="h-[40px] w-full text-[20px] font-semibold text-text-dark hover:text-text-light bg-white rounded-[10px] hover:bg-red-hover active:bg-red-click border-[1px] border-red-primary" text="YES"/>
+          <Button type={undefined} className="h-[40px] w-full text-[20px] font-semibold text-text-dark hover:text-text-light bg-white rounded-[10px] hover:bg-blue-hover active:bg-blue-click border-[1px] border-blue-primary" text="NO" onClick={() => setShowPopUpDelete(false)}/>
+        </div>
+      </Modal>
 
       <div className="flex overflow-visible">
         <table className="min-w-full">
@@ -153,7 +176,7 @@ function Table({
                         )}
                         {role == "admin" && (
                           <>
-                            <div className="group relative">
+                            <div className="group relative" onClick={() => navigate(`edit/${obj.id}`)}>
                               <button className="bg-yellow-primary p-2 rounded hover:bg-yellow-hover active:bg-yellow-click text-text-light">
                                 <BiSolidPencil />
                               </button>
@@ -161,7 +184,7 @@ function Table({
                                 Edit
                               </p>
                             </div>
-                            <div className="group relative">
+                            <div className="group relative" onClick={() => deleteItem(obj.id)}>
                               <button className="bg-red-primary p-2 rounded hover:bg-red-hover active:bg-red-click text-text-light">
                                 <BsTrashFill />
                               </button>

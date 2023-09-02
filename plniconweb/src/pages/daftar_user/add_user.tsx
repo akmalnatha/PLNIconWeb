@@ -3,45 +3,145 @@ import Button from "../../components/Button";
 import Navbar from "../../components/Navbar";
 import Table from "../../components/Table";
 import TextField from "../../components/TextField";
+import moment from "moment";
+import { postWithAuth } from "../../api/api";
+import { toastSuccess, toastError } from "../../components/Toast";
+import { useState } from "react";
+import Footer from "../../components/footer";
+import Dropdown from "../../components/Dropdown";
 
 function AddUser() {
-  let navigate = useNavigate();
-  const routeChange = () => {
-    let path = `/daftar-user`;
-    navigate(path);
+  const navigate = useNavigate();
+
+  //ISIAN
+  const [nama, setNama] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [kontak, setKontak] = useState("");
+  const [role, setRole] = useState("");
+
+  const optionsUser = [
+    { value: "Administrator", label: "Administrator" },
+    { value: "Management", label: "Management" },
+    { value: "Supervisor", label: "Supervisor" },
+    { value: "Engineer", label: "Engineer" },
+    { value: "Field Support", label: "Field Support" },
+  ];
+
+  const token = localStorage.getItem("access_token");
+  const addUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (token) {
+      try {
+        const response = await postWithAuth(
+          "register",
+          {
+            nama: nama,
+            email: email,
+            username: username,
+            password: password,
+            phone: kontak,
+            role: role,
+          },
+          token
+        );
+        toastSuccess(response.data.meta.message);
+      } catch (error) {
+        toastError("User Registration Failed");
+        console.log(error);
+      }
+    }
   };
+
   return (
     <>
       <Navbar />
       <div className="pt-[100px] min-h-screen bg-bnw-50">
-        <div className="w-[95%] lg:w-[97%] mx-auto rounded-lg shadow-xl">
+        <div className="w-[95%] lg:w-[97%] mx-auto mb-6 rounded-lg shadow-xl">
           <h1 className="bg-blue-alternative header1 p-2 px-3 text-text-light rounded-t-lg">
             Create User
           </h1>
-          <div className="flex-col flex gap-10 p-5">
-            <div className="flex flex-col gap-2">
-              <label htmlFor="nama">Nama</label>
-              <TextField id="nama" type="standart" placeholder="" />
+          <form action="" onSubmit={(e) => addUser(e)} className="w-full">
+            <div className="flex-col flex gap-10 p-5">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="nama">Nama</label>
+                <TextField
+                  required
+                  id="nama"
+                  type="standart"
+                  placeholder=""
+                  onChange={(e) => setNama(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="nama">E-mail</label>
+                <TextField
+                  required
+                  id="nama"
+                  type="standart"
+                  placeholder=""
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="password">Password</label>
+                <TextField
+                  required
+                  id="password"
+                  type="standart"
+                  placeholder=""
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="username">Username</label>
+                <TextField
+                  required
+                  id="username"
+                  type="standart"
+                  placeholder=""
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="role">Kontak</label>
+                <TextField
+                  required
+                  id="role"
+                  type="standart"
+                  placeholder=""
+                  onChange={(e) => setKontak(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="role">Role</label>
+                <Dropdown
+                  required
+                  placeholder="Pilih Role!"
+                  type=""
+                  options={optionsUser}
+                  onChange={(selectedOption) => {
+                    if (selectedOption) {
+                      setRole(selectedOption.value);
+                    } else {
+                      setRole("");
+                    }
+                  }}
+                />
+              </div>
+              <div className="flex gap-2 self-end">
+                <Button
+                  type="cancel"
+                  onClick={() => navigate("/daftar-user")}
+                />
+                <Button type="submit" />
+              </div>
             </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="username">Username</label>
-              <TextField id="username" type="standart" placeholder="" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="password">Password</label>
-              <TextField id="password" type="standart" placeholder="" />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="role">Role</label>
-              <TextField id="role" type="standart" placeholder="" />
-            </div>
-            <div className="flex gap-2 self-end">
-              <Button type="cancel" onClick={routeChange} />
-              <Button type="submit" />
-            </div>
-          </div>
+          </form>
         </div>
       </div>
+      <Footer />
     </>
   );
 }
