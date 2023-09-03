@@ -247,7 +247,6 @@ function CreatePM() {
                   <Dropdown
                     required
                     placeholder="Pilih Pelaksana PM"
-                    type=""
                     onChange={(selectedOption) =>
                       OnChange(selectedOption, setUserId, 0)
                     }
@@ -262,7 +261,6 @@ function CreatePM() {
                 <Dropdown
                   required
                   placeholder="Pilih Wilayah PM"
-                  type=""
                   onChange={(selectedOption) =>
                     OnChange(selectedOption, setWilayah, "")
                   }
@@ -274,7 +272,6 @@ function CreatePM() {
                 <Dropdown
                   required
                   placeholder="Pilih Area PM"
-                  type=""
                   onChange={(selectedOption) =>
                     OnChange(selectedOption, setArea, "")
                   }
@@ -286,7 +283,6 @@ function CreatePM() {
                 <Dropdown
                   required
                   placeholder="Pilih Jenis PM"
-                  type=""
                   onChange={(selectedOption) =>
                     OnChange(selectedOption, setJenis, "")
                   }
@@ -298,7 +294,6 @@ function CreatePM() {
                 <Dropdown
                   required
                   placeholder="Pilih Kategori PM"
-                  type=""
                   onChange={(selectedOption) =>
                     OnChange(selectedOption, setKategori, "")
                   }
@@ -483,7 +478,6 @@ function CreatePM() {
                   <Dropdown
                     required
                     placeholder="Pilih ID POP"
-                    type=""
                     onChange={(selectedOption) =>
                       OnChange(selectedOption, setPopID, 0)
                     }

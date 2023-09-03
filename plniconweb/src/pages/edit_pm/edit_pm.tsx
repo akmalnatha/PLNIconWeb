@@ -322,7 +322,6 @@ function EditPM() {
                       value={defaultValue[0].user}
                       required
                       placeholder="Pilih Pelaksana PM"
-                      type=""
                       onChange={(selectedOption) =>
                         setChanges(selectedOption, setUserId, 0)
                       }
@@ -340,7 +339,6 @@ function EditPM() {
                     value={defaultValue[0].wilayah}
                     required
                     placeholder="Pilih Wilayah PM"
-                    type=""
                     onChange={(selectedOption) =>
                       setChanges(selectedOption, setWilayah, "")
                     }
@@ -355,7 +353,6 @@ function EditPM() {
                     value={defaultValue[0].area}
                     required
                     placeholder="Pilih Area PM"
-                    type=""
                     onChange={(selectedOption) =>
                       setChanges(selectedOption, setArea, "")
                     }
@@ -370,7 +367,6 @@ function EditPM() {
                     value={defaultValue[0].jenis}
                     required
                     placeholder="Pilih Jenis PM"
-                    type=""
                     onChange={(selectedOption) =>
                       setChanges(selectedOption, setJenis, "")
                     }
@@ -385,7 +381,6 @@ function EditPM() {
                     value={defaultValue[0].kategori}
                     required
                     placeholder="Pilih Kategori PM"
-                    type=""
                     onChange={(selectedOption) =>
                       setChanges(selectedOption, setKategori, "")
                     }
@@ -580,7 +575,6 @@ function EditPM() {
                       value={defaultValue[0].pop}
                       required
                       placeholder="Pilih ID POP"
-                      type=""
                       onChange={(selectedOption) =>
                         setChanges(selectedOption, setPopID, 0)
                       }

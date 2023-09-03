@@ -117,7 +117,6 @@ function AddUser() {
                 <Dropdown
                   required
                   placeholder="Pilih Role!"
-                  type=""
                   options={optionsUser}
                   onChange={(selectedOption) => {
                     if (selectedOption) {
