@@ -9,12 +9,12 @@ import {
   Outlet,
 } from "react-router-dom";
 import AddUser from "./pages/daftar_user/add_user";
-import PenjadwalanPM from "./pages/penjadwalan_pm/penjadwalan_pm";
-import CreatePM from "./pages/create_pm/create_pm";
-import EditPM from "./pages/edit_pm/edit_pm";
-import ListPOP from "./pages/list_pop/list_pop";
+import PenjadwalanPM from "./pages/pm/penjadwalan_pm";
+import CreatePM from "./pages/pm/create_pm";
+import EditPM from "./pages/pm/edit_pm";
+import ListPOP from "./pages/pop/list_pop";
 import Login from "./pages/login/login";
-import ComingSoon from "./pages/coming_soon/coming_soon";
+import ComingSoon from "./pages/other_pages/coming_soon";
 import UserProvider from "./context/userContext";
 // import './App.css'
 

@@ -17,7 +17,7 @@ import moment from "moment";
 import { getWithAuth } from "../../api/api";
 import { toastError } from "../../components/Toast";
 import Button from "../../components/Button";
-import LoadingPage from "../loadingPage";
+import LoadingPage from "../other_pages/loadingPage";
 
 function Dashboard() {
   const kolom = [

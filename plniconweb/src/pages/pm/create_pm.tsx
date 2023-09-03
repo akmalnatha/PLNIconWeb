@@ -10,7 +10,7 @@ import moment from "moment";
 import { toastError, toastSuccess } from "../../components/Toast";
 import Dropdown from "../../components/Dropdown";
 import { useNavigate } from "react-router-dom";
-import LoadingPage from "../loadingPage";
+import LoadingPage from "../other_pages/loadingPage";
 
 function CreatePM() {
   const [isLoading, setIsLoading] = useState(true);

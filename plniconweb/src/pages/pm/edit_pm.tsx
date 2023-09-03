@@ -11,7 +11,7 @@ import { toastError, toastSuccess } from "../../components/Toast";
 import Dropdown from "../../components/Dropdown";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import LoadingPage from "../loadingPage";
+import LoadingPage from "../other_pages/loadingPage";
 
 function EditPM() {
   const params = useParams(); // inside your component
