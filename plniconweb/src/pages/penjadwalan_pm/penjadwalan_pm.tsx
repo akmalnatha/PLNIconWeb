@@ -27,28 +27,30 @@ function PenjadwalanPM() {
 
   //Page Attributes
   const [search, setSearch] = useState<string | undefined>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isTableLoading, setIsTableLoading] = useState(true);
   const navigate = useNavigate();
   
   //Page Data
   const [dataPm, setDataPm] = useState<any[]>([]);
-  const [dataPop, setDataPop] = useState<any[]>([]);
+  const [dataTambahanPm, setDataTambahanPm] = useState<any>([]);
+  const [paginatedData, setPaginatedData] = useState<any[]>([]);
+  const [paginatedDataTambahan, setPaginatedDataTambahan] = useState<any[]>([]);
 
-  const [dataKotaPop, setDataKotaPop] = useState<string[]>([]);
-  const [dataSeluruhPop, setDataSeluruhPop] = useState<string[]>([]);
+  const [trigger, setTrigger] = useState(false);
 
   const [page, setPage] = useState(1);
-  const [paginatedData, setPaginatedData] = useState<any[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
   const dataLimit = 12;
 
   const token = localStorage.getItem("access_token");
   const getJadwalPm = async () => {
-    setIsLoading(true);
+    setIsTableLoading(true);
     if (token) {
       try {
         const jadwalpm = await getWithAuth(token, "jadwalpm");
-        console.log(jadwalpm);
+        console.log(jadwalpm)
+        const myAttribute = jadwalpm.data.data
+        setDataTambahanPm(myAttribute)
         setDataPm(
           jadwalpm.data.data.map((data: any) => {
             return {
@@ -65,10 +67,11 @@ function PenjadwalanPM() {
           })
         );
         toastSuccess(jadwalpm.data.meta.message);
+        setTrigger(true);
       } catch (error) {
         toastError("Get Data Jadwal PM Failed");
       } finally {
-        setIsLoading(false);
+        setIsTableLoading(false);
       }
     }
   };
@@ -80,8 +83,16 @@ function PenjadwalanPM() {
           String(value).toLowerCase().includes(search.toLowerCase())
         )
       );
+      const filteredTambahan = dataTambahanPm.filter((item: any) =>
+        Object.values(item).some((value: any) =>
+          String(value).toLowerCase().includes(search.toLowerCase())
+        )
+      );
       setPaginatedData(
         filtered.slice((page - 1) * dataLimit, page * dataLimit)
+      );
+      setPaginatedDataTambahan(
+        filteredTambahan.slice((page - 1) * dataLimit, page * dataLimit)
       );
       setTotalPages(
         filtered.length % dataLimit === 0
@@ -90,6 +101,7 @@ function PenjadwalanPM() {
       );
     } else {
       setPaginatedData(dataPm.slice((page - 1) * dataLimit, page * dataLimit));
+      setPaginatedDataTambahan(dataTambahanPm.slice((page - 1) * dataLimit, page * dataLimit));
       setTotalPages(
         dataPm.length % dataLimit === 0
           ? dataPm.length / dataLimit
@@ -99,7 +111,7 @@ function PenjadwalanPM() {
     if (totalPages < page) {
       setPage(1);
     }
-  }, [search, page, dataPm]);
+  }, [search, page, trigger]);
 
   useEffect(() => {
     getJadwalPm();
@@ -123,13 +135,14 @@ function PenjadwalanPM() {
             </div>
             <Button type="add" onClick={() => navigate("create")} />
           </div>
-          <div className="w-full bg-bnw-50 overflow-auto">
+          <div className="w-full bg-bnw-50 overflow-x-auto">
             <Table
+              dataTambahan={paginatedDataTambahan}
               data={paginatedData}
               header={kolom}
               tipe="pm"
               role="admin"
-              isLoading={isLoading}
+              isLoading={isTableLoading}
             />
           </div>
             <Pagination

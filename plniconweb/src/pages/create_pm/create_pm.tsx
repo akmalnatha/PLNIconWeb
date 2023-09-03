@@ -2,15 +2,15 @@ import { SetStateAction, useEffect, useState } from "react";
 import Button from "../../components/Button";
 import DateField from "../../components/DateField";
 import Navbar from "../../components/Navbar";
-import TextField from "../../components/TextField";
 import Footer from "../../components/footer";
-import Select, { SingleValue } from "react-select";
+import { SingleValue } from "react-select";
 import Checkbox from "../../components/Checkbox";
 import { getWithAuth, postWithAuth } from "../../api/api";
 import moment from "moment";
 import { toastError, toastSuccess } from "../../components/Toast";
 import Dropdown from "../../components/Dropdown";
 import { useNavigate } from "react-router-dom";
+import LoadingPage from "../loadingPage";
 
 function CreatePM() {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,9 +18,12 @@ function CreatePM() {
   
   const [dataPop, setDataPop] = useState<any[]>([]);
   const [dataKotaPop, setDataKotaPop] = useState<string[]>([]);
-  const [dataSeluruhPop, setDataSeluruhPop] = useState<string[]>([]);
+
+  const [triggerPop, setTriggerPop] = useState(false);
   
   const [dataUser, setDataUser] = useState<any[]>([]);
+
+  const [triggerUser, setTriggerUser] = useState(false);
 
   //OPSI UMUM
   const [userId, setUserId] = useState(0);
@@ -35,10 +38,10 @@ function CreatePM() {
   const [popID, setPopID] = useState(0);
 
   //OPSI OSP
-  const [lokasi, setLokasi] = useState("");
-  const [ketLokasi, setKetLokasi] = useState("");
-  const [koorAwal, setKoorAwal] = useState("");
-  const [koorAkhir, setKoorAkhir] = useState("");
+  // const [lokasi, setLokasi] = useState("");
+  // const [ketLokasi, setKetLokasi] = useState("");
+  // const [koorAwal, setKoorAwal] = useState("");
+  // const [koorAkhir, setKoorAkhir] = useState("");
 
   const [optionsKategori, setOptionsKategori] = useState<{ value: string; label: string }[]>([]);
   const optionsJenis = [
@@ -97,7 +100,6 @@ function CreatePM() {
         setDetail([]);
       } catch (error) {
         toastError("Create Jadwal PM Failed");
-        console.log(error);
       }
     }
   };
@@ -107,7 +109,6 @@ function CreatePM() {
     if (token) {
       try {
         const listpop = await getWithAuth(token, "pop");
-        console.log(listpop);
         setDataPop(
           listpop.data.data.map((data: any) => {
             return {
@@ -118,9 +119,10 @@ function CreatePM() {
             };
           })
         );
-        toastSuccess(listpop.data.meta.message);
+        setTriggerPop(true)
       } catch (error) {
-        toastError("Get Data List POP Failed");
+        toastError("Get Opsi POP Failed");
+        navigate("/penjadwalan-pm")
       } finally {
         setIsLoading(false);
       }
@@ -141,9 +143,10 @@ function CreatePM() {
             };
           })
         );
-        toastSuccess(listUser.data.meta.message);
+        setTriggerUser(true)
       } catch (error) {
-        toastError("Get all user data failed");
+        toastError("Get Opsi User failed");
+        navigate("/penjadwalan-pm")
       } finally {
         setIsLoading(false);
       }
@@ -200,7 +203,14 @@ function CreatePM() {
     const uniqueCities = Array.from(new Set(dataPop.map((data) => data.kota)));
     const sortedCities = uniqueCities.sort((a, b) => a.localeCompare(b));
     setDataKotaPop(sortedCities);
-  }, [dataPop]);
+  }, [triggerPop]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    if(triggerPop && triggerUser){
+      setIsLoading(false);
+    }
+  }, [triggerPop, triggerUser])
 
   useEffect(() => {
     getListPop();
@@ -209,6 +219,7 @@ function CreatePM() {
 
   return (
     <>
+      <LoadingPage isLoad={isLoading}/>
       <Navbar />
       <div className="pt-[100px] min-h-screen bg-bnw-50">
         <div className="w-[95%] lg:w-[97%] mx-auto rounded-lg mb-6 shadow-xl ">
@@ -481,7 +492,7 @@ function CreatePM() {
                 </div>
               ) : jenis == "OSP" ? (
                 <>
-                  <div className="w-full lg:w-[375px] xl:w-[400px]">
+                  {/* <div className="w-full lg:w-[375px] xl:w-[400px]">
                     <p className="header3 text-left mb-1">Lokasi OSP</p>
                     <TextField
                       type="standart"
@@ -512,7 +523,7 @@ function CreatePM() {
                       placeholder="Koordinat jalan/cluster"
                       onChange={(e) => setKoorAkhir(e.target.value)}
                     />
-                  </div>
+                  </div> */}
                 </>
               ) : (
                 <div></div>

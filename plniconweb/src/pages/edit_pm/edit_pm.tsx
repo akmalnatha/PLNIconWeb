@@ -2,9 +2,8 @@ import { SetStateAction, useEffect, useState } from "react";
 import Button from "../../components/Button";
 import DateField from "../../components/DateField";
 import Navbar from "../../components/Navbar";
-import TextField from "../../components/TextField";
 import Footer from "../../components/footer";
-import Select, { SingleValue } from "react-select";
+import { SingleValue } from "react-select";
 import Checkbox from "../../components/Checkbox";
 import { getWithAuth, postWithAuth } from "../../api/api";
 import moment from "moment";
@@ -12,21 +11,40 @@ import { toastError, toastSuccess } from "../../components/Toast";
 import Dropdown from "../../components/Dropdown";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import LoadingPage from "../loadingPage";
 
 function EditPM() {
   const params = useParams(); // inside your component
-  
-  const [idPM,setIdPM] = useState(params.idPM)
+
+  const [idPM, setIdPM] = useState(params.idPM);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  
+
+  const [triggerDefault, setTriggerDefault] = useState(false);
+  const [triggerPop, setTriggerPop] = useState(false);
+  const [triggerUser, setTriggerUser] = useState(false);
+
   const [dataPop, setDataPop] = useState<any[]>([]);
   const [dataKotaPop, setDataKotaPop] = useState<string[]>([]);
-  const [dataSeluruhPop, setDataSeluruhPop] = useState<string[]>([]);
+
+  const [dataUser, setDataUser] = useState<any[]>([]);
+
+  interface DefaultValueISP {
+    plan: Date;
+    user: { value: string; label: string };
+    wilayah: { value: string; label: string };
+    area: { value: string; label: string };
+    jenis: { value: string; label: string };
+    kategori: { value: string; label: string };
+    pop: { value: string; label: string };
+  }
+
+  const [defaultValue, setDefaultValue] = useState<DefaultValueISP[]>([]);
 
   //OPSI UMUM
   const [userId, setUserId] = useState(0);
   const [date, setDate] = useState<Date | null>(null);
+  const [status, setStatus] = useState("");
   const [jenis, setJenis] = useState("");
   const [kategori, setKategori] = useState("");
   const [detail, setDetail] = useState<string[]>([]);
@@ -37,20 +55,22 @@ function EditPM() {
   const [popID, setPopID] = useState(0);
 
   //OPSI OSP
-  const [lokasi, setLokasi] = useState("");
-  const [ketLokasi, setKetLokasi] = useState("");
-  const [koorAwal, setKoorAwal] = useState("");
-  const [koorAkhir, setKoorAkhir] = useState("");
+  // const [lokasi, setLokasi] = useState("");
+  // const [ketLokasi, setKetLokasi] = useState("");
+  // const [koorAwal, setKoorAwal] = useState("");
+  // const [koorAkhir, setKoorAkhir] = useState("");
 
-  const [optionsKategori, setOptionsKategori] = useState<{ value: string; label: string }[]>([]);
+  const [optionsKategori, setOptionsKategori] = useState<
+    { value: string; label: string }[]
+  >([]);
   const optionsJenis = [
     { value: "ISP", label: "ISP" },
     // { value: "OSP", label: "OSP" },
   ];
-  const optionsUser = [
-    { value: 1, label: "OmadWahyu" },
-    { value: 2, label: "Akmal" },
-  ];
+  const optionsUser = dataUser.map((data: any) => ({
+    value: data.id,
+    label: data.nama,
+  }));
   const optionsPOP = dataPop.map((data: any) => ({
     value: data.id,
     label: data.nama,
@@ -73,7 +93,6 @@ function EditPM() {
     }
   };
 
-  
   const token = localStorage.getItem("access_token");
   const sortedArray = detail.slice().sort((a, b) => a.localeCompare(b));
   const editJadwalPm = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -84,6 +103,7 @@ function EditPM() {
           "edit-jadwalpm",
           {
             id: idPM,
+            status: status,
             pop_id: popID,
             user_id: userId,
             plan: moment(date).format("YYYY-MM-DD HH:mm:ss"),
@@ -104,7 +124,50 @@ function EditPM() {
       }
     }
   };
- 
+
+  const getDefaultValue = async () => {
+    setIsLoading(true);
+    if (token) {
+      try {
+        const jadwalpm = await getWithAuth(token, "jadwalpm");
+        const filtered = jadwalpm.data.data.filter(
+          (data: any) => data.id == idPM
+        );
+        setDefaultValue(
+          filtered.map((data: any) => ({
+              plan: moment(data.plan, "YYYY-MM-DD HH:mm:ss").toDate(),
+              user: { value: data.user.id, label: data.user.nama },
+              wilayah: { value: data.wilayah, label: data.wilayah },
+              area: { value: data.area, label: data.area },
+              jenis: { value: data.jenis, label: data.jenis },
+              kategori: { value: data.kategori, label: data.kategori },
+              pop: { value: data.datapop.id, label: data.datapop.nama },
+            }))
+        );
+        filtered.forEach((data: any) => {
+          setStatus(data.status);
+          setDate(moment(data.plan, "YYYY-MM-DD HH:mm:ss").toDate());
+          setUserId(data.user.id);
+          setWilayah(data.wilayah);
+          setArea(data.area);
+          setJenis(data.jenis);
+          setKategori(data.kategori);
+          setPopID(data.datapop.id);
+          const arrayDetail = data.detail_pm ?? "";
+          setDetail(arrayDetail.split(", "));
+          console.log(detail)
+        });
+        setTriggerDefault(true);
+      } catch (error) {
+        toastError("Get Data Default Value Failed");
+        console.log(error);
+        navigate("/penjadwalan-pm")
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
   const getListPop = async () => {
     setIsLoading(true);
     if (token) {
@@ -121,16 +184,41 @@ function EditPM() {
             };
           })
         );
-        toastSuccess(listpop.data.meta.message);
+        setTriggerPop(true);
       } catch (error) {
-        toastError("Get Data List POP Failed");
+        toastError("Get Data Opsi POP Failed");
+        navigate("/penjadwalan-pm")
       } finally {
         setIsLoading(false);
       }
     }
   };
 
-  function OnChange(
+  const getDaftarUser = async () => {
+    setIsLoading(true);
+    if (token) {
+      try {
+        const listUser = await getWithAuth(token, "all-user");
+        console.log(listUser);
+        setDataUser(
+          listUser.data.data.map((data: any) => {
+            return {
+              id: data.id,
+              nama: data.nama,
+            };
+          })
+        );
+        setTriggerUser(true);
+      } catch (error) {
+        toastError("Get Opsi User failed");
+        navigate("/penjadwalan-pm")
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  function setChanges(
     selectedOption: SingleValue<{ value: string; label: string }>,
     setState: SetStateAction<any>,
     value: number | string
@@ -180,20 +268,28 @@ function EditPM() {
     const uniqueCities = Array.from(new Set(dataPop.map((data) => data.kota)));
     const sortedCities = uniqueCities.sort((a, b) => a.localeCompare(b));
     setDataKotaPop(sortedCities);
-  }, [dataPop]);
+  }, [triggerPop]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    if(triggerPop && triggerUser && triggerDefault){
+      setIsLoading(false);
+    }
+  }, [triggerPop, triggerUser, triggerDefault])
+
+  useEffect(() => {
+    setIdPM(params.idPM);
+  }, [params]);
 
   useEffect(() => {
     getListPop();
+    getDaftarUser();
+    getDefaultValue();
   }, []);
-
-  useEffect(()=>{
-    setIdPM(params.idPM);
-    console.log(params)
-    console.log(idPM)
-  },[params])
 
   return (
     <>
+      <LoadingPage isLoad={isLoading}/>
       <Navbar />
       <div className="pt-[100px] min-h-screen bg-bnw-50">
         <div className="w-[95%] lg:w-[97%] mx-auto rounded-lg mb-6 shadow-xl ">
@@ -209,139 +305,93 @@ function EditPM() {
               <div className="w-full lg:w-[375px] xl:w-[400px] flex flex-col justify-center gap-5">
                 <div>
                   <p className="header3 text-left mb-1">Plan</p>
-                  <DateField
-                    required
-                    onChange={(date: Date) => setDate(date)}
-                    id=""
-                    text="Pilih Tanggal PM"
-                  />
+                  {defaultValue.length > 0 && (
+                    <DateField
+                      value={defaultValue[0].plan}
+                      required
+                      onChange={(date: Date) => setDate(date)}
+                      id=""
+                      text="Pilih Tanggal PM"
+                    />
+                  )}
                 </div>
                 <div>
                   <p className="header3 text-left mb-1">Pelaksana</p>
-                  <Dropdown
-                    required
-                    placeholder="Pilih Pelaksana PM"
-                    type=""
-                    onChange={(selectedOption) =>
-                      OnChange(selectedOption, setUserId, 0)
-                    }
-                    options={optionsUser}
-                  />
-                  {/* <Select
-                    options={optionsUser}
-                    placeholder={"Pilih Pelaksana PM"}
-                    onChange={(selectedOption) => {
-                      if (selectedOption) {
-                        setUserId(selectedOption.value);
-                      } else {
-                        setUserId(0);
+                  {defaultValue.length > 0 && (
+                    <Dropdown
+                      value={defaultValue[0].user}
+                      required
+                      placeholder="Pilih Pelaksana PM"
+                      type=""
+                      onChange={(selectedOption) =>
+                        setChanges(selectedOption, setUserId, 0)
                       }
-                    }}
-                  /> */}
+                      options={optionsUser}
+                    />
+                  )}
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-[max-content_max-content] grid-rows-4 lg:grid-rows-2 gap-y-5 justify-between mt-[20px] lg:mt-[40px]">
               <div className="w-full lg:w-[375px] xl:w-[400px]">
                 <p className="header3 text-left mb-1">Wilayah</p>
-                <Dropdown
-                  required
-                  placeholder="Pilih Wilayah PM"
-                  type=""
-                  onChange={(selectedOption) =>
-                    OnChange(selectedOption, setWilayah, "")
-                  }
-                  options={optionsWilayah}
-                />
-                {/* <Select
-                  options={optionsWilayah}
-                  placeholder="Pilih Wilayah PM"
-                  onChange={(selectedOption) => {
-                    if (selectedOption) {
-                      setWilayah(selectedOption.value);
-                    } else {
-                      setWilayah("");
+                {defaultValue.length > 0 && (
+                  <Dropdown
+                    value={defaultValue[0].wilayah}
+                    required
+                    placeholder="Pilih Wilayah PM"
+                    type=""
+                    onChange={(selectedOption) =>
+                      setChanges(selectedOption, setWilayah, "")
                     }
-                  }}
-                /> */}
+                    options={optionsWilayah}
+                  />
+                )}
               </div>
               <div className="w-full lg:w-[375px] xl:w-[400px]">
                 <p className="header3 text-left mb-1">Area</p>
-                <Dropdown
-                  required
-                  placeholder="Pilih Area PM"
-                  type=""
-                  onChange={(selectedOption) =>
-                    OnChange(selectedOption, setArea, "")
-                  }
-                  options={optionsArea}
-                />
-                {/* <Select
-                  options={optionsArea}
-                  placeholder={"Pilih Area PM"}
-                  onChange={(selectedOption) => {
-                    if (selectedOption) {
-                      setArea(selectedOption.value);
-                    } else {
-                      setArea("");
+                {defaultValue.length > 0 && (
+                  <Dropdown
+                    value={defaultValue[0].area}
+                    required
+                    placeholder="Pilih Area PM"
+                    type=""
+                    onChange={(selectedOption) =>
+                      setChanges(selectedOption, setArea, "")
                     }
-                  }}
-                /> */}
+                    options={optionsArea}
+                  />
+                )}
               </div>
               <div className="w-full lg:w-[375px] xl:w-[400px]">
                 <p className="header3 text-left mb-1">Jenis PM</p>
-                <Dropdown
-                  required
-                  placeholder="Pilih Jenis PM"
-                  type=""
-                  onChange={(selectedOption) =>
-                    OnChange(selectedOption, setJenis, "")
-                  }
-                  options={optionsJenis}
-                />
-                {/* <Select
-                  options={optionsJenis}
-                  placeholder={"Pilih Jenis PM"}
-                  onChange={(selectedOption) => {
-                    if (selectedOption) {
-                      setJenis(selectedOption.value);
-                    } else {
-                      setJenis("");
+                {defaultValue.length > 0 && (
+                  <Dropdown
+                    value={defaultValue[0].jenis}
+                    required
+                    placeholder="Pilih Jenis PM"
+                    type=""
+                    onChange={(selectedOption) =>
+                      setChanges(selectedOption, setJenis, "")
                     }
-                  }}
-                /> */}
+                    options={optionsJenis}
+                  />
+                )}
               </div>
               <div className="w-full lg:w-[375px] xl:w-[400px]">
                 <p className="header3 text-left mb-1">Kategori PM</p>
-                <Dropdown
-                  required
-                  placeholder="Pilih Kategori PM"
-                  type=""
-                  onChange={(selectedOption) =>
-                    OnChange(selectedOption, setKategori, "")
-                  }
-                  options={optionsKategori}
-                />
-                {/* <Select
-                  options={optionsKategori}
-                  placeholder={"Pilih Kategori PM"}
-                  onChange={(selectedOption) => {
-                    if (selectedOption) {
-                      setKategori(selectedOption.value);
-                      if (selectedOption.value == "Rutin" ) {
-                        if(jenis == "ISP"){
-                          setDetail(["Uji Baterai, PM OLT Retail, Air Conditioner, Genset, Pendataan"]);
-                        } else {
-                          setDetail(["Jalur Kabel TR/TM, ADSS LS, Retail - IKR, Retail - FAT, Retail - Cluster"]);
-                        }
-                      } else {
-                        setDetail([]);
-                      }
-                    } else {
-                      setKategori("");
+                {defaultValue.length > 0 && (
+                  <Dropdown
+                    value={defaultValue[0].kategori}
+                    required
+                    placeholder="Pilih Kategori PM"
+                    type=""
+                    onChange={(selectedOption) =>
+                      setChanges(selectedOption, setKategori, "")
                     }
-                  }}
-                /> */}
+                    options={optionsKategori}
+                  />
+                )}
               </div>
             </div>
             <div className="mt-[20px] lg:mt-[59px] flex justify-between flex-col lg:flex-row gap-y-2">
@@ -386,46 +436,50 @@ function EditPM() {
                   </>
                 ) : (
                   <>
-                    <Checkbox
-                      checked={detail.includes("Uji Baterai")}
-                      onChange={handleCheckboxChange}
-                      disabled={false}
-                      id="baterai"
-                      label="Uji Baterai"
-                      value="Uji Baterai"
-                    />
-                    <Checkbox
-                      checked={detail.includes("PM OLT Retail")}
-                      onChange={handleCheckboxChange}
-                      disabled={false}
-                      id="olt"
-                      label="PM OLT Retail"
-                      value="PM OLT Retail"
-                    />
-                    <Checkbox
-                      checked={detail.includes("Air Conditioner")}
-                      onChange={handleCheckboxChange}
-                      disabled={false}
-                      id="ac"
-                      label="Air Conditioner"
-                      value="Air Conditioner"
-                    />
-                    <Checkbox
-                      checked={detail.includes("Genset")}
-                      onChange={handleCheckboxChange}
-                      disabled={false}
-                      id="genset"
-                      label="Genset"
-                      value="Genset"
-                    />
-                    <Checkbox
-                      checked={detail.includes("Pendataan")}
-                      onChange={handleCheckboxChange}
-                      disabled={false}
-                      id="pendataan"
-                      label="Pendataan"
-                      value="Pendataan"
-                    />
+                    {triggerDefault && (
+                      <>
+                        <Checkbox
+                          checked={detail.includes("Uji Baterai")}
+                          onChange={handleCheckboxChange}
+                          disabled={false}
+                          id="baterai"
+                          label="Uji Baterai"
+                          value="Uji Baterai"
+                        />
+                        <Checkbox
+                          checked={detail.includes("PM OLT Retail")}
+                          onChange={handleCheckboxChange}
+                          disabled={false}
+                          id="olt"
+                          label="PM OLT Retail"
+                          value="PM OLT Retail"
+                        />
+                        <Checkbox
+                          checked={detail.includes("Air Conditioner")}
+                          onChange={handleCheckboxChange}
+                          disabled={false}
+                          id="ac"
+                          label="Air Conditioner"
+                          value="Air Conditioner"
+                        />
+                        <Checkbox
+                          checked={detail.includes("Genset")}
+                          onChange={handleCheckboxChange}
+                          disabled={false}
+                          id="genset"
+                          label="Genset"
+                          value="Genset"
+                        />
+                        <Checkbox
+                          checked={detail.includes("Pendataan")}
+                          onChange={handleCheckboxChange}
+                          disabled={false}
+                          id="pendataan"
+                          label="Pendataan"
+                          value="Pendataan"
+                        />
+                      </>
+                    )}
                   </>
                 )
               ) : (
@@ -470,6 +524,8 @@ function EditPM() {
                   </>
                 ) : (
                   <>
+                    {triggerDefault &&
+                    <>
                     <Checkbox
                       checked={detail.includes("Jalur Kabel TR/TM")}
                       onChange={handleCheckboxChange}
@@ -510,6 +566,7 @@ function EditPM() {
                       label="Retail - Cluster"
                       value="Retail - Cluster"
                     />
+                    </>}
                   </>
                 ))
               )}
@@ -518,30 +575,22 @@ function EditPM() {
               {jenis == "ISP" ? (
                 <div className="w-full lg:w-[375px] xl:w-[400px]">
                   <p className="header3 text-left mb-1">ID POP</p>
-                  <Dropdown
-                    required
-                    placeholder="Pilih ID POP"
-                    type=""
-                    onChange={(selectedOption) =>
-                      OnChange(selectedOption, setPopID, 0)
-                    }
-                    options={optionsPOP}
-                  />
-                  {/* <Select
-                    options={optionsPOP}
-                    placeholder={"Pilih ID POP"}
-                    onChange={(selectedOption) => {
-                      if (selectedOption) {
-                        setPopID(selectedOption.value);
-                      } else {
-                        setPopID(0);
+                  {defaultValue.length > 0 && (
+                    <Dropdown
+                      value={defaultValue[0].pop}
+                      required
+                      placeholder="Pilih ID POP"
+                      type=""
+                      onChange={(selectedOption) =>
+                        setChanges(selectedOption, setPopID, 0)
                       }
-                    }}
-                  /> */}
+                      options={optionsPOP}
+                    />
+                  )}
                 </div>
               ) : jenis == "OSP" ? (
                 <>
-                  <div className="w-full lg:w-[375px] xl:w-[400px]">
+                  {/* <div className="w-full lg:w-[375px] xl:w-[400px]">
                     <p className="header3 text-left mb-1">Lokasi OSP</p>
                     <TextField
                       type="standart"
@@ -572,14 +621,17 @@ function EditPM() {
                       placeholder="Koordinat jalan/cluster"
                       onChange={(e) => setKoorAkhir(e.target.value)}
                     />
-                  </div>
+                  </div> */}
                 </>
               ) : (
                 <div></div>
               )}
             </div>
             <div className="flex justify-center lg:justify-end gap-5 mt-5">
-              <Button type="cancel" onClick={() => navigate("/penjadwalan-pm")}/>
+              <Button
+                type="cancel"
+                onClick={() => navigate("/penjadwalan-pm")}
+              />
               <Button type="save" />
             </div>
           </form>

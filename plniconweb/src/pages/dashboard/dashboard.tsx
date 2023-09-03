@@ -12,12 +12,12 @@ import StackedbarChartKabKot from "../../components/StackedbarChartKabKot";
 import Table from "../../components/Table";
 import Status from "../../components/Status";
 import Footer from "../../components/footer";
-import Pagination from "../../components/Pagination";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { getWithAuth } from "../../api/api";
-import { toastSuccess, toastError } from "../../components/Toast";
+import { toastError } from "../../components/Toast";
 import Button from "../../components/Button";
+import LoadingPage from "../loadingPage";
 
 function Dashboard() {
   const kolom = [
@@ -49,7 +49,6 @@ function Dashboard() {
   //Bar chart 1
   const [dataRemainingStatus, setDataRemainingStatus] = useState<number[]>([0, 0, 0, 0, 0]);
   const [dataRealisasi, setDataRealisasi] = useState<number[]>([0, 0, 0, 0, 0]);
-  const [dataPlan, setDataPlan] = useState<number[]>([]);
 
   //Bar chart 2
   const [dataRealisasiPerKota, setDataRealisasiPerKota] = useState<number[]>([]);
@@ -67,8 +66,8 @@ function Dashboard() {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [filteredDataPm, setFilteredDataPm] = useState<any[]>([]);
-  const [triggerPop, setTriggerPop] = useState(0);
-  const [triggerPm, setTriggerPm] = useState(0);
+  const [triggerPop, setTriggerPop] = useState(false);
+  const [triggerPm, setTriggerPm] = useState(false);
 
   const token = localStorage.getItem("access_token");
   const getListPop = async () => {
@@ -89,12 +88,10 @@ function Dashboard() {
             };
           })
         );
-        toastSuccess(listpop.data.meta.message);
-        setTriggerPop(1);
       } catch (error) {
         toastError("Get Data List POP Failed");
       } finally {
-        setIsLoading(false);
+        setTriggerPop(true);
       }
     }
   };
@@ -137,12 +134,10 @@ function Dashboard() {
             };
           })
         );
-        toastSuccess(jadwalpm.data.meta.message);
-        setTriggerPm(1);
       } catch (error) {
         toastError("Get Data Jadwal PM Failed");
       } finally {
-        setIsLoading(false);
+        setTriggerPm(true);
       }
     }
   };
@@ -377,6 +372,13 @@ function Dashboard() {
   }, [triggerPm]);
 
   useEffect(() => {
+    setIsLoading(true);
+    if(triggerPop && triggerPm){
+      setIsLoading(false);
+    }
+  }, [triggerPop, triggerPm])
+
+  useEffect(() => {
     getJadwalPm();
     getListPop();
   }, []);
@@ -426,6 +428,7 @@ function Dashboard() {
   }
   return (
     <>
+      <LoadingPage isLoad={isLoading}/>
       <Navbar />
       <div className="overflow-auto pt-[136px] bg-bnw-50">
         <h1 className="header1 text-blue-primary text-center">JUMLAH POP</h1>
@@ -532,12 +535,7 @@ function Dashboard() {
           <div className="my-[56px] w-[1370px] bg-bnw-50 mx-auto py-10 rounded-lg shadow-xl gap-16">
             <div className="flex flex-col gap-5">
               <div className="flex justify-end pr-[20px]">
-                <a
-                  href="/penjadwalan-pm"
-                  className="flex items-center justify-center rounded-[10px] h-[40px] w-[150px] text-white bg-blue-primary font-semibold"
-                >
-                  Lihat Semua
-                </a>
+                <Button type={undefined} onClick={() => navigate("/penjadwalan-pm")} text={"Lihat Semua"} className="h-[40px] w-[175px] text-[20px] font-semibold text-white bg-blue-primary rounded-[10px] hover:bg-blue-hover active:bg-blue-click"/>
               </div>
               <div className="flex items-center justify-center">
                 <Table

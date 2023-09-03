@@ -2,7 +2,6 @@ import Select, { ActionMeta, SingleValue } from "react-select";
 
 interface DropdownProps {
   placeholder: string;
-  type: string;
   onChange?:
     | ((
         newValue: SingleValue<{
@@ -22,7 +21,6 @@ interface DropdownProps {
 
 const Dropdown = ({
   placeholder,
-  type,
   onChange,
   options,
   value,
@@ -31,6 +29,7 @@ const Dropdown = ({
   
   return (
     <Select
+      defaultValue={value}
       required={required}
       options={options}
       placeholder={placeholder}
@@ -38,7 +37,7 @@ const Dropdown = ({
       isSearchable={true}
       theme={(theme) => ({
         ...theme,
-        borderRadius: "8px",
+        borderRadius: 8,
         border: "2px",
 
         colors: {

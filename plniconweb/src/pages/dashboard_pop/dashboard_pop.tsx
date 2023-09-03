@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom"
 import CardPOP from "../../components/CardPOP"
-import Dropdown from "../../components/Dropdown"
 import Navbar from "../../components/Navbar"
 import TextField from "../../components/TextField"
 import Footer from "../../components/footer"

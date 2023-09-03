@@ -120,8 +120,8 @@ function ListPOP() {
             <Table
               data={paginatedData}
               header={kolom}
-              tipe="pop"
-              role="admin"
+              tipe={"pop"}
+              role="user"
               isLoading={isLoading}
             />
           </div>

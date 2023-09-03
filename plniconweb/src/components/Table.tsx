@@ -1,7 +1,7 @@
 import { BiSolidPencil } from "react-icons/bi";
 import { BsBarChartFill, BsTrashFill } from "react-icons/bs";
 import Modal from "./Modal";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 
@@ -11,18 +11,32 @@ function Table({
   tipe,
   role,
   isLoading,
+  dataTambahan,
 }: {
   data: any[];
   header: any[];
   tipe: string;
   role: string;
   isLoading: boolean;
+  dataTambahan?: any[];
 }) {
   const [showDetailPM, setShowDetailPM] = useState(false);
+
   const [showPopUpDelete, setShowPopUpDelete] = useState(false);
   const [idDelete, setIdDelete] = useState(0);
 
   const navigate = useNavigate();
+
+  //DETAIL PM
+  const [detailIdPm, setDetailIdPm] = useState("")
+  const [detailStatus, setDetailStatus] = useState<ReactNode>()
+  const [detailPlan, setDetailPlan] = useState("")
+  const [detailWilayah, setDetailWilayah] = useState("")
+  const [detailArea, setDetailArea] = useState("")
+  const [detailJenis, setDetailJenis] = useState("")
+  const [detailKategori, setDetailKategori] = useState("")
+  const [detailPengerjaan, setDetailPengerjaan] = useState("")
+  const [detailNamaPop, setDetailNamaPop] = useState("")
   
   const Load = () => {
     const dummy = [1, 2, 3, 4, 5];
@@ -48,14 +62,30 @@ function Table({
     console.log(idDelete);
   }
 
-  function Klik(tipe:string, url:string){
-    if (tipe=='pm'){
-      setShowDetailPM(true)
-    }
-    else{
-      navigate(url);
+  function dataDetailPm(tipe:string, url:string, id?: string, plan?: Date, status?: ReactNode, wilayah?: string, area?: string, jenis?: string, kategori?: string, detail_pm?: string, nama_pop?: string){
+    if (tipe){
+      switch (tipe){
+        case "pm":
+          setDetailIdPm(id!);
+          const planString = plan!.toLocaleString();
+          setDetailPlan(planString);
+          setDetailStatus(status!);
+          setDetailWilayah(wilayah!);
+          setDetailArea(area!);
+          setDetailJenis(jenis!)
+          setDetailKategori(kategori!);
+          setDetailPengerjaan(detail_pm!);
+          setDetailNamaPop(nama_pop!);
+          setShowDetailPM(true); 
+          break;
+        default:
+          navigate(url);
+          console.log("yoyoii")
+          break;
+      }
     }
   }
+
   return (
     <>
       <Modal
@@ -68,39 +98,39 @@ function Table({
           <div className="grid grid-cols-3 gap-y-10">
             <div className="text-[20px]">
               <span className="font-semibold">ID : </span>
-              <span>ISP/2023/0005</span>
+              <span>{detailIdPm}</span>
             </div>
             <div className="text-[20px]">
               <span className="font-semibold">Plan : </span>
-              <span>2023-01-09</span>
+              <span>{detailPlan}</span>
             </div>
             <div className="text-[20px]">
               <span className="font-semibold">Realisasi : </span>
-              <span>2023-03-09</span>
+              <span>-</span>
             </div>
             <div className="text-[20px]">
               <span className="font-semibold">Status : </span>
-              <span>PLAN</span>
+              <span>{detailStatus}</span>
             </div>
             <div className="text-[20px]">
               <span className="font-semibold">Wilayah : </span>
-              <span>HAR JAKARTA</span>
+              <span>{detailWilayah}</span>
             </div>
             <div className="text-[20px]">
               <span className="font-semibold">Area : </span>
-              <span>Jakarta Timur</span>
+              <span>{detailArea}</span>
             </div>
             <div className="text-[20px]">
               <span className="font-semibold">Jenis PM : </span>
-              <span>ISP</span>
+              <span>{detailJenis}</span>
             </div>
             <div className="text-[20px]">
               <span className="font-semibold">Kategori PM : </span>
-              <span>Rutin</span>
+              <span>{detailKategori}</span>
             </div>
             <div className="text-[20px]">
               <span className="font-semibold">Detail PM : </span>
-              <span>AC - Environment</span>
+              <span>{detailPengerjaan}</span>
             </div>
             <div className="text-[20px]">
               <span className="font-semibold">Hostname : </span>
@@ -112,16 +142,16 @@ function Table({
             </div>
             <div className="text-[20px]">
               <span className="font-semibold">Nama POP : </span>
-              <span>Cawang GI Shelter</span>
+              <span>{detailNamaPop}</span>
             </div>
             <div className="text-[20px] col-span-3">
               <span className="font-semibold">Temuan : </span>
-              <span>Perangkat panas, AC bocor, rect mati, dan tembok retak</span>
+              <span>-</span>
             </div>
             <div className="text-[20px] col-span-3">
               <span className="font-semibold">Link Laporan OSP : </span>
               <span>
-                <a href="http://pm.microlearning.my.id/jadwal" className="hover:text-blue-400 hover:underline">http://pm.microlearning.my.id/jadwal</a>
+                -
               </span>
             </div>
           </div>
@@ -140,7 +170,7 @@ function Table({
       </Modal>
 
       <div className="flex overflow-visible">
-        <table className="min-w-full">
+        <table className="min-w-full overflow-visible">
           <thead>
             <tr>
               {header.map((cell: any, idx: number) => {
@@ -155,18 +185,18 @@ function Table({
               })}
             </tr>
           </thead>
-          <tbody>
+          <tbody className="overflow-visible">
             {isLoading ? (
               <Load />
             ) : data.length > 0 ? (
               Object.values(data).map((obj: any, idx: number) => {
                 return (
-                  <tr key={idx}>
-                    <td className="h-auto w-auto border-collapse border-b-2 border-bnw-500 px-2 py-3 text-center xl:px-4">
-                      <div className="flex items-center justify-center gap-1">
+                  <tr key={idx} className="overflow-visible">
+                    <td className="h-auto w-auto overflow-visible border-collapse border-b-2 border-bnw-500 px-2 py-3 text-center xl:px-4">
+                      <div className="flex items-center overflow-visible justify-center gap-1">
                         {tipe != "user" && (
                           <div className="group relative">
-                            <button className="bg-blue-primary p-2 rounded hover:bg-blue-hover active:bg-blue-click text-text-light" onClick={() => Klik(tipe, "/dashboard-pop/info-umum")}>
+                            <button className="bg-blue-primary p-2 rounded hover:bg-blue-hover active:bg-blue-click text-text-light" onClick={() => dataDetailPm(tipe, "dashboard-pop/info-umum", obj.id, obj.plan, obj.status, obj.wilayah, obj.area, obj.jenis, obj.kategori, dataTambahan && dataTambahan[idx] && dataTambahan[idx].detail_pm, dataTambahan && dataTambahan[idx] && dataTambahan[idx].datapop.nama)}>
                               <BsBarChartFill />
                             </button>
                             <p className="p-1 rounded z-10 shadow-lg hidden group-hover:block absolute bg-bnw-50">
@@ -176,7 +206,7 @@ function Table({
                         )}
                         {role == "admin" && (
                           <>
-                            <div className="group relative" onClick={() => navigate(`edit/${obj.id}`)}>
+                            <div className="group relative" onClick={() => navigate(`edit/${dataTambahan![idx].id}`)}>
                               <button className="bg-yellow-primary p-2 rounded hover:bg-yellow-hover active:bg-yellow-click text-text-light">
                                 <BiSolidPencil />
                               </button>

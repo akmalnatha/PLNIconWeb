@@ -24,7 +24,7 @@ function Modal({
       onClick={(e) => handleOnClose(e)}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm"
     >
-      <div className="w-fit max-h-[99%] overflow-auto rounded-xl bg-white px-7 py-4 xl:py-7">
+      <div className="w-fit max-w-[85%] h-fit max-h-[90%] overflow-auto rounded-xl bg-white px-2 xl:px-4 py-2 xl:py-4">
         {children}
       </div>
     </div>

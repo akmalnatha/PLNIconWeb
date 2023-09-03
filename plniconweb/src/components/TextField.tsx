@@ -20,7 +20,7 @@ function TextField({
   value?: string | number | readonly string[] | undefined;
   required?: boolean;
 }) {
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState(value || "");
   const [inputValue, setInputValue] = useState(value || "");
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -83,7 +83,7 @@ function TextField({
             onChange={(e) => setDescription(e.target.value)}
             name="desc"
             id="desc"
-            value={value}
+            value={description}
             placeholder={placeholder}
             className="px-3 py-2 text-black min-h-[40px] w-full rounded-[10px] border-2 border-[#6B6B6B] hover:border-black bg-white lg:h-[200px]"
           ></textarea>
