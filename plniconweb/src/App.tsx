@@ -1,36 +1,102 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Dashboard from "./pages/dashboard/dashboard";
+import DaftarUser from "./pages/daftar_user/daftar_user";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
+import AddUser from "./pages/daftar_user/add_user";
+import PenjadwalanPM from "./pages/pm/penjadwalan_pm";
+import CreatePM from "./pages/pm/create_pm";
+import EditPM from "./pages/pm/edit_pm";
+import ListPOP from "./pages/pop/list_pop";
+import Login from "./pages/login/login";
+import ComingSoon from "./pages/other_pages/coming_soon";
+import UserProvider from "./context/userContext";
 // import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const router = createBrowserRouter([{ path: "*", Component: Root }]);
+
+const ProtectedRoute = () => {
+  const token = localStorage.getItem("access_token");
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
-    <>
-      <p className='font-montserrat font-bold text-2xl text-blue-primary'>kontol</p>
-      {/* <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="font-montserrat font-bold">
-        Click on the Vite and React logos to learn more
-      </p> */}
-    </>
-  )
+    <UserProvider>
+      <Outlet />
+    </UserProvider>
+  );
+};
+
+export default function App() {
+  return <RouterProvider router={router} />;
 }
 
-export default App
+function Root() {
+  return (
+    <Routes>
+      <Route element={<ProtectedRoute/>}>
+
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/daftar-user">
+          <Route path="" element={<DaftarUser />} />
+          <Route path="create" element={<AddUser />} />
+        </Route>
+        <Route path="/dashboard-pop">
+          <Route path="" element={<ComingSoon/>} />
+          <Route
+            path="info-umum"
+            element={
+            // <PageDetail>
+                <ComingSoon />
+              //</PageDetail>
+            }
+          />
+          <Route
+            path="kwh"
+            element={
+            // <PageDetail>
+                <ComingSoon />
+              //</PageDetail>
+            }
+          />
+          <Route
+            path="inverter"
+            element={
+            // <PageDetail>
+                <ComingSoon />
+              //</PageDetail>
+            }
+          />
+          <Route
+            path="recti"
+            element={
+            // <PageDetail>
+                <ComingSoon />
+              //</PageDetail>
+            }
+          />
+        </Route>
+        <Route path="pop">
+          <Route path="" element={<ListPOP />} />
+          <Route path="create" element={<ComingSoon/>}/>
+        </Route>
+        <Route path="penjadwalan-pm">
+          <Route path="" element={<PenjadwalanPM />} />
+          <Route path="create" element={<CreatePM/>}/>
+          <Route path="edit/:idPM" element={<EditPM/>}/>
+        </Route>
+        <Route path="/temuan" element={<ComingSoon />} />
+        <Route path="/export" element={<ComingSoon />} />
+      </Route>
+      <Route path="/" element={<Login />} />
+      <Route path="*" element={<ComingSoon />} />
+    </Routes>
+  );
+}
