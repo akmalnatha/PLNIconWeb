@@ -1,5 +1,6 @@
 {
   "name": "plniconweb",
+  "homepage": "https://jakban.iconpln.co.id/sipreman/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -46,6 +47,5 @@
     "tailwindcss": "^3.3.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
-  },
-  "homepage": "http://localhost/dist/"
+  }
 }

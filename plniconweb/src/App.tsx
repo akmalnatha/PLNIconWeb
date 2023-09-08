@@ -18,13 +18,13 @@ import ComingSoon from "./pages/other_pages/coming_soon";
 import UserProvider from "./context/userContext";
 // import './App.css'
 
-const router = createBrowserRouter([{ path: "*", Component: Root }]);
+const router = createBrowserRouter([{ path: "*", Component: Root}, ], { basename: "/sipreman" });
 
 const ProtectedRoute = () => {
   const token = localStorage.getItem("access_token");
 
   if (!token) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return (
@@ -83,11 +83,11 @@ function Root() {
             }
           />
         </Route>
-        <Route path="pop">
+        <Route path="/pop">
           <Route path="" element={<ListPOP />} />
           <Route path="create" element={<ComingSoon/>}/>
         </Route>
-        <Route path="penjadwalan-pm">
+        <Route path="/penjadwalan-pm">
           <Route path="" element={<PenjadwalanPM />} />
           <Route path="create" element={<CreatePM/>}/>
           <Route path="edit/:idPM" element={<EditPM/>}/>

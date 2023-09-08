@@ -34,7 +34,7 @@ function DateField({
         value={value}
         placeholder={text}
         onChange={onChange}
-        className="w-full rounded-lg border-2 border-[#6B6B6B] bg-[url(/assets/date_icon.svg)] cursor-pointer bg-right bg-no-repeat bg-origin-content px-3 py-2 hover:border-blue-hover focus:outline-blue-primary"
+        className={`w-full rounded-lg border-2 border-[#6B6B6B] bg-[url('${process.env.PUBLIC_URL}/assets/date_icon.svg')] cursor-pointer bg-right bg-no-repeat bg-origin-content px-3 py-2 hover:border-blue-hover focus:outline-blue-primary`}
         onClick={onClick}
         ref={ref}
       ></input>
