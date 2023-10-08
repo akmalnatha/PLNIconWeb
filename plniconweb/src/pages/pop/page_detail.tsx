@@ -5,7 +5,7 @@ import Footer from "../../components/footer";
 function PageDetail({children} : {children: React.ReactNode}){
     return(
         <>
-        <Navbar/>
+        <Navbar active={2}/>
         <div className="pt-[90px] min-h-[91.75vh]">
             <div className="w-[98%] mx-auto shadow-xl mb-6 rounded-xl">
                 <div className="bg-blue-alternative h-[123px] w-full flex items-center justify-center rounded-t-xl">

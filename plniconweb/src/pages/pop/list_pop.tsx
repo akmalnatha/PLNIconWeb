@@ -102,7 +102,7 @@ function ListPOP() {
 
   return (
     <>
-      <Navbar />
+      <Navbar active={3}/>
       <div className="pt-[136px] min-h-[calc(100vh-60px)] bg-bnw-50 px-2">
         <h1 className="header1 text-blue-primary text-center">POP</h1>
         <div className="mb-[56px] mt-[40px] pt-[11px] pb-10 w-full bg-bnw-50 rounded-lg shadow-xl px-[20px] border-t-bnw-alternative border-t-2">

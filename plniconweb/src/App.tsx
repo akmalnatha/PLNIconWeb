@@ -16,6 +16,12 @@ import ListPOP from "./pages/pop/list_pop";
 import Login from "./pages/login/login";
 import ComingSoon from "./pages/other_pages/coming_soon";
 import UserProvider from "./context/userContext";
+import DashboardPOP from "./pages/pop/dashboard_pop";
+import InfoUmum from "./pages/pop/details/info_umum";
+import PageDetail from "./pages/pop/page_detail";
+import KWH from "./pages/pop/details/kwh";
+import Inverter from "./pages/pop/details/inverter";
+import Recti from "./pages/pop/details/recti";
 // import './App.css'
 
 const router = createBrowserRouter([{ path: "*", Component: Root}, ], { basename: "/sipreman" });
@@ -49,37 +55,37 @@ function Root() {
           <Route path="create" element={<AddUser />} />
         </Route>
         <Route path="/dashboard-pop">
-          <Route path="" element={<ComingSoon/>} />
+          <Route path="" element={<DashboardPOP/>} />
           <Route
             path="info-umum"
             element={
-            // <PageDetail>
-                <ComingSoon />
-              //</PageDetail>
+            <PageDetail>
+                <InfoUmum />
+            </PageDetail>
             }
           />
           <Route
             path="kwh"
             element={
-            // <PageDetail>
-                <ComingSoon />
-              //</PageDetail>
+            <PageDetail>
+                <KWH />
+              </PageDetail>
             }
           />
           <Route
             path="inverter"
             element={
-            // <PageDetail>
-                <ComingSoon />
-              //</PageDetail>
+            <PageDetail>
+                <Inverter />
+              </PageDetail>
             }
           />
           <Route
             path="recti"
             element={
-            // <PageDetail>
-                <ComingSoon />
-              //</PageDetail>
+            <PageDetail>
+                <Recti />
+              </PageDetail>
             }
           />
         </Route>

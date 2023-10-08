@@ -41,17 +41,23 @@ function Dashboard() {
   const [dataPopD, setDataPopD] = useState<number[][]>([[], [], []]);
   const [dataPopA, setDataPopA] = useState<number[][]>([[], [], []]);
   const [dataCpePln, setDataCpePln] = useState<number[][]>([[], [], []]);
+  const [dataTotalPop, setDataTotalPop] = useState<number>(0);
+  const [dataTotalCpePln, setDataTotalCpePln] = useState<number>(0);
 
   //ISP and OSP count
   const [dataIspCount, setDataIspCount] = useState(0);
   const [dataOspCount, setDataOspCount] = useState(0);
 
   //Bar chart 1
-  const [dataRemainingStatus, setDataRemainingStatus] = useState<number[]>([0, 0, 0, 0, 0]);
+  const [dataRemainingStatus, setDataRemainingStatus] = useState<number[]>([
+    0, 0, 0, 0, 0,
+  ]);
   const [dataRealisasi, setDataRealisasi] = useState<number[]>([0, 0, 0, 0, 0]);
 
   //Bar chart 2
-  const [dataRealisasiPerKota, setDataRealisasiPerKota] = useState<number[]>([]);
+  const [dataRealisasiPerKota, setDataRealisasiPerKota] = useState<number[]>(
+    []
+  );
   const [dataPlanPerKota, setDataPlanPerKota] = useState<number[]>([]);
 
   //Page Attributes
@@ -148,46 +154,47 @@ function Dashboard() {
     );
     const sortedCities = uniqueCities.sort((a, b) => a.localeCompare(b));
     setDataKotaPop(sortedCities);
-  }, [triggerPop]) 
+  }, [triggerPop]);
 
   useEffect(() => {
-    if(dataKotaPop.length === 0){
-      return
+    if (dataKotaPop.length === 0) {
+      return;
     }
     const initialDataStatusPerKota = Array(dataKotaPop.length).fill(0);
     const newDataRealisasiPerKota = [...initialDataStatusPerKota];
     const newDataPlanPerKota = [...initialDataStatusPerKota];
-    
+
     let ispCount = 0;
     let ospCount = 0;
 
     let filteredData;
-    if(startDate && endDate){
+    if (startDate && endDate) {
       const filterStartDate = moment(startDate).format("YYYY-MM-DD");
       const filterEndDate = moment(endDate).format("YYYY-MM-DD");
-      filteredData = dataChartPm.filter((data) => data.plan >= filterStartDate && data.plan <= filterEndDate)
+      filteredData = dataChartPm.filter(
+        (data) => data.plan >= filterStartDate && data.plan <= filterEndDate
+      );
     } else {
       filteredData = dataChartPm;
     }
-
 
     filteredData.forEach((data: any) => {
       if (data.popId) {
         let i = dataKotaPop.indexOf(data.area);
         if (i != -1) {
           if (data.status) {
-            switch (data.status) {
+            switch (data.status){
               case "PLAN":
                 newDataPlanPerKota[i]++;
                 break;
               case "REALISASI":
                 newDataRealisasiPerKota[i]++;
-              break;
+                break;
             }
           }
         }
-        if(data.jenis){
-          switch(data.jenis){
+        if (data.jenis) {
+          switch (data.jenis) {
             case "ISP":
               ispCount++;
               break;
@@ -207,7 +214,7 @@ function Dashboard() {
   useEffect(() => {
     const processFilteredData = (
       filteredDataPop: any[],
-      setDataFunc: React.Dispatch<React.SetStateAction<number[][]>>,
+      setDataFunc: React.Dispatch<React.SetStateAction<number[][]>>
     ) => {
       let shelterCount = 0;
       let ruangKantorCount = 0;
@@ -222,10 +229,10 @@ function Dashboard() {
       filteredDataPop.forEach((item: any) => {
         if (item.wilayah) {
           switch (item.wilayah) {
-            case "Jakarta":
+            case "HarJak":
               HarjakCount++;
               break;
-            case "Banten Bodebek":
+            case "HarBDB":
               HarBdbCount++;
               break;
           }
@@ -253,7 +260,6 @@ function Dashboard() {
               break;
           }
         }
-        
       });
       const newData = [
         [
@@ -270,37 +276,29 @@ function Dashboard() {
       setDataFunc(newData);
     };
 
+    // setDataTotalPop(totalPop)
+
     const filteredDataSb = dataChartPop.filter((item) => item.tipe === "SB");
-    processFilteredData(
-      filteredDataSb,
-      setDataPopSb,
-    );
+    processFilteredData(filteredDataSb, setDataPopSb);
+    setDataTotalPop((prevDataTotalPop) => prevDataTotalPop + filteredDataSb.length);
 
     const filteredDataB = dataChartPop.filter((item) => item.tipe === "B");
-    processFilteredData(
-      filteredDataB,
-      setDataPopB,
-    );
+    processFilteredData(filteredDataB, setDataPopB);
+    setDataTotalPop((prevDataTotalPop) => prevDataTotalPop + filteredDataB.length);
 
     const filteredDataD = dataChartPop.filter((item) => item.tipe === "D");
-    processFilteredData(
-      filteredDataD,
-      setDataPopD,
-    );
+    processFilteredData(filteredDataD, setDataPopD);
+    setDataTotalPop((prevDataTotalPop) => prevDataTotalPop + filteredDataD.length);
 
     const filteredDataA = dataChartPop.filter((item) => item.tipe === "A");
-    processFilteredData(
-      filteredDataA,
-      setDataPopA,
-    );
+    processFilteredData(filteredDataA, setDataPopA);
+    setDataTotalPop((prevDataTotalPop) => prevDataTotalPop + filteredDataA.length);
 
     const filteredDataCpePln = dataChartPop.filter(
       (item) => item.tipe === "CPE PLN"
     );
-    processFilteredData(
-      filteredDataCpePln,
-      setDataCpePln,
-    );
+    processFilteredData(filteredDataCpePln, setDataCpePln);
+    setDataTotalCpePln((prevDataTotalPop) => prevDataTotalPop + filteredDataCpePln.length);
   }, [dataChartPop, dataChartPm]);
 
   useEffect(() => {
@@ -316,9 +314,9 @@ function Dashboard() {
     setFilteredDataPm(filtered);
 
     dataChartPm.forEach((data: any) => {
-      if(data.popTipe){
-        if(data.status){
-          switch (data.status){
+      if (data.popTipe) {
+        if (data.status) {
+          switch (data.status) {
             case "REALISASI":
               setDataRealisasi((prevData) => {
                 const updatedData = [...prevData];
@@ -373,10 +371,10 @@ function Dashboard() {
 
   useEffect(() => {
     setIsLoading(true);
-    if(triggerPop && triggerPm){
+    if (triggerPop && triggerPm) {
       setIsLoading(false);
     }
-  }, [triggerPop, triggerPm])
+  }, [triggerPop, triggerPm]);
 
   useEffect(() => {
     getJadwalPm();
@@ -428,13 +426,17 @@ function Dashboard() {
   }
   return (
     <>
-      <LoadingPage isLoad={isLoading}/>
-      <Navbar />
+      <LoadingPage isLoad={isLoading} />
+      <Navbar active={1} />
       <div className="overflow-auto pt-[136px] bg-bnw-50">
-        <h1 className="header1 text-blue-primary text-center">JUMLAH POP</h1>
-        <div className="w-1/2 mt-[31px] flex justify-between mx-auto">
-          <h3 className="header3 text-blue-primary">Jumlah Total POP: 685</h3>
-          <h3 className="header3 text-blue-primary">Jumlah CPE PLN: 685</h3>
+        <h1 className="header1 text-blue-primary text-center">POP & CPE PLN</h1>
+        <div className="mt-[21px] flex justify-center gap-[120px]">
+          <div className="bg-blue-primary rounded-xl p-4">
+            <h3 className="header3 text-white">Jumlah Total POP: {dataTotalPop}</h3>
+          </div>
+          <div className="bg-blue-primary rounded-xl p-4">
+            <h3 className="header3 text-white">Jumlah CPE PLN: {dataTotalCpePln}</h3>
+          </div>
         </div>
         <div className="flex mt-[51px] items-center justify-between w-[95%] mx-auto h-[950px]">
           <PrevArrow />
@@ -503,16 +505,27 @@ function Dashboard() {
               />
             </div>
           </div>
-          {startDate && endDate && <div className="w-[864px] mx-auto mt-[22px]">
-            <Button type={undefined} text="Clear Date Filter" onClick={clearDate} className="h-[40px] w-full text-[20px] font-semibold text-white bg-blue-primary rounded-[10px] hover:bg-blue-hover active:bg-blue-click"/>
-          </div>}
+          {startDate && endDate && (
+            <div className="w-[864px] mx-auto mt-[22px]">
+              <Button
+                type={undefined}
+                text="Clear Date Filter"
+                onClick={clearDate}
+                className="h-[40px] w-full text-[20px] font-semibold text-white bg-blue-primary rounded-[10px] hover:bg-blue-hover active:bg-blue-click"
+              />
+            </div>
+          )}
           <div className="mt-[22px] flex items-center justify-center gap-16">
             <div className="bg-blue-primary flex flex-col gap-8 rounded-lg items-center justify-center w-[400px] h-[260px]">
-              <h1 className="header1 text-text-light text-center">{dataIspCount}</h1>
+              <h1 className="header1 text-text-light text-center">
+                {dataIspCount}
+              </h1>
               <h2 className="header2 text-text-light text-center">ISP</h2>
             </div>
             <div className="bg-blue-primary flex flex-col gap-8 rounded-lg items-center justify-center w-[400px] h-[260px]">
-              <h1 className="header1 text-text-light text-center">{dataOspCount}</h1>
+              <h1 className="header1 text-text-light text-center">
+                {dataOspCount}
+              </h1>
               <h2 className="header2 text-text-light text-center">OSP</h2>
             </div>
           </div>
@@ -535,7 +548,12 @@ function Dashboard() {
           <div className="my-[56px] w-[1370px] bg-bnw-50 mx-auto py-10 rounded-lg shadow-xl gap-16">
             <div className="flex flex-col gap-5">
               <div className="flex justify-end pr-[20px]">
-                <Button type={undefined} onClick={() => navigate("/penjadwalan-pm")} text={"Lihat Semua"} className="h-[40px] w-[175px] text-[20px] font-semibold text-white bg-blue-primary rounded-[10px] hover:bg-blue-hover active:bg-blue-click"/>
+                <Button
+                  type={undefined}
+                  onClick={() => navigate("/penjadwalan-pm")}
+                  text={"Lihat Semua"}
+                  className="h-[40px] w-[175px] text-[20px] font-semibold text-white bg-blue-primary rounded-[10px] hover:bg-blue-hover active:bg-blue-click"
+                />
               </div>
               <div className="flex items-center justify-center">
                 <Table

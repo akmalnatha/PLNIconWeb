@@ -14,7 +14,7 @@ function TextField({
 }: {
   id?: string;
   style?: string;
-  type: "standart" | "pass" | "area" | "datepicker" | "dropdown" | "search";
+  type: "standart" | "pass" | "area" | "datepicker" | "dropdown" | "search" | "email";
   placeholder: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
   value?: string | number | readonly string[] | undefined;
@@ -52,6 +52,19 @@ function TextField({
             className="w-full px-3 py-2 text-black bg-white border-2 border-[#6B6B6B] hover:border-blue-hover focus:outline-blue-primary rounded-[10px]"
             onChange={handleChange}
             />
+        </div>
+      )}
+
+      {type == "email" && (
+        <div className={style + "w-full"}>
+          <input
+            required={required}
+            type="email"
+            placeholder={placeholder}
+            className={`w-full px-3 py-2 text-black bg-white border-2 border-[#6B6B6B] hover:border-blue-hover focus:outline-blue-primary rounded-[10px] ${inputValue && "invalid:border-red-primary invalid:focus:outline-red-primary peer"}`}
+            onChange={handleChange}
+            />
+            <p className={`text-red-primary hidden peer-invalid:block`}>Masukkan Email yang valid!</p>
         </div>
       )}
 

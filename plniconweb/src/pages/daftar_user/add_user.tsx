@@ -20,7 +20,7 @@ function AddUser() {
   const [role, setRole] = useState("");
 
   const optionsUser = [
-    { value: "Administrator", label: "Administrator" },
+    { value: "ADMIN", label: "Administrator" },
     { value: "Management", label: "Management" },
     { value: "Supervisor", label: "Supervisor" },
     { value: "Engineer", label: "Engineer" },
@@ -55,86 +55,92 @@ function AddUser() {
   return (
     <>
       <Navbar />
-      <div className="pt-[100px] min-h-screen bg-bnw-50">
+      <div className="pt-[100px] min-h-[calc(100vh-60px)] bg-bnw-50">
         <div className="w-[95%] lg:w-[97%] mx-auto mb-6 rounded-lg shadow-xl">
           <h1 className="bg-blue-alternative header1 p-2 px-3 text-text-light rounded-t-lg">
             Create User
           </h1>
           <form action="" onSubmit={(e) => addUser(e)} className="w-full">
-            <div className="flex-col flex gap-10 p-5">
-              <div className="flex flex-col gap-2">
-                <label htmlFor="nama">Nama</label>
-                <TextField
-                  required
-                  id="nama"
-                  type="standart"
-                  placeholder=""
-                  onChange={(e) => setNama(e.target.value)}
-                />
+            <div className="flex-col lg:flex-row gap-10 flex p-5">
+              <div className="w-full lg:w-1/2 flex flex-col gap-10">
+
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="nama">Nama</label>
+                  <TextField
+                    required
+                    id="nama"
+                    type="standart"
+                    placeholder=""
+                    onChange={(e) => setNama(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="nama">E-mail</label>
+                  <TextField
+                    required
+                    id="nama"
+                    type="email"
+                    placeholder=""
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="password">Password</label>
+                  <TextField
+                    required
+                    id="password"
+                    type="standart"
+                    placeholder=""
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
               </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="nama">E-mail</label>
-                <TextField
-                  required
-                  id="nama"
-                  type="standart"
-                  placeholder=""
-                  onChange={(e) => setEmail(e.target.value)}
-                />
+              <div className="w-full lg:w-1/2 flex flex-col gap-10">
+
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="username">Username</label>
+                  <TextField
+                    required
+                    id="username"
+                    type="standart"
+                    placeholder=""
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="role">Kontak</label>
+                  <TextField
+                    required
+                    id="role"
+                    type="standart"
+                    placeholder=""
+                    onChange={(e) => setKontak(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="role">Role</label>
+                  <Dropdown
+                    required
+                    placeholder="Pilih Role!"
+                    options={optionsUser}
+                    onChange={(selectedOption) => {
+                      if (selectedOption) {
+                        setRole(selectedOption.value);
+                      } else {
+                        setRole("");
+                      }
+                    }}
+                  />
+                </div>
               </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="password">Password</label>
-                <TextField
-                  required
-                  id="password"
-                  type="standart"
-                  placeholder=""
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="username">Username</label>
-                <TextField
-                  required
-                  id="username"
-                  type="standart"
-                  placeholder=""
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="role">Kontak</label>
-                <TextField
-                  required
-                  id="role"
-                  type="standart"
-                  placeholder=""
-                  onChange={(e) => setKontak(e.target.value)}
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="role">Role</label>
-                <Dropdown
-                  required
-                  placeholder="Pilih Role!"
-                  options={optionsUser}
-                  onChange={(selectedOption) => {
-                    if (selectedOption) {
-                      setRole(selectedOption.value);
-                    } else {
-                      setRole("");
-                    }
-                  }}
-                />
-              </div>
-              <div className="flex gap-2 self-end">
+            </div>
+              <div className="flex gap-2 justify-end px-5 pb-5">
                 <Button
                   type="cancel"
                   onClick={() => navigate("/daftar-user")}
                 />
                 <Button type="submit" />
               </div>
-            </div>
           </form>
         </div>
       </div>

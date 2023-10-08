@@ -8,7 +8,7 @@ function DashboardPOP(){
     const changePage = useNavigate();
     return(
     <>
-    <Navbar/>
+    <Navbar active={2}/>
     <div className="py-[136px] px-10">
         <h1 className="header1 text-center text-blue-primary">POP S-BACKBONE</h1>
         <h3 className="header3 text-center text-blue-primary mt-[6px]">Jumlah Total POP: 685</h3>

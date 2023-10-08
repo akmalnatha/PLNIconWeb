@@ -76,7 +76,7 @@ function PenjadwalanPM() {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => { {/*search*/}
     if (search != undefined && search != "") {
       const filtered = dataPm.filter((item: any) =>
         Object.values(item).some((value: any) =>
@@ -119,23 +119,23 @@ function PenjadwalanPM() {
 
   return (
     <>
-      <Navbar />
+      <Navbar active={4}/>
       <div className="pt-[136px] min-h-[calc(100vh-60px)] bg-bnw-50 px-2">
         <h1 className="header1 text-blue-primary text-center">
           PENJADWALAN PM
         </h1>
         <div className="mb-[56px] mt-[40px] pt-[11px] pb-10 w-full bg-bnw-50 rounded-lg shadow-xl px-[20px] border-t-bnw-alternative border-t-2">
           <div className="flex justify-between mb-[11px]">
-            <div className="max-w-[20%]">
+            <div className="max-w-[20%]"> {/*search*/}
               <TextField
                 type="search"
                 placeholder="Search PM"
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => setSearch(e.target.value)} 
               />
             </div>
             <Button type="add" onClick={() => navigate("create")} />
           </div>
-          <div className="w-full bg-bnw-50 overflow-x-auto">
+          <div className="w-full bg-bnw-50 overflow-x-auto"> {/*search*/}
             <Table
               dataTambahan={paginatedDataTambahan}
               data={paginatedData}

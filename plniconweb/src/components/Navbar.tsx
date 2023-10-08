@@ -1,9 +1,9 @@
 import { IoNotifications } from "react-icons/io5"
 import UserOptions from "./UserOptions";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function Navbar() {
+function Navbar({active}: {active?: number}) {
     const [open, setOpen] = useState(false);
 
     const toggleUser = () => {
@@ -16,12 +16,12 @@ function Navbar() {
     <div className="fixed z-40 w-full flex justify-between items-center h-20 px-7 bg-bnw-50 shadow-lg">
         <img src={"/assets/logo.svg"} alt="logo PLN IconPlus" onClick={() => navigate('/dashboard')} className="cursor-pointer"/>
         <div className="flex gap-4 xl:gap-11 items-center">
-            <Link to="/dashboard" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Home</Link>
-            <Link to="/dashboard-pop" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Dashboard POP</Link>
-            <Link to="/pop" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">POP</Link>
-            <Link to="/penjadwalan-pm" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Penjadwalan PM</Link>
-            <Link to="/temuan" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Temuan</Link>
-            <Link to="/export" className="text-text-dark text-center hover:text-blue-hover active:text-blue-click ">Export</Link>
+            <a href="/sipreman/dashboard" className={`${active === 1 ? "text-blue-primary" : "text-text-dark"} text-center hover:text-blue-hover active:text-blue-click`}>Home</a>
+            <a href="/sipreman/dashboard-pop" className={`${active === 2? "text-blue-primary" : "text-text-dark"} text-center hover:text-blue-hover active:text-blue-click`}>Dashboard POP</a>
+            <a href="/sipreman/pop" className={`${active === 3 ? "text-blue-primary" : "text-text-dark"} text-center hover:text-blue-hover active:text-blue-click`}>POP</a>
+            <a href="/sipreman/penjadwalan-pm" className={`${active === 4 ? "text-blue-primary" : "text-text-dark"} text-center hover:text-blue-hover active:text-blue-click`}>Penjadwalan PM</a>
+            <a href="/sipreman/temuan" className={`${active === 5 ? "text-blue-primary" : "text-text-dark"} text-center hover:text-blue-hover active:text-blue-click`}>Temuan</a>
+            <a href="/sipreman/export" className={`${active === 6 ? "text-blue-primary" : "text-text-dark"} text-center hover:text-blue-hover active:text-blue-click`}>Export</a>
             <div className="relative w-[220px]">
                 <div className="flex gap-2 w-full cursor-pointer hover:bg-blue-hover items-center justify-center group" onClick={toggleUser}>
                     <div className="w-[50px] h-[50px] shrink-0 rounded-full bg-bnw-500"></div>

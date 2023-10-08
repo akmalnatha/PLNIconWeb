@@ -290,7 +290,7 @@ function EditPM() {
   return (
     <>
       <LoadingPage isLoad={isLoading}/>
-      <Navbar />
+      <Navbar active={4}/>
       <div className="pt-[100px] min-h-screen bg-bnw-50">
         <div className="w-[95%] lg:w-[97%] mx-auto rounded-lg mb-6 shadow-xl ">
           <h1 className="bg-blue-alternative header1 p-2 px-3 text-text-light rounded-t-lg">
