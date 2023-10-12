@@ -4,7 +4,7 @@ function ComingSoon() {
     <>
       <Navbar/>
       <div className="w-full h-screen">
-        <div className={`w-full h-full bg-[url('${process.env.PUBLIC_URL}/assets/coming_soon_alt.svg')] bg-cover bg-no-repeat`}></div>
+        <div className={`w-full h-full bg-[url('./assets/coming_soon_alt.svg')] bg-cover bg-no-repeat`}></div>
       </div>
     </>
   );
