@@ -8,15 +8,16 @@ function DateField({
   text,
   onChange,
   required,
-  value,
+  defaultValue = null,
 }: {
   id: string;
   text: string;
   onChange: any;
   required?: boolean;
-  value?: Date | null;
+  defaultValue?: Date | null;
 }) {
-  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [startDate, setStartDate] = useState<Date | null>(defaultValue);
+
   const CustomInput = forwardRef(
     (
       {
@@ -40,6 +41,7 @@ function DateField({
       ></input>
     )
   );
+  
   return (
     <>
       <DatePicker
@@ -50,7 +52,7 @@ function DateField({
         scrollableYearDropdown
         popperPlacement="bottom"
         showPopperArrow={false}
-        selected={startDate == null && value != null ? value : startDate}
+        selected={startDate == null && defaultValue != null ? defaultValue : startDate}
         onChange={(date) => {
           setStartDate(date);
           onChange(date);

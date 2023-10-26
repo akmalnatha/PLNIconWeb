@@ -57,7 +57,7 @@ function AddUser() {
       <Navbar />
       <div className="pt-[100px] min-h-[calc(100vh-60px)] bg-bnw-50">
         <div className="w-[95%] lg:w-[97%] mx-auto mb-6 rounded-lg shadow-xl">
-          <h1 className="bg-blue-alternative header1 p-2 px-3 text-text-light rounded-t-lg">
+          <h1 className="bg-blue-primary header1 p-2 px-3 text-text-light rounded-t-lg">
             Create User
           </h1>
           <form action="" onSubmit={(e) => addUser(e)} className="w-full">

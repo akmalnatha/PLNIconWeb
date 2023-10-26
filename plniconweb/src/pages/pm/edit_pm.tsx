@@ -45,6 +45,7 @@ function EditPM() {
   const [userId, setUserId] = useState(0);
   const [date, setDate] = useState<Date | null>(null);
   const [status, setStatus] = useState("");
+  const [statusApproval, setStatusApproval] = useState("");
   const [jenis, setJenis] = useState("");
   const [kategori, setKategori] = useState("");
   const [detail, setDetail] = useState<string[]>([]);
@@ -76,8 +77,8 @@ function EditPM() {
     label: data.nama,
   }));
   const optionsWilayah = [
-    { value: "HARJAK", label: "HARJAK" },
-    { value: "HARBDB", label: "HARBDB" },
+    { value: "Harjak", label: "HARJAK" },
+    { value: "HarBDB", label: "HARBDB" },
   ];
   const optionsArea = dataKotaPop.map((kota: string) => ({
     value: kota,
@@ -104,6 +105,7 @@ function EditPM() {
           {
             id: idPM,
             status: status,
+            status_approval: statusApproval,
             pop_id: popID,
             user_id: userId,
             plan: moment(date).format("YYYY-MM-DD HH:mm:ss"),
@@ -117,7 +119,7 @@ function EditPM() {
           token
         );
         toastSuccess(response.data.meta.message);
-        setDetail([]);
+        console.log(response);
       } catch (error) {
         toastError("Edit Jadwal PM Failed");
         console.log(error);
@@ -130,12 +132,13 @@ function EditPM() {
     if (token) {
       try {
         const jadwalpm = await getWithAuth(token, "jadwalpm");
+        console.log(jadwalpm)
         const filtered = jadwalpm.data.data.filter(
           (data: any) => data.id == idPM
         );
         setDefaultValue(
           filtered.map((data: any) => ({
-              plan: moment(data.plan, "YYYY-MM-DD HH:mm:ss").toDate(),
+              plan: moment(data.plan).toDate(),
               user: { value: data.user.id, label: data.user.nama },
               wilayah: { value: data.wilayah, label: data.wilayah },
               area: { value: data.area, label: data.area },
@@ -146,7 +149,8 @@ function EditPM() {
         );
         filtered.forEach((data: any) => {
           setStatus(data.status);
-          setDate(moment(data.plan, "YYYY-MM-DD HH:mm:ss").toDate());
+          setDate(moment(data.plan).toDate());
+          setStatusApproval(data.status_approval);
           setUserId(data.user.id);
           setWilayah(data.wilayah);
           setArea(data.area);
@@ -155,7 +159,7 @@ function EditPM() {
           setPopID(data.datapop.id);
           const arrayDetail = data.detail_pm ?? "";
           setDetail(arrayDetail.split(", "));
-          console.log(detail)
+          // console.log(detail)
         });
         setTriggerDefault(true);
       } catch (error) {
@@ -173,7 +177,7 @@ function EditPM() {
     if (token) {
       try {
         const listpop = await getWithAuth(token, "pop");
-        console.log(listpop);
+        // console.log(listpop);
         setDataPop(
           listpop.data.data.map((data: any) => {
             return {
@@ -199,7 +203,7 @@ function EditPM() {
     if (token) {
       try {
         const listUser = await getWithAuth(token, "all-user");
-        console.log(listUser);
+        // console.log(listUser);
         setDataUser(
           listUser.data.data.map((data: any) => {
             return {
@@ -251,6 +255,11 @@ function EditPM() {
     }
   }
 
+  // useEffect(() => {
+  //   console.log(date);
+  //   console.log(defaultValue)
+  // },[date, defaultValue])
+
   useEffect(() => {
     if (jenis == "") {
       setOptionsKategori([]);
@@ -293,7 +302,7 @@ function EditPM() {
       <Navbar active={4}/>
       <div className="pt-[100px] min-h-screen bg-bnw-50">
         <div className="w-[95%] lg:w-[97%] mx-auto rounded-lg mb-6 shadow-xl ">
-          <h1 className="bg-blue-alternative header1 p-2 px-3 text-text-light rounded-t-lg">
+          <h1 className="bg-blue-primary header1 p-2 px-3 text-text-light rounded-t-lg">
             Edit PM
           </h1>
           <form
@@ -307,7 +316,7 @@ function EditPM() {
                   <p className="header3 text-left mb-1">Plan</p>
                   {defaultValue.length > 0 && (
                     <DateField
-                      value={defaultValue[0].plan}
+                      defaultValue={defaultValue[0].plan}
                       required
                       onChange={(date: Date) => setDate(date)}
                       id=""

@@ -487,7 +487,7 @@ function Dashboard() {
                 Tanggal Awal
               </label>
               <DateField
-                value={startDate}
+                defaultValue={startDate}
                 id="start"
                 text="Pilih Tanggal Awal!"
                 onChange={(date: Date) => setStartDate(date)}
@@ -498,10 +498,11 @@ function Dashboard() {
                 Tanggal Akhir
               </label>
               <DateField
-                value={endDate}
+                defaultValue={endDate}
                 id="end"
                 text="Pilih Tanggal Akhir!"
                 onChange={(date: Date) => setEndDate(date)}
+                
               />
             </div>
           </div>

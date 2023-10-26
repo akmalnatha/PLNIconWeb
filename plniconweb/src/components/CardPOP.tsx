@@ -2,10 +2,14 @@ import { MouseEventHandler } from "react";
 import { HiUserGroup } from "react-icons/hi"
 
 function CardPOP({
+    nama,
+    area,
     kondisi,
     type,
     onClick
 }:{
+    nama: string;
+    area: string;
     kondisi: "handal" | "sehat" | "critical";
     type: "s-backbone" | "backbone" | "distribusi" | "akses" | "cpe"
     onClick?: MouseEventHandler<HTMLDivElement> | undefined;
@@ -14,8 +18,8 @@ function CardPOP({
     return(
     <>
     {type == "s-backbone" && (
-        <div className="w-[200px] h-[160px] bg-white hover:bg-bnw-500 rounded-2xl border-2 drop-shadow-lg cursor-pointer " onClick={onClick}>
-            <div className="flex flex-col items-center gap-1 p-5">
+        <div className="w-full h-full bg-white hover:bg-bnw-500 rounded-2xl border-2 drop-shadow-lg cursor-pointer " onClick={onClick}>
+            <div className="flex flex-col items-center justify-between gap-1 p-5 h-full w-full">
                 {kondisi == "handal" && (<div className="w-[75px] h-[75px] bg-green-primary rounded-full flex items-center justify-center">
                     <HiUserGroup style={iconStyle}/>
                 </div>)}
@@ -25,8 +29,8 @@ function CardPOP({
                 {kondisi == "critical" && (<div className="w-[75px] h-[75px] bg-red-primary rounded-full flex items-center justify-center">
                     <HiUserGroup style={iconStyle}/>
                 </div>)}
-                <p className="font-bold">Cawang GI Shelter</p>
-                <p>[Nama Area]</p>
+                <p className="font-bold text-center line-clamp-3 break-words w-full">{nama}</p>
+                <p>{area}</p>
             </div>
         </div>
     )}

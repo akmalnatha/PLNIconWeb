@@ -57,8 +57,8 @@ function CreatePM() {
     label: data.nama,
   }));
   const optionsWilayah = [
-    { value: "HARJAK", label: "HARJAK" },
-    { value: "HARBDB", label: "HARBDB" },
+    { value: "HarJak", label: "HARJAK" },
+    { value: "HarBDB", label: "HARBDB" },
   ];
   const optionsArea = dataKotaPop.map((kota: string) => ({
     value: kota,
@@ -223,7 +223,7 @@ function CreatePM() {
       <Navbar active={4}/>
       <div className="pt-[100px] min-h-screen bg-bnw-50">
         <div className="w-[95%] lg:w-[97%] mx-auto rounded-lg mb-6 shadow-xl ">
-          <h1 className="bg-blue-alternative header1 p-2 px-3 text-text-light rounded-t-lg">
+          <h1 className="bg-blue-primary header1 p-2 px-3 text-text-light rounded-t-lg">
             Create PM
           </h1>
           <form
